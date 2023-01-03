@@ -2,16 +2,30 @@
   "name": "orcastration",
   "version": "1.0.0",
   "description": "",
-  "main": "webpack.config.js",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "cross-env NODE_ENV=production nodemon server/server.js",
+    "build": "NODE_ENV=production webpack",
+    "dev": "concurrently \"nodemon server/server.js\" \"cross-env NODE_ENV=development webpack serve --open\""
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ]
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "build",
+      "client"
+    ]
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/oslabs-beta/Orcastration.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Andrew Hogan, Max Heubel, Juliana Morrelli, Meimei Xiong, Danny Zheng",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/oslabs-beta/Orcastration/issues"
@@ -35,8 +49,6 @@
   },
   "dependencies": {
     "axios": "^1.2.2",
-    "bcryptjs": "^2.4.3",
-    "chart.js": "^4.1.1",
     "concurrently": "^7.6.0",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
