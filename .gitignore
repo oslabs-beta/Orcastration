@@ -1,6 +1,6 @@
 # Builds
 node_modules
-build
+dist
 neighborModels.js
 # Logs
 logs
