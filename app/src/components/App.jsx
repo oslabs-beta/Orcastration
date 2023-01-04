@@ -1,5 +1,7 @@
 import * as React from 'react';
-import WorkerComponent from './WorkerComponent';
+// import WorkerComponent from './WorkerComponent';
+import Tabs from './tabComponent/Tabs';
+import Tabs from './tabComponent/Tabs';
 
 const App = (props) => {
   return (
@@ -7,9 +9,9 @@ const App = (props) => {
       <WorkerComponent />
       <WorkerComponent />
       <WorkerComponent />
-      
+      <Tabs />
     </div>
-  )
+  );
 };
 
 export default App;
