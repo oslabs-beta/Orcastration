@@ -1,11 +1,14 @@
 import * as React from 'react';
-// import ContainerUnit from './ContainerUnit';
+// import WorkerComponent from './WorkerComponent';
+import Tabs from './tabComponent/Tabs';
 import Tabs from './tabComponent/Tabs';
 
 const App = (props) => {
   return (
-    <div className='App'>
-      {/* render tab component  */}
+    <div className='flex items-center justify-center min-h-screen bg-blue-100 gap-x-3.5'>
+      <WorkerComponent />
+      <WorkerComponent />
+      <WorkerComponent />
       <Tabs />
     </div>
   );
