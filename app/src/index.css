@@ -1,3 +1,162 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+#background {
+  background-color: slategrey;
+  background-image: url("./background.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#test_div {
+  background-color: slategrey;
+  background-image: url("background.png");
+  background-position: border-box;
+  width: 20rem;
+  height: 20rem;
+}
+
+/* Remove browser defaults */
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+/* Style App.js wrapper */
+.App {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Tab Container */
+.Tabs {
+  width: 80%;
+  height: auto;
+  min-height: 400px;
+  background: #94a3b8;
+  margin: 3.5rem auto 1.5rem;
+  padding: 2rem 1rem;
+  color: #e8f0f2;
+  border-radius: 2rem;
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+  @media (max-width: 769px) {
+    padding: 2rem 0;
+  }
+}
+
+/* Tab Navigation */
+ul.nav {
+  width: 60%;
+  margin: 0 auto 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid rgb(63, 62, 62);
+  border-radius: 2rem;
+  padding-left: 0px;
+  box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px,
+    rgba(17, 17, 26, 0.1) 0px 0px 8px;
+  @media (max-width: 768px) {
+    width: 90%;
+  }
+}
+
+ul.nav li {
+  width: 50%;
+  padding: 1rem;
+  background-color: rgb(250, 250, 250);
+  color: grey;
+  list-style: none;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.7s;
+}
+
+ul.nav li:first-child {
+  border-bottom-left-radius: 2rem;
+  border-top-left-radius: 2rem;
+}
+
+ul.nav li:last-child {
+  border-bottom-right-radius: 2rem;
+  border-top-right-radius: 2rem;
+}
+
+ul.nav li:hover {
+  background: rgb(190, 190, 190);
+}
+
+ul.nav li.active {
+  background: rgb(74, 73, 73);
+  color: rgb(219, 217, 217);
+}
+
+/* Tab Content Styles */
+.TabContent {
+  font-size: 2rem;
+  text-align: center;
+}
+
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+* {
+  scrollbar-width: none;
+  scrollbar-color: #919191 #ffffff;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 8px;
+  /* display: none; */
+}
+
+*::-webkit-scrollbar-track {
+  background: inherit;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #ececec;
+  border-radius: 0.375rem;
+}
+
+.navigationBar {
+  display: flex;
+  justify-content: space-between;
+  margin: 1.2rem 3rem;
+}
+
+#logo {
+  font-size: 1.8rem;
+}
+.mainFontEl {
+  font-family: 'Prosto One', cursive;
+}
+
+.managerAndTabs {
+  display: flex;
+  /* align-items: center; */
+  /* width: 80%; */
+  /* height: auto; */
+  justify-content: space-around;
+}
+
+.managerMetricsContainer {
+  /* display: flex; */
+  background: #94a3b8;
+  border-radius: 2rem;
+  padding: 2rem 1rem;
+  margin-left: 1rem;
+  width: 200px;
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+
+#signout:hover {
+  text-decoration: underline;
+}
