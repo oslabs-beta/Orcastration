@@ -1,15 +1,14 @@
 import * as React from 'react';
-// import WorkerComponent from './WorkerComponent';
+import WorkerComponent from './WorkerComponent';
 import Tabs from './tabComponent/Tabs';
-import Tabs from './tabComponent/Tabs';
+import Star from '../star.svg'
 
 const App = (props) => {
   return (
-    <div className='flex items-center justify-center min-h-screen bg-blue-100 gap-x-3.5'>
-      <WorkerComponent />
-      <WorkerComponent />
-      <WorkerComponent />
-      <Tabs />
+    <div id='background' className='flex items-center justify-center h-screen gap-x-3.5 overflow-clip'>
+        <WorkerComponent />
+        <WorkerComponent />
+        <WorkerComponent />
     </div>
   );
 };

@@ -2,6 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+
+#background {
+  background-color: slategrey;
+  background-image: url("./background.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#test_div {
+  background-color: slategrey;
+  background-image: url("background.png");
+  background-position: border-box;
+  width: 20rem;
+  height: 20rem;
+}
+
 /* Remove browser defaults */
 * {
   box-sizing: border-box;
@@ -85,17 +101,18 @@ ul.nav li.active {
 /* ===== Scrollbar CSS ===== */
 /* Firefox */
 * {
-  scrollbar-width: auto;
+  scrollbar-width: none;
   scrollbar-color: #919191 #ffffff;
 }
 
 /* Chrome, Edge, and Safari */
 *::-webkit-scrollbar {
   width: 8px;
+  /* display: none; */
 }
 
 *::-webkit-scrollbar-track {
-  background: none;
+  background: inherit;
 }
 
 *::-webkit-scrollbar-thumb {
