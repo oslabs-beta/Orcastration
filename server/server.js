@@ -2,26 +2,25 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const PORT = 3000;
-const apiRouter = require('./routes/api');
-const userRouter = require('./routes/user');
 const cors = require('cors');
+const mongoose = require('mongoose');
+
+// import routers
+const dockerContainerRouter = require('./routes/dockerContainer');
+const userRouter = require('./routes/user');
 
 // parses JSON from incoming request
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({ credentials: true, origin: 'http://localhost:8080' }));
 
 // handle requests for static files
 app.use(express.static(path.resolve(__dirname, '../app')));
 
 // define route handlers
-app.use('/user', userRouter, (req, res) => {
-  return res.status(200).send({});
-});
+app.use('/user', userRouter);
 
-app.use('/api', apiRouter, (req, res) => {
-  return res.status(200).send({});
-});
+app.use('/dockerCont', dockerContainerRouter);
 
 // define catch all error handler
 app.get('*', (req, res) => {
@@ -32,7 +31,7 @@ app.get('*', (req, res) => {
 app.use((err, req, res, next) => {
   const defaultErr = {
     log: 'Express error handler caught unknown middleware error',
-    status: 400,
+    status: 500,
     message: { err: 'An error occurred' },
   };
   const errorObj = Object.assign({}, defaultErr, err);
@@ -43,5 +42,3 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log('Server listening on port 3000');
 });
-
-module.exports = app;
