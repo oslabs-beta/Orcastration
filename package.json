@@ -55,6 +55,8 @@
   },
   "dependencies": {
     "axios": "^1.2.2",
+    "bcryptjs": "^2.4.3",
+    "child_process": "^1.0.2",
     "concurrently": "^7.6.0",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
@@ -66,6 +68,7 @@
     "react-dom": "^18.2.0",
     "react-router": "^6.6.1",
     "react-router-dom": "^6.6.1",
-    "react-svg-loader": "^3.0.3"
+    "react-svg-loader": "^3.0.3",
+    "util": "^0.12.5"
   }
 }
