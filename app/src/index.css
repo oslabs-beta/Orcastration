@@ -58,7 +58,6 @@ ul.nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid rgb(63, 62, 62);
   border-radius: 2rem;
   padding-left: 0px;
   box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px,
