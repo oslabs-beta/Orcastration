@@ -12,6 +12,10 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.svg$/,
+        use: ['@svgr/webpack'],
+      },
+      {
         test: /\.jsx?/,
         exclude: /node_modules/,
         loader: 'babel-loader',
@@ -21,11 +25,6 @@ module.exports = {
         include: path.resolve(__dirname, './app/src'),
         use: ['style-loader', 'css-loader', 'postcss-loader'],
       },
-      // {
-      //   test: /\.s[ac]ss$/i, // /scss$/
-      //   use: ['style-loader', 'css-loader', 'sass-loader'],
-      //   // use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
-      // },
     ],
   },
   plugins: [
