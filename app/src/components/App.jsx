@@ -1,15 +1,33 @@
-import * as React from 'react';
-// import WorkerComponent from './WorkerComponent';
+import React, { useState } from 'react';
 import Tabs from './tabComponent/Tabs';
-import Tabs from './tabComponent/Tabs';
+import Navigation from './Navigation';
+import ManagerMetricsContainer from './Managers/ManagerMetricsContainer';
 
 const App = (props) => {
+  const [activeTab, setActiveTab] = useState('tab1');
+  const [currentManager, setCurrentManager] = useState('Manager 1');
+
+  const updateManager = (manager) => {
+    setCurrentManager(manager);
+  };
+
   return (
-    <div className='flex items-center justify-center min-h-screen bg-blue-100 gap-x-3.5'>
-      <WorkerComponent />
-      <WorkerComponent />
-      <WorkerComponent />
-      <Tabs />
+    <div className='navigation'>
+      <Navigation />
+      <div className='managerAndTabs'>
+        <ManagerMetricsContainer
+          activeTab={activeTab}
+          currentManager={currentManager}
+          // managerActive={true}
+        />
+        <Tabs
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          currentManager={currentManager}
+          updateManager={updateManager}
+          // managerActive={true}
+        />
+      </div>
     </div>
   );
 };
