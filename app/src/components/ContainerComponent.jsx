@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 export default function ContainerComponent() {
   return (
@@ -15,5 +15,5 @@ export default function ContainerComponent() {
         <div className="bg-slate-400 h-14 w-14 bg-green-500/40 rounded-full"></div>
       </section>
     </div>
-  )
+  );
 }
