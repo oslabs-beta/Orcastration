@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Tabs from './tabComponent/Tabs';
 import Navigation from './Navigation';
 import ManagerMetricsContainer from './Managers/ManagerMetricsContainer';
+import OffCanvas from './OffCanvas';
 
 const App = (props) => {
   const [activeTab, setActiveTab] = useState('tab1');
@@ -12,13 +13,13 @@ const App = (props) => {
   };
 
   return (
-    <div className='navigation'>
+    <div className='navigation' id='background'>
       <Navigation />
       <div className='managerAndTabs'>
         <ManagerMetricsContainer
           activeTab={activeTab}
           currentManager={currentManager}
-          // managerActive={true}
+          managerActive={true}
         />
         <Tabs
           activeTab={activeTab}
