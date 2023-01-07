@@ -3,20 +3,20 @@
 @tailwind utilities;
 
 
-#background {
-  background-color: slategrey;
-  background-image: url("./background.png");
+
+
+body {
+  margin: 0;
+  background-color: #050b24;
+  background-image: url('../assets/night_nomoon.png');
+  /* background-color: rgb(9, 6, 60); */
   background-repeat: no-repeat;
   background-size: cover;
 }
 
-#test_div {
-  background-color: slategrey;
-  background-image: url("background.png");
-  background-position: border-box;
-  width: 20rem;
-  height: 20rem;
-}
+/* #tab-background {
+  box-shadow: 0 0 0 99999px rgba(7, 7, 7, 0.25)
+} */
 
 /* Remove browser defaults */
 * {
@@ -40,12 +40,11 @@
   width: 80%;
   height: auto;
   min-height: 400px;
-  background: #94a3b8;
   margin: 3.5rem auto 1.5rem;
   padding: 2rem 1rem;
-  color: #e8f0f2;
-  border-radius: 2rem;
-  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+  border-radius: 1rem;
+  outline-style: solid;
+  outline-width: 1px;
   @media (max-width: 769px) {
     padding: 2rem 0;
   }
@@ -58,7 +57,6 @@ ul.nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid rgb(63, 62, 62);
   border-radius: 2rem;
   padding-left: 0px;
   box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px,
@@ -129,7 +127,6 @@ ul.nav li.active {
 .navigationBar {
   display: flex;
   justify-content: space-between;
-  margin: 1.2rem 3rem;
 }
 
 #logo {
@@ -149,12 +146,10 @@ ul.nav li.active {
 
 .managerMetricsContainer {
   /* display: flex; */
-  background: #94a3b8;
   border-radius: 2rem;
   padding: 2rem 1rem;
   margin-left: 1rem;
   width: 200px;
-  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
 }
 
 #signout:hover {
