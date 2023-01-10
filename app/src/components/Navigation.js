@@ -2,7 +2,7 @@ import React from 'react';
 
 const Navigation = () => {
   return (
-    <div className='navigationBar text-slate-200 bg-nightblue-700 border-slate-500 h-1/6 mx-2 mb-4'>
+    <div className='navigationBar text-slate-200 border-slate-500 mx-2 mb-4'>
       <p id='logo' className='mainFontEl'>
         Orcastration
       </p>
