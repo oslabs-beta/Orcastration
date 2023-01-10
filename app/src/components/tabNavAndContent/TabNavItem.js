@@ -19,7 +19,7 @@ const TabNavItem = ({
   return (
     <li
       onClick={() => handleClick(title)}
-      className={activeTab === id ? 'active mainFontEl' : 'mainFontEl'}
+      className={(activeTab === id ? 'active mainFontEl' : 'mainFontEl') + ' min-w-fit'}
     >
       {title}
     </li>
