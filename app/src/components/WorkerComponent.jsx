@@ -2,7 +2,7 @@ import React from 'react';
 import ContainerComponent from './ContainerComponent';
 // import { motion, useViewportScroll, useTransform } from "framer-motion";
 
-export default function WorkerComponent({ chartData }) {
+export default function WorkerComponent({ chartData, totalPercentageCPU }) {
   // const { scrollYProgress } = useViewportScroll();
   // const scale = useTransform(scrollYProgress, [0, 1], [0.2, 2]);
   let containers = [];
