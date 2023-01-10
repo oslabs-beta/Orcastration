@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 
 // import routers
 const dockerContainerRouter = require('./routes/dockerContainer');
+const dockerSwarmRouter = require('./routes/dockerSwarm');
 const userRouter = require('./routes/user');
 
 // parses JSON from incoming request
@@ -21,6 +22,8 @@ app.use(express.static(path.resolve(__dirname, '../app')));
 app.use('/user', userRouter);
 
 app.use('/dockerCont', dockerContainerRouter);
+
+app.use('/dockerSwarm', dockerSwarmRouter);
 
 // define catch all error handler
 app.get('*', (req, res) => {
