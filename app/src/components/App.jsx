@@ -51,9 +51,9 @@ const App = (props) => {
   };
 
   return (
-    <div className='navigation' id='background'>
+    <div className='navigation h-full' id='background'>
       <Navigation />
-      <div className='managerAndTabs'>
+      <div className='managerAndTabs mx-6 overflow-y-visible'>
         <ManagerMetricsContainer
           activeTab={activeTab}
           currentManager={currentManager}
@@ -69,6 +69,7 @@ const App = (props) => {
           totalPercentageCPU={totalPercentageCPU}
         />
       </div>
+      <div className='text-slate-500'>this will be the footer (R)</div>
     </div>
   );
 };
