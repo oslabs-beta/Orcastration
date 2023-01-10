@@ -1,5 +1,5 @@
 import React from 'react';
-import Metrics from './metrics.js';
+import Metrics from './Metrics.js';
 
 const ManagerMetricsContainer = ({ currentManager, totalCPU }) => {
   // console.log(currentManager);
