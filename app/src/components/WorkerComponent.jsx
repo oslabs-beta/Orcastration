@@ -25,10 +25,8 @@ export default function WorkerComponent({ chartData, totalPercentageCPU }) {
       <legend className='text-white bg-nightblue-300 text-lg p-2 rounded-md shadow-lg'>
         ID : 10293810
       </legend>
-      <ContainerComponent />
-      <ContainerComponent />
-      <ContainerComponent />
-      <ContainerComponent />
+      {containers}
+
       {/* <motion.div style={{ scaleY: scrollYProgress }} className="bg-blue-600 w-full h-full origin-bottom z-20">  
   </motion.div> */}
     </motion.fieldset>

@@ -70,7 +70,7 @@ const Tabs = ({
             />
           </div>
         </TabContent>
-        <TabContent id='tab2' activeTab={activeTab}>
+        {/* <TabContent id='tab2' activeTab={activeTab}>
           <div className='flex items-center justify-center p-4 gap-x-3.5'>
             <WorkerComponent
               chartData={chartData}
@@ -105,7 +105,7 @@ const Tabs = ({
               totalPercentageCPU={totalPercentageCPU}
             />
           </div>
-        </TabContent>
+        </TabContent> */}
       </div>
     </div>
   );
