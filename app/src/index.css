@@ -2,16 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
-
 body {
+  height: 100vh;
+}
+
+#root {
+  height: 100%;
+  width: 100%;
   margin: 0;
-  background-color: #050b24;
-  background-image: url('../assets/night_nomoon.png');
+  background: linear-gradient(158deg, hsl(231, 72%, 25%) 17%, hsl(231, 72%, 45%) 100%);
+  /* background-color: rgb(255, 255, 255); */
+  /* background-image: url('../assets/night_nomoon.png'); */
   /* background-color: rgb(9, 6, 60); */
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+.worker-component {
+    height: auto;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    position: relative;
+    background-image: linear-gradient(
+      to bottom,
+      #121f6d,
+      #131D5A
+    );
+    z-index: 1;
+  }
+  
+.worker-component::before {
+  position: absolute;
+  content: "";
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-image: linear-gradient(
+    to bottom,
+    #121f6d,
+    #092fd6,
+    #b517d4
+  );
+  z-index: -1;
+  transition: opacity 1.2s linear;
+  opacity: 0;
+}
+.worker-component:hover::before {
+  opacity: 1;
 }
 
 /* #tab-background {
@@ -23,6 +61,7 @@ body {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 /* Style App.js wrapper */
@@ -37,28 +76,15 @@ body {
 
 /* Tab Container */
 .Tabs {
-  width: 80%;
-  height: auto;
-  min-height: 400px;
-  margin: 3.5rem auto 1.5rem;
-  padding: 2rem 1rem;
-  border-radius: 1rem;
-  outline-style: solid;
-  outline-width: 1px;
-  @media (max-width: 769px) {
-    padding: 2rem 0;
-  }
+  display: grid;
 }
-
 /* Tab Navigation */
 ul.nav {
   width: 60%;
-  margin: 0 auto 2rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-radius: 2rem;
-  padding-left: 0px;
   box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px,
     rgba(17, 17, 26, 0.1) 0px 0px 8px;
   @media (max-width: 768px) {
@@ -67,37 +93,44 @@ ul.nav {
 }
 
 ul.nav li {
+  font-size: medium;
+  font-weight: 300;
   width: 50%;
   padding: 1rem;
   background-color: rgb(250, 250, 250);
-  color: grey;
+  color: rgb(33, 33, 33);
   list-style: none;
   text-align: center;
   cursor: pointer;
-  transition: all 0.7s;
+  transition: all 0.5s;
 }
 
 ul.nav li:first-child {
   border-bottom-left-radius: 2rem;
-  border-top-left-radius: 2rem;
 }
 
 ul.nav li:last-child {
   border-bottom-right-radius: 2rem;
-  border-top-right-radius: 2rem;
 }
 
 ul.nav li:hover {
-  background: rgb(190, 190, 190);
+  box-shadow: 0px 0px 5px #b517d4;
+  background-color: #ececec;
+  color: #b517d4;
 }
 
 ul.nav li.active {
-  background: rgb(74, 73, 73);
+  transition: all 0.7s;
+  background: #092fd6;
+  box-shadow: inset 0 0 4px rgb(33, 18, 160);
   color: rgb(219, 217, 217);
 }
 
 /* Tab Content Styles */
 .TabContent {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
   font-size: 2rem;
   text-align: center;
 }
@@ -132,26 +165,28 @@ ul.nav li.active {
 #logo {
   font-size: 1.8rem;
 }
-.mainFontEl {
-  font-family: 'Prosto One', cursive;
-}
-
-.managerAndTabs {
-  display: flex;
-  /* align-items: center; */
-  /* width: 80%; */
-  /* height: auto; */
-  justify-content: space-around;
-}
-
+/* .mainFontEl { */
+  /* font-family: 'Prosto One', cursive; */
+/* } */
 .managerMetricsContainer {
   /* display: flex; */
-  border-radius: 2rem;
-  padding: 2rem 1rem;
-  margin-left: 1rem;
-  width: 200px;
+  outline-style: solid;
+  outline-width: 1px;
 }
 
 #signout:hover {
   text-decoration: underline;
+}
+
+
+/* set nav proportion relative to rest of screen  */
+.navigation {
+  display: grid;
+  grid-template-rows: 1fr 85% 1fr;
+}
+
+.managerAndTabs {
+  display: grid;
+  grid-template-columns: 1fr 80%;
+  gap: 2rem;
 }

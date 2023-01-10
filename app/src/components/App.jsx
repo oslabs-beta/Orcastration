@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Tabs from './tabComponent/Tabs';
 import Navigation from './Navigation';
 import ManagerMetricsContainer from './Managers/ManagerMetricsContainer';
-import OffCanvas from './OffCanvas';
 
 const App = (props) => {
   const [activeTab, setActiveTab] = useState('tab1');
@@ -13,9 +12,9 @@ const App = (props) => {
   };
 
   return (
-    <div className='navigation' id='background'>
+    <div className='navigation h-full' id='background'>
       <Navigation />
-      <div className='managerAndTabs'>
+      <div className='managerAndTabs mx-6 overflow-y-visible'>
         <ManagerMetricsContainer
           activeTab={activeTab}
           currentManager={currentManager}
@@ -28,7 +27,10 @@ const App = (props) => {
           updateManager={updateManager}
           // managerActive={true}
         />
-      </div>
+        </div>
+        <div className="text-slate-500">
+          this will be the footer (R)
+        </div>
     </div>
   );
 };
