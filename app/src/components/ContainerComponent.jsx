@@ -16,7 +16,7 @@ export default function ContainerComponent({ chartData, memoryData }) {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
         whileHover={{ scale: 1.02 }}
-        className='container_component p-5 my-2 flex flex-col bg-slate-100 hover:duration-200 w-5/6 min-h-fit snap-start scroll-mt-2 drop-shadow-lg hover:drop-shadow-2xl rounded-md z-30 text-sm text-slate-800'
+        className='container_component p-2 my-2 flex flex-col bg-slate-100 hover:duration-200 w-5/6 min-h-fit snap-start scroll-mt-2 drop-shadow-lg hover:drop-shadow-2xl rounded-md z-30 text-sm text-slate-800'
       >
         <ul className='flex flex-row justify-between'>
           <h1>Container</h1>
@@ -30,8 +30,10 @@ export default function ContainerComponent({ chartData, memoryData }) {
             </button>
           </li>
         </ul>
+        <div className='chart-container'>
         <CPUPieChart chartData={chartData} />
         <MemPieChart memoryData={memoryData} />
+        </div>
         <section className='flex flex-row p-4 gap-4'></section>
         {toggleData && (
           <motion.div

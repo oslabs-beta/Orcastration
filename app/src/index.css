@@ -146,7 +146,7 @@ ul.nav li.active {
 .TabContent {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: 40%;
+  grid-auto-columns: 20%;
   gap: 1rem;
   font-size: 2rem;
   text-align: center;

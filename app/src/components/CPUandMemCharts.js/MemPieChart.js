@@ -4,7 +4,6 @@ import { Pie } from 'react-chartjs-2';
 function MemPieChart({ memoryData }) {
   console.log(memoryData);
   return (
-    <div className='chart-container'>
       <Pie
         data={memoryData}
         options={{
@@ -16,8 +15,6 @@ function MemPieChart({ memoryData }) {
           },
         }}
       />
-      hello
-    </div>
   );
 }
 export default MemPieChart;
