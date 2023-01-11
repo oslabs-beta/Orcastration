@@ -8,12 +8,15 @@ import WorkerComponent from '../WorkerComponent';
 const Tabs = ({
   activeTab,
   setActiveTab,
-  currentManager,
-  updateManager,
+  currentNode,
+  setCurrentNode,
+  updateNode,
   chartData,
   totalPercentageCPU,
+  memoryData,
 }) => {
   // console.log(chartData);
+
   //declare activeTab and setActiveTab to be able to display
   //   const [activeTab, setActiveTab] = useState('tab1');
   return (
@@ -22,38 +25,38 @@ const Tabs = ({
       <div className='w-full flex align-middle overflow-y-visible justify-center'>
         <ul className='nav m-0 h-fit'>
           <TabNavItem
-            title='Manager 1'
+            title='Node 1'
             id='tab1'
             activeTab={activeTab}
             setActiveTab={setActiveTab}
-            currentManager={currentManager}
-            updateManager={updateManager}
-            // setCurrentManager={setCurrentManager}
-            // managerActive = {}
+            currentNode={currentNode}
+            updateNode={updateNode}
+            setCurrentNode={setCurrentNode}
+            // NodeActive = {}
           />
           <TabNavItem
-            title='Manager 2'
+            title='Node 2'
             id='tab2'
             activeTab={activeTab}
             setActiveTab={setActiveTab}
-            currentManager={currentManager}
-            updateManager={updateManager}
+            currentNode={currentNode}
+            updateNode={updateNode}
           />
           <TabNavItem
-            title='Manager 3'
+            title='Node 3'
             id='tab3'
             activeTab={activeTab}
             setActiveTab={setActiveTab}
-            currentManager={currentManager}
-            updateManager={updateManager}
+            currentNode={currentNode}
+            updateNode={updateNode}
           />
           <TabNavItem
-            title='Manager 4'
+            title='Node 4'
             id='tab4'
             activeTab={activeTab}
             setActiveTab={setActiveTab}
-            currentManager={currentManager}
-            updateManager={updateManager}
+            currentNode={currentNode}
+            updateNode={updateNode}
           />
         </ul>
       </div>
@@ -67,6 +70,7 @@ const Tabs = ({
             <WorkerComponent
               chartData={chartData}
               totalPercentageCPU={totalPercentageCPU}
+              memoryData={memoryData}
             />
           </div>
         </TabContent>
@@ -75,10 +79,12 @@ const Tabs = ({
             <WorkerComponent
               chartData={chartData}
               totalPercentageCPU={totalPercentageCPU}
+              memoryData={memoryData}
             />
             <WorkerComponent
               chartData={chartData}
               totalPercentageCPU={totalPercentageCPU}
+              memoryData={memoryData}
             />
           </div>
         </TabContent>
@@ -87,14 +93,17 @@ const Tabs = ({
             <WorkerComponent
               chartData={chartData}
               totalPercentageCPU={totalPercentageCPU}
+              memoryData={memoryData}
             />
             <WorkerComponent
               chartData={chartData}
               totalPercentageCPU={totalPercentageCPU}
+              memoryData={memoryData}
             />
             <WorkerComponent
               chartData={chartData}
               totalPercentageCPU={totalPercentageCPU}
+              memoryData={memoryData}
             />
           </div>
         </TabContent>
@@ -103,6 +112,7 @@ const Tabs = ({
             <WorkerComponent
               chartData={chartData}
               totalPercentageCPU={totalPercentageCPU}
+              memoryData={memoryData}
             />
           </div>
         </TabContent> */}
