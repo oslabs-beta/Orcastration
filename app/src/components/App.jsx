@@ -85,7 +85,6 @@ const App = (props) => {
   const [chartData, setChartData] = useState(cpuData);
   const [totalCPU, setPercentageCPU] = useState(totalPercentageCPU);
   const [memoryData, setMemoryData] = useState(memData);
-  // // console.log(chartData);
   const updateNode = (node) => {
     setCurrentNode(manager);
   };
@@ -109,7 +108,6 @@ const App = (props) => {
           memoryData={memoryData}
         />
       </div>
-      <div className='text-slate-500'>this will be the footer (R)</div>
     </div>
   );
 };

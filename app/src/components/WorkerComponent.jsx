@@ -20,9 +20,9 @@ export default function WorkerComponent({
 
   return (
     <motion.fieldset
-      className='worker-component border-solid flex flex-col items-center gap-y-1 snap-y scroll-smooth rounded-md'
+      className='worker-component border-solid flex flex-col items-center gap-y-4 snap-y scroll-smooth rounded-md'
     >
-      <legend className='text-white bg-nightblue-300 text-lg p-2 rounded-md'>
+      <legend className='text-white bg-nightblue-300 text-lg p-2 rounded-md mb-4'>
         Task Name
       </legend>
       {containers}

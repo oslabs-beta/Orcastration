@@ -74,6 +74,7 @@ const Tabs = ({
           <WorkerComponent
             chartData={chartData}
             totalPercentageCPU={totalPercentageCPU}
+            memoryData={memoryData}
           />
       </TabContent>
       <TabContent id='tab3' activeTab={activeTab}>

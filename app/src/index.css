@@ -38,7 +38,7 @@ body {
 
 .worker-component {
   height: 100%;
-  padding-bottom: 1rem;
+  padding-bottom: 2rem;
   position: relative;
   background-image: linear-gradient(
     to bottom,
@@ -69,12 +69,8 @@ body {
   opacity: 0;
 }
 
-.worker-component:hover::before {
+/* .worker-component:hover::before {
   opacity: 1;
-}
-
-/* #tab-background {
-  box-shadow: 0 0 0 99999px rgba(7, 7, 7, 0.25)
 } */
 
 /* Remove browser defaults */
