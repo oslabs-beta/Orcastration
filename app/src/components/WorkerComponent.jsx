@@ -3,10 +3,19 @@ import ContainerComponent from './ContainerComponent';
 import { motion } from 'framer-motion';
 // import { motion, useViewportScroll, useTransform } from "framer-motion";
 
-export default function WorkerComponent({ chartData, totalPercentageCPU }) {
+export default function WorkerComponent({
+  chartData,
+  totalPercentageCPU,
+  memoryData,
+}) {
+  // const { scrollYProgress } = useViewportScroll();
+  // const scale = useTransform(scrollYProgress, [0, 1], [0.2, 2]);
   let containers = [];
   for (let i = 0; i < chartData.length; i++) {
-    containers.push(<ContainerComponent chartData={chartData[i]} />);
+    // console.log(chartData[i]);
+    containers.push(
+      <ContainerComponent chartData={chartData[i]} memoryData={memoryData[i]} />
+    );
   }
 
   return (

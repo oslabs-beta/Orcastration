@@ -9,7 +9,6 @@ userController.createUser = (req, res, next) => {
 
   User.create({ email, password })
     .then((userDoc) => {
-      console.log(userDoc);
       res.locals.user = userDoc;
       return next();
     })
@@ -21,7 +20,6 @@ userController.createUser = (req, res, next) => {
           message: { err: 'The email has already been taken.' },
         });
       }
-      console.log(err);
       next({
         log: `userController.createUser: ERROR: ${err}`,
         message: { err: 'An error occurred in creating new user.' },

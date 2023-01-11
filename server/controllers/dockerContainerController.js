@@ -9,6 +9,73 @@ const parseRawData = (rawData) => {
   return parsedData;
 };
 
+const getNodeIDs = () => {
+  return execProm('docker node ls --format "{{json .ID}}"').then(
+    (rawNodeIDs) => {
+      const parsedNodeIDs = parseRawData(rawNodeIDs);
+      return parsedNodeIDs;
+    }
+  );
+};
+
+// getNodeIDs().then((nodeIDs) => {
+//   console.log(nodeIDs);
+// });
+
+const getRunningTaskIDs = (nodeID) => {
+  return execProm(
+    `docker node ps ${nodeID} --filter desired-state=running --format "{{json .ID}}"`
+  ).then((rawTaskIDs) => {
+    const parsedRunningTaskIDs = parseRawData(rawTaskIDs);
+    return parsedRunningTaskIDs;
+  });
+};
+
+// getRunningTaskIDs('01hce8ymcxnkc10hhsgqusb0t').then((taskIDs) => {
+//   console.log(taskIDs);
+// });
+
+const getShutdownTaskIDs = (nodeID) => {
+  return execProm(
+    `docker node ps ${nodeID} --filter desired-state=shutdown --format "{{json .ID}}"`
+  ).then((rawTaskIDs) => {
+    const parsedShutdownTaskIDs = parseRawData(rawTaskIDs);
+    return parsedShutdownTaskIDs;
+  });
+};
+
+// getShutdownTaskIDs('01hce8ymcxnkc10hhsgqusb0t').then((taskIDs) => {
+//   console.log(taskIDs);
+// });
+
+const getContainerIDs = (taskID) => {
+  return execProm(
+    `docker inspect ${taskID} --format='{{json .Status.ContainerStatus.ContainerID}}'`
+  ).then((rawContainerIDs) => {
+    const parsedContainerIDs = parseRawData(rawContainerIDs);
+    return parsedContainerIDs;
+  });
+};
+
+// getContainerIDs('d57ntl1o16jk').then((containerIDs) => {
+//   console.log(containerIDs);
+// });
+
+const getContainerStats = (containerID) => {
+  return execProm(
+    `docker stats ${containerID} --no-stream --format "{{json .}}"`
+  ).then((rawContainerStats) => {
+    const parsedContainerStats = parseRawData(rawContainerStats);
+    return parsedContainerStats;
+  });
+};
+
+// getContainerStats(
+//   'b2d48a94eafced96d8b9153e1cc5a11fdff9dac1e3b135d1b143dd5992b5afd3'
+// ).then((containerStats) => {
+//   console.log(containerStats);
+// });
+
 dockerContainerController = {};
 
 dockerContainerController.getContainers = (req, res, next) => {
@@ -41,80 +108,60 @@ dockerContainerController.getContainers = (req, res, next) => {
 };
 
 dockerContainerController.getStats = (req, res, next) => {
-  execProm('docker node ls --format "{{json .}}"')
-    .then((rawNodeData) => {
-      const parsedNodeData = parseRawData(rawNodeData);
-      const nodeData = parsedNodeData.map((node) => {
-        return {
-          nodeID: node.ID,
-        };
-      });
-      return nodeData;
-    })
-    .then((nodeData) => {
-      const nodeID = nodeData[0].nodeID;
-      const taskPromise = execProm(
-        `docker node ps ${nodeID} --format "{{json .}}"`
-      ).then((rawTaskData) => {
-        const parsedTaskData = parseRawData(rawTaskData);
-        const runningTasks = parsedTaskData.filter((task) => {
-          return task.DesiredState === 'Running';
-        });
-        console.log('RUNNING TASKS', runningTasks);
-        const taskData = [{ nodeID: `${nodeID}`, taskID: [] }];
+  getNodeIDs()
+    .then((nodeIDList) => {
+      const firstNodeID = [nodeIDList[0]];
+      return Promise.all(
+        firstNodeID.map((nodeID) => {
+          // Create an object for the current node
+          const nodeData = { nodeID: nodeID, tasks: [] };
 
-        runningTasks.forEach((task) => {
-          console.log('TASK', task);
-          taskData[0].taskID.push(task.ID);
-        });
-        return taskData;
-      });
-      return taskPromise;
-    })
-    .then((taskData) => {
-      taskData[0].containerID = [];
-      const containerPromise = taskData[0].taskID.map((task) => {
-        return execProm(
-          `docker inspect ${task} --format='{{json .Status.ContainerStatus.ContainerID}}'`
-        ).then((rawContainerData) => {
-          const parsedContainerData = parseRawData(rawContainerData);
-          taskData[0].containerID.push(parsedContainerData[0]);
-          return taskData;
-        });
-      });
-      return Promise.all(containerPromise);
-    })
-    .then((containerData) => {
-      console.log('CONTAINERpromise', containerData[0]);
-      containerData[0][0].containerMetrics = [];
-      const mappedContainerData = containerData[0][0].containerID.map(
-        (container) => {
-          console.log('CONTAINER', container);
-          return execProm(
-            `docker stats ${container} --no-stream --format "{{json .}}"`
-          ).then((rawContainerStats) => {
-            const parsedContainerStats = parseRawData(rawContainerStats);
-            console.log('PARSED CONTAINER STATS', parsedContainerStats);
-            const metrics = {
-              containerID: parsedContainerStats[0].ID,
-              containerName: parsedContainerStats[0].Name,
-              CPUPerc: parsedContainerStats[0].CPUPerc,
-              memPerc: parsedContainerStats[0].MemPerc,
-              memUsage: parsedContainerStats[0].MemUsage,
-              netIO: parsedContainerStats[0].NetIO,
-            };
-            containerData[0][0].containerMetrics.push(metrics);
-            console.log('CONTAINERDATA', containerData);
-            return containerData;
+          // Get the running tasks for the current node
+          return getRunningTaskIDs(nodeID).then((runningTaskList) => {
+            // Iterate over the running tasks
+            return Promise.all(
+              runningTaskList.map((taskID) => {
+                // Create an object for the current task
+                const taskData = { taskID: taskID, containers: [] };
+
+                // Get the container IDs for the current task
+                return getContainerIDs(taskID).then((containerIDList) => {
+                  // Iterate over the container IDs
+                  return Promise.all(
+                    containerIDList.map((containerID) => {
+                      // Get the stats for the current container
+                      return getContainerStats(containerID).then(
+                        (containerStat) => {
+                          // Create an object for the current container
+                          const containerData = {
+                            containerID: containerStat[0].ID,
+                            containerName: containerStat[0].Name,
+                            CPUPerc: containerStat[0].CPUPerc,
+                            memPerc: containerStat[0].MemPerc,
+                            memUsage: containerStat[0].MemUsage,
+                            netIO: containerStat[0].NetIO,
+                          };
+                          // Add the container data to the task's containers array
+                          taskData.containers.push(containerData);
+                          return taskData;
+                        }
+                      );
+                    })
+                  ).then((tasksData) => {
+                    return tasksData[0];
+                  });
+                });
+              })
+            ).then((tasksData) => {
+              nodeData.tasks = tasksData;
+              return nodeData;
+            });
           });
-        }
+        })
       );
-      return Promise.all(mappedContainerData);
     })
-    .then((data) => {
-      console.log('DATA[0]', data[0][0][0]);
-      console.log('DATAAAAAAAAAAAAAAA', data);
-      res.locals.dockerContainerStats = data[0][0];
+    .then((nodesData) => {
+      res.locals.dockerContainerStats = nodesData;
       return next();
     })
     .catch((err) => {
@@ -125,24 +172,61 @@ dockerContainerController.getStats = (req, res, next) => {
     });
 };
 
-// dockerContainerController.getStats = (req, res, next) => {
-//   execProm(
-//     'docker stats --no-stream 9929e422cbeb 050b0c808d1d --format "{{json .}}"'
-//   ).then((rawContainerStatsData) => {
-//     const parsedContainerStatsData = parseRawData(rawContainerStatsData);
-//     console.log(parsedContainerStatsData);
-//     const containerStatsData = parsedContainerStatsData.map((container) => {
-//       return {
-//         containerID: container.ID,
-//         containerName: container.Name,
-//         CPUPerc: container.CPUPerc,
-//         memPerc: container.MemPerc,
-//         memUsage: container.MemUsage,
-//         netIO: container.NetIO,
-//       };
-//     });
-//     res.locals.dockerContainerStats = containerStatsData;
-//     return next();
-//   });
-// };
+dockerContainerController.getStatsByNode = (req, res, next) => {
+  let nodeID = req.params.nodeID;
+  return Promise.all(
+    [nodeID].map((nodeID) => {
+      const nodeData = { nodeID: nodeID, tasks: [] };
+
+      return getRunningTaskIDs(nodeID).then((runningTaskList) => {
+        return Promise.all(
+          runningTaskList.map((taskID) => {
+            const taskData = { taskID: taskID, containers: [] };
+
+            return getContainerIDs(taskID).then((containerIDList) => {
+              return Promise.all(
+                containerIDList.map((containerID) => {
+                  return getContainerStats(containerID).then(
+                    (containerStat) => {
+                      const containerData = {
+                        containerID: containerStat[0].ID,
+                        containerName: containerStat[0].Name,
+                        CPUPerc: containerStat[0].CPUPerc,
+                        memPerc: containerStat[0].MemPerc,
+                        memUsage: containerStat[0].MemUsage,
+                        netIO: containerStat[0].NetIO,
+                      };
+
+                      taskData.containers.push(containerData);
+                      return taskData;
+                    }
+                  );
+                })
+              ).then((tasksData) => {
+                return tasksData[0];
+              });
+            });
+          })
+        ).then((tasksData) => {
+          nodeData.tasks = tasksData;
+
+          return nodeData;
+        });
+      });
+    })
+  )
+    .then((nodesData) => {
+      res.locals.dockerContainerStats = nodesData;
+      return next();
+    })
+    .catch((err) => {
+      return next({
+        log: `dockerContainerController.getStatsByNode: ERROR: ${err}`,
+        message: {
+          err: "An error occurred in obtaining container stats by node'.",
+        },
+      });
+    });
+};
+
 module.exports = dockerContainerController;
