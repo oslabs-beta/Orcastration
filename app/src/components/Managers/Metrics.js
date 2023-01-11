@@ -3,9 +3,9 @@ import { Pie } from 'react-chartjs-2';
 
 // ChartJS.register(ArcElement, Tooltip, Legend);
 
-const Metrics = ({ totalCPU, currentManager }) => {
+const Metrics = ({ totalCPU, currentNode }) => {
   const cpuData = {
-    labels: [`${currentManager}`, 'available CPU'],
+    labels: [`${currentNode}`, 'available CPU'],
     datasets: [
       {
         label: 'manager test',
@@ -35,7 +35,6 @@ const Metrics = ({ totalCPU, currentManager }) => {
           },
         }}
       />
-      {/* hello */}
     </div>
   );
 };

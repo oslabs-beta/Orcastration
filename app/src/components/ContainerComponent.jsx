@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import PieChart from '../components/PieChart';
+import CPUPieChart from './CPUandMemCharts.js/CPUPieChart';
+import MemPieChart from './CPUandMemCharts.js/MemPieChart';
 
-export default function ContainerComponent({ chartData }) {
+export default function ContainerComponent({ chartData, memoryData }) {
   const [toggleData, setToggleData] = useState(false);
 
   // console.log(toggleData);
   // console.log(chartData);
+  // console.log(memoryData);
   return (
     <React.Fragment>
-      <PieChart chartData={chartData} />
       <motion.div
         initial={{ opacity: 0, scale: 0.5, originY: -0.2 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -29,13 +30,9 @@ export default function ContainerComponent({ chartData }) {
             </button>
           </li>
         </ul>
-
-        <section className='flex flex-row p-4 gap-4'>
-          <canvas>{/* <PieChart chartData={chartData} /> */}</canvas>
-
-          <div className='h-14 w-14 bg-orange-300 rounded-full'></div>
-          <div className='h-14 w-14 bg-green-300 rounded-full'></div>
-        </section>
+        <CPUPieChart chartData={chartData} />
+        <MemPieChart memoryData={memoryData} />
+        <section className='flex flex-row p-4 gap-4'></section>
         {toggleData && (
           <motion.div
             className='bg-blue-200 w-full'
