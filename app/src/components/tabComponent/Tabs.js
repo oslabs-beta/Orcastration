@@ -17,10 +17,9 @@ const Tabs = ({
   //declare activeTab and setActiveTab to be able to display
   //   const [activeTab, setActiveTab] = useState('tab1');
   return (
-    <div className='Tabs px-4 pb-4 bg-nightblue-800/50 overflow-x-auto overflow-y-visible w-full rounded-md'>
+    <div className='Tabs px-4 pb-4 bg-nightblue-800/50 rounded-md'>
       {/* Tab nav */}
-      <div className='w-full flex align-middle overflow-y-visible justify-center'>
-        <ul className='nav m-0 h-fit'>
+        <ul className='nav m-0 flex h-fit'>
           <TabNavItem
             title='Manager 1'
             id='tab1'
@@ -56,57 +55,42 @@ const Tabs = ({
             updateManager={updateManager}
           />
         </ul>
-      </div>
-      <div className='outlet flex items-end'>
-        {/* content displayed here */}
-        <TabContent id='tab1' activeTab={activeTab}>
-          <div
-            id='tab_background'
-            className='flex items-center justify-center p-4 bg-slate-400/0 gap-x-3.5 rounded-md'
-          >
-            <WorkerComponent
-              chartData={chartData}
-              totalPercentageCPU={totalPercentageCPU}
-            />
-          </div>
-        </TabContent>
-        {/* <TabContent id='tab2' activeTab={activeTab}>
-          <div className='flex items-center justify-center p-4 gap-x-3.5'>
-            <WorkerComponent
-              chartData={chartData}
-              totalPercentageCPU={totalPercentageCPU}
-            />
-            <WorkerComponent
-              chartData={chartData}
-              totalPercentageCPU={totalPercentageCPU}
-            />
-          </div>
-        </TabContent>
-        <TabContent id='tab3' activeTab={activeTab}>
-          <div className='flex items-center justify-center p-4 bg-blue-100 gap-x-3.5'>
-            <WorkerComponent
-              chartData={chartData}
-              totalPercentageCPU={totalPercentageCPU}
-            />
-            <WorkerComponent
-              chartData={chartData}
-              totalPercentageCPU={totalPercentageCPU}
-            />
-            <WorkerComponent
-              chartData={chartData}
-              totalPercentageCPU={totalPercentageCPU}
-            />
-          </div>
-        </TabContent>
-        <TabContent id='tab4' activeTab={activeTab}>
-          <div className='flex items-center justify-center p-4 bg-blue-100 gap-x-3.5'>
-            <WorkerComponent
-              chartData={chartData}
-              totalPercentageCPU={totalPercentageCPU}
-            />
-          </div>
-        </TabContent> */}
-      </div>
+      <TabContent id='tab1' activeTab={activeTab}>
+          <WorkerComponent
+            chartData={chartData}
+            totalPercentageCPU={totalPercentageCPU}
+          />
+      </TabContent>
+      <TabContent id='tab2' activeTab={activeTab}>
+          <WorkerComponent
+            chartData={chartData}
+            totalPercentageCPU={totalPercentageCPU}
+          />
+          <WorkerComponent
+            chartData={chartData}
+            totalPercentageCPU={totalPercentageCPU}
+          />
+      </TabContent>
+      <TabContent id='tab3' activeTab={activeTab}>
+          <WorkerComponent
+            chartData={chartData}
+            totalPercentageCPU={totalPercentageCPU}
+          />
+          <WorkerComponent
+            chartData={chartData}
+            totalPercentageCPU={totalPercentageCPU}
+          />
+          <WorkerComponent
+            chartData={chartData}
+            totalPercentageCPU={totalPercentageCPU}
+          />
+      </TabContent>
+      <TabContent id='tab4' activeTab={activeTab}>
+          <WorkerComponent
+            chartData={chartData}
+            totalPercentageCPU={totalPercentageCPU}
+          />
+      </TabContent>
     </div>
   );
 };

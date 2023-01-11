@@ -51,9 +51,9 @@ const App = (props) => {
   };
 
   return (
-    <div className='navigation h-full' id='background'>
+    <div className='navigation' id='background'>
       <Navigation />
-      <div className='managerAndTabs mx-6 overflow-y-visible'>
+      <div className='managerAndTabs mx-6'>
         <ManagerMetricsContainer
           activeTab={activeTab}
           currentManager={currentManager}
