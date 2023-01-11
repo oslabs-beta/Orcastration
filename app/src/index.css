@@ -4,13 +4,15 @@
 
 body {
   height: 100vh;
+  height: 100dvh;
+  /* width: 100vw; */
 }
 
 #root {
-  height: 100%;
-  width: 100%;
+  height: inherit;
+  /* width: inherit; */
   margin: 0;
-  background: linear-gradient(158deg, hsl(231, 72%, 25%) 17%, hsl(231, 72%, 45%) 100%);
+  background: linear-gradient(158deg, hsl(231, 39%, 6%) 17%, hsl(231, 72%, 45%) 50%);
   /* background-color: rgb(255, 255, 255); */
   /* background-image: url('../assets/night_nomoon.png'); */
   /* background-color: rgb(9, 6, 60); */
@@ -18,19 +20,36 @@ body {
   background-size: cover;
 }
 
+/* Tabs Container */
+.Tabs {
+  display: grid;
+  grid-template-rows: 1fr 92.5%;
+  height: inherit;
+  overflow: auto;
+}
+
+.snap-inline {
+  scroll-snap-type: inline mandatory;
+}
+
+.snap-inline > * {
+  scroll-snap-align: start;
+}
+
 .worker-component {
-    height: auto;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    position: relative;
-    background-image: linear-gradient(
-      to bottom,
-      #121f6d,
-      #131D5A
-    );
-    z-index: 1;
-  }
-  
+  height: 100%;
+  padding-bottom: 2rem;
+  position: relative;
+  background-image: linear-gradient(
+    to bottom,
+    #121f6d,
+    #131D5A
+  );
+  z-index: 1;
+  overflow-y: scroll;
+  overscroll-behavior-inline: contain;
+}
+
 .worker-component::before {
   position: absolute;
   content: "";
@@ -38,6 +57,7 @@ body {
   right: 0;
   bottom: 0;
   left: 0;
+  height: 200%;
   background-image: linear-gradient(
     to bottom,
     #121f6d,
@@ -48,12 +68,9 @@ body {
   transition: opacity 1.2s linear;
   opacity: 0;
 }
-.worker-component:hover::before {
-  opacity: 1;
-}
 
-/* #tab-background {
-  box-shadow: 0 0 0 99999px rgba(7, 7, 7, 0.25)
+/* .worker-component:hover::before {
+  opacity: 1;
 } */
 
 /* Remove browser defaults */
@@ -65,31 +82,30 @@ body {
 }
 
 /* Style App.js wrapper */
-.App {
+/* .App {
   width: 100vw;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+} */
+
+.nav {
+  margin-inline: auto;
 }
 
-/* Tab Container */
-.Tabs {
-  display: grid;
-}
 /* Tab Navigation */
 ul.nav {
   width: 60%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-radius: 2rem;
   box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px,
     rgba(17, 17, 26, 0.1) 0px 0px 8px;
-  @media (max-width: 768px) {
+  /* @media (max-width: 768px) {
     width: 90%;
-  }
+  } */
 }
 
 ul.nav li {
@@ -128,11 +144,14 @@ ul.nav li.active {
 
 /* Tab Content Styles */
 .TabContent {
-  display: flex;
-  align-items: flex-start;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 20%;
   gap: 1rem;
   font-size: 2rem;
   text-align: center;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
 }
 
 /* ===== Scrollbar CSS ===== */
@@ -165,9 +184,11 @@ ul.nav li.active {
 #logo {
   font-size: 1.8rem;
 }
+
 /* .mainFontEl { */
   /* font-family: 'Prosto One', cursive; */
 /* } */
+
 .managerMetricsContainer {
   /* display: flex; */
   outline-style: solid;
@@ -181,12 +202,19 @@ ul.nav li.active {
 
 /* set nav proportion relative to rest of screen  */
 .navigation {
+  padding-bottom: 2rem;
+  height: inherit;
   display: grid;
-  grid-template-rows: 1fr 85% 1fr;
+  grid-template-rows: 2fr 90% 1fr;
 }
 
 .managerAndTabs {
   display: grid;
   grid-template-columns: 1fr 80%;
   gap: 2rem;
+}
+
+#tab3 {
+  display: grid;
+  grid-auto-flow: column;
 }

@@ -85,15 +85,14 @@ const App = (props) => {
   const [chartData, setChartData] = useState(cpuData);
   const [totalCPU, setPercentageCPU] = useState(totalPercentageCPU);
   const [memoryData, setMemoryData] = useState(memData);
-  // // console.log(chartData);
   const updateNode = (node) => {
     setCurrentNode(manager);
   };
   // console.log(memoryData);
   return (
-    <div className='navigation h-full' id='background'>
+    <div className='navigation' id='background'>
       <Navigation />
-      <div className='managerAndTabs mx-6 overflow-y-visible'>
+      <div className='managerAndTabs mx-6'>
         <ManagerMetricsContainer
           activeTab={activeTab}
           currentNode={currentNode}
@@ -109,7 +108,6 @@ const App = (props) => {
           memoryData={memoryData}
         />
       </div>
-      <div className='text-slate-500'>this will be the footer (R)</div>
     </div>
   );
 };
