@@ -30,8 +30,10 @@ export default function ContainerComponent({ chartData, memoryData }) {
             </button>
           </li>
         </ul>
-        <CPUPieChart chartData={chartData} />
-        <MemPieChart memoryData={memoryData} />
+        <div className="chart-container flex flex-row">
+          <CPUPieChart chartData={chartData} />
+          <MemPieChart memoryData={memoryData} />
+        </div>
         <section className='flex flex-row p-4 gap-4'></section>
         {toggleData && (
           <motion.div

@@ -1,23 +1,21 @@
 import React from 'react';
-import { Pie } from 'react-chartjs-2';
+import { Doughnut, Pie } from 'react-chartjs-2';
 
 function MemPieChart({ memoryData }) {
-  console.log(memoryData);
+  // console.log(memoryData);
   return (
-    <div className='chart-container'>
-      <Pie
-        data={memoryData}
-        options={{
-          plugins: {
-            title: {
-              display: true,
-              text: 'container memory usage',
-            },
+    <Pie
+      data={memoryData}
+      options={{
+        plugins: {
+          title: {
+            display: true,
+            text: 'container memory usage',
           },
-        }}
-      />
-      hello
-    </div>
+          borderWidth: 1,
+        },
+      }}
+    />
   );
 }
 export default MemPieChart;

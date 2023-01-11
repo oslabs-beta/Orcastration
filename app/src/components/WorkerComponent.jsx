@@ -14,7 +14,7 @@ export default function WorkerComponent({
   for (let i = 0; i < chartData.length; i++) {
     // console.log(chartData[i]);
     containers.push(
-      <ContainerComponent chartData={chartData[i]} memoryData={memoryData[i]} />
+        <ContainerComponent chartData={chartData[i]} memoryData={memoryData[i]} />
     );
   }
 
@@ -29,9 +29,9 @@ export default function WorkerComponent({
       // transition={{ duration: 0.2 }}
       className='worker-component w-96 border-solid flex flex-col items-center justify-items-end gap-y-2.5 overflow-auto snap-y scroll-smooth rounded-md'
     >
-      <legend className='text-white bg-nightblue-300 text-lg p-2 rounded-md shadow-lg'>
+      {/* <legend className='text-white bg-nightblue-300 text-lg p-2 rounded-md shadow-lg'>
         ID : 10293810
-      </legend>
+      </legend> */}
       {containers}
 
       {/* <motion.div style={{ scaleY: scrollYProgress }} className="bg-blue-600 w-full h-full origin-bottom z-20">  
