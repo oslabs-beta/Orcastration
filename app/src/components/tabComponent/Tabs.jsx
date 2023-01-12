@@ -52,19 +52,28 @@ const Tabs = ({
       </ul>
       <TabContent id='tab1' activeTab={activeTab}>
         {allTasks.length === 0 ? (
-          <div>Loading...</div>
+          // <div>Loading...</div>
+          <div class='center'>
+            <div class='wave'></div>
+            <div class='wave'></div>
+            <div class='wave'></div>
+            <div class='wave'></div>
+            <div class='wave'></div>
+            <div class='wave'></div>
+            <div class='wave'></div>
+            <div class='wave'></div>
+            <div class='wave'></div>
+            <div class='wave'></div>
+          </div>
         ) : (
           allTasks[0].tasks.map((task) => {
             return <WorkerComponent task={task} />;
           })
         )}
       </TabContent>
-      <TabContent id='tab2' activeTab={activeTab}>
-      </TabContent>
-      <TabContent id='tab3' activeTab={activeTab}>
-      </TabContent>
-      <TabContent id='tab4' activeTab={activeTab}>
-      </TabContent>
+      <TabContent id='tab2' activeTab={activeTab}></TabContent>
+      <TabContent id='tab3' activeTab={activeTab}></TabContent>
+      <TabContent id='tab4' activeTab={activeTab}></TabContent>
     </div>
   );
 };

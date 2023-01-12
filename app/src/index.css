@@ -12,7 +12,11 @@ body {
   height: inherit;
   /* width: inherit; */
   margin: 0;
-  background: linear-gradient(158deg, hsl(231, 39%, 6%) 17%, hsl(231, 72%, 45%) 50%);
+  background: linear-gradient(
+    158deg,
+    hsl(231, 39%, 6%) 17%,
+    hsl(231, 72%, 45%) 50%
+  );
   /* background-color: rgb(255, 255, 255); */
   /* background-image: url('../assets/night_nomoon.png'); */
   /* background-color: rgb(9, 6, 60); */
@@ -40,11 +44,7 @@ body {
   height: 100%;
   padding-bottom: 2rem;
   position: relative;
-  background-image: linear-gradient(
-    to bottom,
-    #121f6d,
-    #131D5A
-  );
+  background-image: linear-gradient(to bottom, #121f6d, #131d5a);
   z-index: 1;
   overflow-y: scroll;
   overscroll-behavior-inline: contain;
@@ -52,18 +52,13 @@ body {
 
 .worker-component::before {
   position: absolute;
-  content: "";
+  content: '';
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
   height: 200%;
-  background-image: linear-gradient(
-    to bottom,
-    #121f6d,
-    #092fd6,
-    #b517d4
-  );
+  background-image: linear-gradient(to bottom, #121f6d, #092fd6, #b517d4);
   z-index: -1;
   transition: opacity 1.2s linear;
   opacity: 0;
@@ -186,7 +181,7 @@ ul.nav li.active {
 }
 
 /* .mainFontEl { */
-  /* font-family: 'Prosto One', cursive; */
+/* font-family: 'Prosto One', cursive; */
 /* } */
 
 .managerMetricsContainer {
@@ -198,7 +193,6 @@ ul.nav li.active {
 #signout:hover {
   text-decoration: underline;
 }
-
 
 /* set nav proportion relative to rest of screen  */
 .navigation {
@@ -217,4 +211,65 @@ ul.nav li.active {
 #tab3 {
   display: grid;
   grid-auto-flow: column;
+}
+
+/*LOADING WAVE ANIMATION*/
+bodY {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.center {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #000;
+}
+.wave {
+  width: 5px;
+  height: 100px;
+  background: linear-gradient(45deg, cyan, #fff);
+  margin: 10px;
+  animation: wave 1s linear infinite;
+  border-radius: 20px;
+}
+.wave:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.wave:nth-child(3) {
+  animation-delay: 0.2s;
+}
+.wave:nth-child(4) {
+  animation-delay: 0.3s;
+}
+.wave:nth-child(5) {
+  animation-delay: 0.4s;
+}
+.wave:nth-child(6) {
+  animation-delay: 0.5s;
+}
+.wave:nth-child(7) {
+  animation-delay: 0.6s;
+}
+.wave:nth-child(8) {
+  animation-delay: 0.7s;
+}
+.wave:nth-child(9) {
+  animation-delay: 0.8s;
+}
+.wave:nth-child(10) {
+  animation-delay: 0.9s;
+}
+
+@keyframes wave {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
 }
