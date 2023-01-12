@@ -3,24 +3,29 @@ import { motion } from 'framer-motion';
 import CPUPieChart from './CPUandMemCharts.js/CPUPieChart';
 import MemPieChart from './CPUandMemCharts.js/MemPieChart';
 
-export default function ContainerComponent({ chartData, memoryData }) {
+export default function ContainerComponent({
+  chartData,
+  memoryData,
+  containerData,
+}) {
   const [toggleData, setToggleData] = useState(false);
 
   // console.log(toggleData);
   // console.log(chartData);
   // console.log(memoryData);
+  console.log('containerData.memPerc HEREEEEEE:', containerData.memPerc);
   return (
     <React.Fragment>
       <motion.div
-        initial={{ opacity: 0, scale: 0.8, originY: -0.2 }}
+        initial={{ opacity: 0, scale: 0.5, originY: -0.2 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
-        whileHover={{ scale: 1.02 }}
-        className='container_component p-2 my-2 flex flex-col bg-slate-100 hover:duration-200 w-5/6 min-h-fit snap-start scroll-mt-2 drop-shadow-lg hover:drop-shadow-2xl rounded-md z-30 text-sm text-slate-800'
+        whileHover={{ scale: 1.05 }}
+        className='container_component overflow-hidden p-5 my-2 flex flex-col bg-slate-100/90 hover:bg-slate-100 hover:duration-200 w-5/6 min-h-fit snap-start scroll-mt-2 drop-shadow-lg hover:drop-shadow-2xl rounded-md z-30 text-sm text-slate-800'
       >
         <ul className='flex flex-row justify-between'>
-          <h1>Container</h1>
-          <li>data</li>
+          <h1>{containerData.containerID}</h1>
+          {/* <li>{containerData.containerName}</li> */}
           <li>
             <button
               className='bg-blue-500 rounded-full w-8'
@@ -31,8 +36,8 @@ export default function ContainerComponent({ chartData, memoryData }) {
           </li>
         </ul>
         <div className='chart-container'>
-        <CPUPieChart chartData={chartData} />
-        <MemPieChart memoryData={memoryData} />
+          <CPUPieChart CPUPerc={containerData.CPUPerc} />
+          <MemPieChart memPerc={containerData.memPerc} />
         </div>
         <section className='flex flex-row p-4 gap-4'></section>
         {toggleData && (
@@ -42,7 +47,9 @@ export default function ContainerComponent({ chartData, memoryData }) {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
           >
-            This is some other sort of graph
+            Mem Usage / Mem Limit: {containerData.memUsage}
+            <br></br>
+            net I/O: {containerData.netIO}
           </motion.div>
         )}
       </motion.div>
