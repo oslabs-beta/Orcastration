@@ -104,32 +104,38 @@ const App = (props) => {
     setCurrentNode(node);
   };
   useEffect(() => {
-    console.log('running use effect');
+    // console.log('running use effect');
     const fetchData = async () => {
       try {
         let rawData = await fetch('/dockerCont/getStats');
-        console.log('raw data:', rawData);
+        // console.log('raw data:', rawData);
         let parsedData = await rawData.json();
-        console.log('parsed data:', parsedData);
+        // console.log('parsed data:', parsedData);
         setData(parsedData);
         setCurrentNode(parsedData[0].nodeID);
-        console.log('DATTA', parsedData);
+        // console.log('DATTA', parsedData);
 
         const cpuData = [];
         const memData = [];
         let totalPercentageCPU = 0;
         const dataTasks = parsedData[0].tasks;
-        console.log('dataTasks!!!!', dataTasks);
+        // console.log('dataTasks!!!!', dataTasks);
         setCurrentNode(parsedData[0].nodeID);
         // console.log(dataTasks);
         for (let i = 0; i < dataTasks.length; i++) {
           // console.log(parseFloat(dataTasks[i].containers[0].CPUPerc));
-          totalPercentageCPU += parseFloat(dataTasks[i].containers[0].CPUPerc);
-          console.log('totalPercentageCPU!!!', totalPercentageCPU)
+
           // console.log(dataTasks[i].containers[0].containerName);
-          if (dataTasks[i].containers.length > 1) {
-            //!!!LOGIC NOT COMPLETE!!!!COME BACK AND MAKE THIS SUCK LESS!!!!!
-          } else {
+          let containerElements = {};
+          containerElements.taskID = dataTasks[i].taskID;
+
+          for (let j = 0; j < dataTasks[i].containers.length; j++) {
+            totalPercentageCPU += parseFloat(
+              dataTasks[i].containers[0].CPUPerc
+            );
+            // console.log('totalPercentageCPU!!!', totalPercentageCPU);
+
+            containerElements.push();
             cpuData.push({
               labels: [
                 dataTasks[i].containers[0].containerName,
@@ -200,6 +206,8 @@ const App = (props) => {
           totalCPU={totalCPU}
         />
         <Tabs
+        // need allTasks prop below
+          allTasks={data}
           activeTab={activeTab}
           // setActiveTab={setActiveTab}
           currentNode={currentNode}

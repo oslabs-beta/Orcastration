@@ -1,11 +1,36 @@
 import React from 'react';
 import { Pie } from 'react-chartjs-2';
 
-function CPUPieChart({ chartData }) {
+function CPUPieChart({ CPUPerc }) {
   // console.log(chartData);
   return (
       <Pie
-        data={chartData}
+        data={{
+          labels: [
+            // dataTasks[i].containers[0].containerName,
+            // 'containerName',
+            // 'max allowed cpu',
+            `CPU usage: ${CPUPerc}`
+          ],
+          datasets: [
+            {
+              label: 'cpu test',
+              data: [
+                parseFloat(CPUPerc),
+                100 - parseFloat(CPUPerc),
+              ],
+              backgroundColor: [
+                'rgba(75,192,192,1)',
+                '#ecf0f1',
+                '#50AF95',
+                '#f3ba2f',
+                '#2a71d0',
+              ],
+              borderColor: 'black',
+              borderWidth: 3,
+            },
+          ],
+        }}
         options={{
           plugins: {
             title: {
