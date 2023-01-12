@@ -2,14 +2,10 @@ import React from 'react';
 import { Pie } from 'react-chartjs-2';
 
 function CPUPieChart({ CPUPerc }) {
-  // console.log(chartData);
   return (
       <Pie
         data={{
           labels: [
-            // dataTasks[i].containers[0].containerName,
-            // 'containerName',
-            // 'max allowed cpu',
             `CPU usage: ${CPUPerc}`
           ],
           datasets: [

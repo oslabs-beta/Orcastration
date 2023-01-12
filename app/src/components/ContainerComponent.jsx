@@ -3,17 +3,9 @@ import { motion } from 'framer-motion';
 import CPUPieChart from './CPUandMemCharts.js/CPUPieChart';
 import MemPieChart from './CPUandMemCharts.js/MemPieChart';
 
-export default function ContainerComponent({
-  chartData,
-  memoryData,
-  containerData,
-}) {
+export default function ContainerComponent({ containerData }) {
   const [toggleData, setToggleData] = useState(false);
 
-  // console.log(toggleData);
-  // console.log(chartData);
-  // console.log(memoryData);
-  console.log('containerData.memPerc HEREEEEEE:', containerData.memPerc);
   return (
     <React.Fragment>
       <motion.div
@@ -25,13 +17,12 @@ export default function ContainerComponent({
       >
         <ul className='flex flex-row justify-between'>
           <h1>{containerData.containerID}</h1>
-          {/* <li>{containerData.containerName}</li> */}
           <li>
             <button
               className='bg-blue-500 rounded-full w-8'
               onClick={() => setToggleData((prev) => !prev)}
             >
-              {toggleData ? '<' : '\\/'}
+              {!toggleData ? '+' : '-'}
             </button>
           </li>
         </ul>
