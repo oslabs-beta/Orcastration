@@ -2,14 +2,10 @@ import React from 'react';
 import { Doughnut, Pie } from 'react-chartjs-2';
 
 function MemPieChart({ memPerc }) {
-  console.log('memPerc HEREEEEEE:', memPerc)
-  // console.log(memoryData);
   return (
     <Pie
       data={{
         labels: [
-          // dataTasks[i].containers[0].containerName,
-          // 'max allowed memory',
           `MEM usage: ${memPerc}`
         ],
         datasets: [
