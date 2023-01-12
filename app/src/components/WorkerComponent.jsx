@@ -14,7 +14,7 @@ export default function WorkerComponent({
   for (let i = 0; i < chartData.length; i++) {
     // console.log(chartData[i]);
     containers.push(
-      <ContainerComponent chartData={chartData[i]} memoryData={memoryData[i]} />
+        <ContainerComponent chartData={chartData[i]} memoryData={memoryData[i]} />
     );
   }
 
@@ -22,9 +22,9 @@ export default function WorkerComponent({
     <motion.fieldset
       className='worker-component border-solid flex flex-col items-center gap-y-4 snap-y scroll-smooth rounded-md'
     >
-      <legend className='text-white bg-nightblue-300 text-lg p-2 rounded-md mb-4'>
-        Task Name
-      </legend>
+      {/* <legend className='text-white bg-nightblue-300 text-lg p-2 rounded-md shadow-lg'>
+        ID : 10293810
+      </legend> */}
       {containers}
     </motion.fieldset>
   );

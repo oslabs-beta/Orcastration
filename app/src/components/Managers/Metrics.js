@@ -5,7 +5,7 @@ import { Pie } from 'react-chartjs-2';
 
 const Metrics = ({ totalCPU, currentNode }) => {
   const cpuData = {
-    labels: [`${currentNode}`, 'available CPU'],
+    labels: [`node memory usage`, 'available CPU'],
     datasets: [
       {
         label: 'manager test',

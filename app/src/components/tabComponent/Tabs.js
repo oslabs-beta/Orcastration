@@ -16,7 +16,6 @@ const Tabs = ({
   memoryData,
 }) => {
   // console.log(chartData);
-
   //declare activeTab and setActiveTab to be able to display
   //   const [activeTab, setActiveTab] = useState('tab1');
   return (
