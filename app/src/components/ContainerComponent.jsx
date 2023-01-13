@@ -33,7 +33,7 @@ export default function ContainerComponent({ containerData }) {
         <section className='flex flex-row p-4 gap-4'></section>
         {toggleData && (
           <motion.div
-            className='bg-blue-200 w-full'
+            className='bg-blue-200 w-full min-h-fit p-1'
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
