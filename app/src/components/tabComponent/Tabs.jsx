@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import TabNavItem from '../tabNavAndContent/TabNavItem';
 import TabContent from '../tabNavAndContent/TabContent';
 import WorkerComponent from '../WorkerComponent';
+import Loader from './Loader';
 
 const Tabs = ({
   allTasks,
@@ -50,27 +51,15 @@ const Tabs = ({
           updateNode={updateNode}
         />
       </ul>
-      <TabContent id='tab1' activeTab={activeTab}>
-        {allTasks.length === 0 ? (
-          // <div>Loading...</div>
-          <div class='center'>
-            <div class='wave'></div>
-            <div class='wave'></div>
-            <div class='wave'></div>
-            <div class='wave'></div>
-            <div class='wave'></div>
-            <div class='wave'></div>
-            <div class='wave'></div>
-            <div class='wave'></div>
-            <div class='wave'></div>
-            <div class='wave'></div>
-          </div>
-        ) : (
-          allTasks[0].tasks.map((task) => {
+      {allTasks.length === 0 ? (
+        <Loader />
+      ) : (
+        <TabContent id='tab1' activeTab={activeTab}>
+          {allTasks[0].tasks.map((task) => {
             return <WorkerComponent task={task} />;
-          })
-        )}
-      </TabContent>
+          })}
+        </TabContent>
+      )}
       <TabContent id='tab2' activeTab={activeTab}></TabContent>
       <TabContent id='tab3' activeTab={activeTab}></TabContent>
       <TabContent id='tab4' activeTab={activeTab}></TabContent>
