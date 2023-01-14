@@ -16,7 +16,7 @@ const LogIn = (props) => {
           email:
           <input className='signUpInput' id='email'></input>
           password:
-          <input className='signUpInput' id='password'></input>
+          <input className='signUpInput' type="password" id='password'></input>
           <button className='enter' onClick={props.logInClick}> enter </button>
       </div>
     </div>

@@ -70,6 +70,16 @@ const getContainerStats = (containerID) => {
   });
 };
 
+const getContainerInfo = (containerID) => {
+  return execProm(
+    `docker ps --filter "id=${containerID}" --format "{{json .}}"`
+  )
+    .then((rawContainerData) => {
+      const parsedContainerData = parseRawData(rawContainerData);
+      return parsedContainerData
+    })
+};
+
 // getContainerStats(
 //   'b2d48a94eafced96d8b9153e1cc5a11fdff9dac1e3b135d1b143dd5992b5afd3'
 // ).then((containerStats) => {
@@ -145,9 +155,30 @@ dockerContainerController.getStats = (req, res, next) => {
                           taskData.containers.push(containerData);
                           return taskData;
                         }
-                      );
+                      ).then((taskData) => {
+                        console.log(containerID)
+                        return getContainerInfo(containerID).then((containerStat) => {
+                          // console.log(containerStat)
+                          // console.log(taskData.containers)
+                          const containerInfo = {
+                            state: containerStat[0].State,
+                            size: containerStat[0].Size,
+                            image: containerStat[0].Image,
+                            containerStatus: containerStat[0].Status,
+                            created: containerStat[0].CreatedAt,
+                            ports: containerStat[0].Ports
+                          }
+                          taskData.containers[0].information = containerInfo
+                          // console.log(taskData.containers[0].information)
+                          return taskData
+                          // return info
+                        }
+                      )
+                    }
+                  )
                     })
                   ).then((tasksData) => {
+                    console.log('taskData in task data', tasksData[0].containers)
                     return tasksData[0];
                   });
                 });

@@ -41,6 +41,12 @@ export default function ContainerComponent({ containerData }) {
             Mem Usage / Mem Limit: {containerData.memUsage}
             <br></br>
             net I/O: {containerData.netIO}
+            <br></br>
+            Image: {containerData.information.image}
+            <br></br>
+            Created At: {containerData.information.created}
+            <br></br>
+            Size: {containerData.information.size}
           </motion.div>
         )}
       </motion.div>
