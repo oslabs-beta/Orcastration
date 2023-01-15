@@ -70,6 +70,16 @@ const getContainerStats = (containerID) => {
   });
 };
 
+const getContainerInfo = (containerID) => {
+  return execProm(
+    `docker ps --filter "id=${containerID}" --format "{{json .}}"`
+  )
+    .then((rawContainerData) => {
+      const parsedContainerData = parseRawData(rawContainerData);
+      return parsedContainerData
+    })
+};
+
 // getContainerStats(
 //   'b2d48a94eafced96d8b9153e1cc5a11fdff9dac1e3b135d1b143dd5992b5afd3'
 // ).then((containerStats) => {

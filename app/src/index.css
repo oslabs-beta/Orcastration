@@ -8,6 +8,46 @@ body {
   /* width: 100vw; */
 }
 
+.signUp{
+  /* align-items: center; */
+    /* background-color: rgb(180, 236, 255); */
+    /* color: white; */
+    font-size: 25px;
+    margin: 50px auto;
+    background-color: rgb(30 64 175);
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px,
+      rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px,
+      rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    padding: 20px 20px;
+    /* text-align: center; */
+    max-width: 100%;
+    width: 850px;
+}
+
+.signUpTitle{
+  /* margin: 50px auto; */
+  /* margin-top: 100px; */
+  color: white;
+  font-size: 28px;
+}
+.signUpInput{
+  border-radius: 5px;
+}
+
+.enter {
+  background-color: hsl(232, 43%, 27%);
+  color: white;
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  margin-right: 10px;
+  margin-left: 15px;
+  border-radius: 5px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1), 0 6px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
 #root {
   height: inherit;
   /* width: inherit; */

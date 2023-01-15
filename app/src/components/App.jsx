@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Tabs from './tabComponent/Tabs';
 import Navigation from './Navigation';
 import ManagerMetricsContainer from './Managers/ManagerMetricsContainer';
+import SignUp from './Authentication/SignUp';
+import LogIn from './Authentication/Login';
 // import Data from '../TEST-DATA/Data';
 // import PieChart from '../components/PieChart';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
@@ -11,6 +13,9 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 
 const App = (props) => {
+  const [signUp, setSignUp] = useState(true);
+  const [logIn, setLogIn] = useState(false)
+  const [user, setUser] = useState(false)
   const [data, setData] = useState([]);
   const [activeTab, setActiveTab] = useState('tab1');
   const [currentNode, setCurrentNode] = useState('');
@@ -19,7 +24,77 @@ const App = (props) => {
   const updateNode = (node) => {
     setCurrentNode(node);
   };
+
+  const checkLogIn = () => {
+    const loggedInUser = localStorage.getItem("user");
+    if (loggedInUser) {
+      console.log('inside the conditional');
+      setSignUp(false);
+      setLogIn(true);
+    }
+  }
+
+  const signUpClick = () => {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    console.log(email, password)
+    fetch(`http://localhost:3000/user/signup`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({email: email, password: password})
+    })
+      .then((data) => {if(data.status === 200){
+        setSignUp(false);
+        setLogIn(true);
+        localStorage.setItem('user', true);
+        console.log(data);
+      }
+      else {
+        alert('The username has already been taken.');
+      }
+    })
+  }
+
+  const logInClick = () => {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    fetch('http://localhost:3000/user/login', {
+      method:  'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({email: email, password: password})
+    })
+      .then((data) => {if(data.status === 200){
+        setSignUp(false);
+        setLogIn(true);
+        setUser(true);
+        localStorage.setItem('user', true);
+      }} 
+    )
+  }
+
+  const logOutClick = () => {
+    setUser(false);
+    setSignUp(true);
+    setLogIn(false);
+    localStorage.clear();
+  }
+
+  const logInPage = () => {
+    setSignUp(false);
+  }
+
+  const signUpPage = () => {
+    setSignUp(true);
+  }
+
   useEffect(() => {
+    checkLogIn();
     const fetchData = async () => {
       try {
         let rawData = await fetch('/dockerCont/getStats');
@@ -34,9 +109,24 @@ const App = (props) => {
     };
     fetchData();
   }, []);
+  if(signUp === true){
+    return(
+      <div>
+        <SignUp signUpClick={signUpClick} logInPage={logInPage} />
+      </div>
+    )
+  }
+  else if(logIn === false){
+    return(
+      <div>
+        <LogIn logInClick={logInClick} signUpPage={signUpPage} />
+      </div>
+    )
+  }
+  else{
   return (
     <div className='navigation' id='background'>
-      <Navigation />
+      <Navigation logOutClick={logOutClick}/>
       <div className='managerAndTabs mx-6'>
         <ManagerMetricsContainer
           activeTab={activeTab}
@@ -51,6 +141,7 @@ const App = (props) => {
       </div>
     </div>
   );
+};
 };
 
 export default App;
