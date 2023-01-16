@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import CPUPieChart from './CPUandMemCharts.js/CPUPieChart';
 import MemPieChart from './CPUandMemCharts.js/MemPieChart';
 
-export default function ContainerComponent({ containerData }) {
+export default function ContainerComponent({ containerData, children }) {
   const [toggleData, setToggleData] = useState(false);
 
   return (

@@ -8,30 +8,31 @@ body {
   /* width: 100vw; */
 }
 
-.signUp{
+.signUp {
   /* align-items: center; */
-    /* background-color: rgb(180, 236, 255); */
-    /* color: white; */
-    font-size: 25px;
-    margin: 50px auto;
-    background-color: rgb(30 64 175);
-    border-radius: 5px;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px,
-      rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px,
-      rgba(0, 0, 0, 0.09) 0px -3px 5px;
-    padding: 20px 20px;
-    /* text-align: center; */
-    max-width: 100%;
-    width: 850px;
+  /* background-color: rgb(180, 236, 255); */
+  /* color: white; */
+  font-size: 25px;
+  margin: 50px auto;
+  background-color: rgb(30 64 175);
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  padding: 20px 20px;
+  /* text-align: center; */
+  max-width: 100%;
+  width: 850px;
 }
 
-.signUpTitle{
+.signUpTitle {
   /* margin: 50px auto; */
   /* margin-top: 100px; */
   color: white;
   font-size: 28px;
 }
-.signUpInput{
+
+.signUpInput {
   border-radius: 5px;
 }
 
@@ -81,12 +82,12 @@ body {
 }
 
 .worker-component {
-  height: 100%;
+  height: fit-content;
   padding-bottom: 2rem;
   position: relative;
   background-image: linear-gradient(to bottom, #121f6d, #131d5a);
   z-index: 1;
-  overflow-y: scroll;
+  overflow-y: auto;
   overscroll-behavior-inline: contain;
 }
 
@@ -97,16 +98,16 @@ body {
   right: 0;
   bottom: 0;
   left: 0;
-  height: 200%;
+  height: 100%;
   background-image: linear-gradient(to bottom, #121f6d, #092fd6, #b517d4);
   z-index: -1;
   transition: opacity 1.2s linear;
   opacity: 0;
 }
 
-/* .worker-component:hover::before {
+.worker-component:hover::before {
   opacity: 1;
-} */
+}
 
 /* Remove browser defaults */
 * {

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // import FirstTab from '../allTabs/firstTab';
 // import SecondTab from '../allTabs/secondTab';
 import TabNavItem from '../tabNavAndContent/TabNavItem';
 import TabContent from '../tabNavAndContent/TabContent';
 import WorkerComponent from '../WorkerComponent';
+import ContainerComponent from '../ContainerComponent';
 import Loader from './Loader';
 
 const Tabs = ({
@@ -14,6 +15,45 @@ const Tabs = ({
   setCurrentNode,
   updateNode,
 }) => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const reqObj = {};
+      allTasks.forEach((node) => {
+        node.tasks.forEach((task) => {
+          task.containers.forEach((container) => {
+            reqObj[container] = task.taskID;
+          });
+        });
+      });
+      try {
+        let response = await fetch('/dockerCont/getStats', {
+          method: 'POST',
+          mode: 'cors',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(reqObj),
+        });
+
+        let parsedData = await response.json();
+        console.log('here is the parsed data', parsedData)
+        setData(parsedData);
+      } catch (err) {
+        console.log('Error in App.jsx useEffect', err);
+      }
+    };
+    fetchData();
+    // return for componentWillUnmount lifecycle
+  }, []);
+
+  // <ContainerComponent>
+  //   <CPUPieChart CPUPerc={containerData.CPUPerc} />
+  //   <MemPieChart memPerc={containerData.memPerc} />
+  // </ContainerComponent>
+
+
   return (
     <div className='Tabs px-4 pb-4 bg-nightblue-800/50 rounded-md'>
       <ul className='nav m-0 flex h-fit'>
@@ -56,7 +96,12 @@ const Tabs = ({
       ) : (
         <TabContent id='tab1' activeTab={activeTab}>
           {allTasks[0].tasks.map((task) => {
-            return <WorkerComponent task={task} />;
+            return (
+              <WorkerComponent id={task.taskID} key={task.taskID} task={task}>
+                <memchart data={data} />
+                <cpuchart data></cpuchart>
+              </WorkerComponent>
+            );
           })}
         </TabContent>
       )}

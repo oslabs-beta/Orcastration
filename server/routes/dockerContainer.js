@@ -10,9 +10,21 @@ router.get(
   }
 );
 
-router.get('/getStats', dockerContainerController.getStats, (req, res) => {
-  return res.status(200).json(res.locals.dockerContainerStats);
-});
+router.get(
+  '/getTasks',
+  dockerContainerController.getTasksByNode,
+  (req, res) => {
+    return res.status(200).json(res.locals.dockerContainerStats);
+  }
+);
+
+router.post(
+  '/getStats',
+  dockerContainerController.getContainerData,
+  (req, res) => {
+    return res.status(200).json(res.locals.dockerContainerStats);
+  }
+);
 
 router.get(
   '/getStatsByNode/:nodeID',
