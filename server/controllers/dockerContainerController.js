@@ -74,16 +74,6 @@ const getContainerStats = (containerID) => {
   });
 };
 
-const getContainerInfo = (containerID) => {
-  return execProm(
-    `docker ps --filter "id=${containerID}" --format "{{json .}}"`
-  )
-    .then((rawContainerData) => {
-      const parsedContainerData = parseRawData(rawContainerData);
-      return parsedContainerData
-    })
-};
-
 // getContainerStats(
 //   'ee004d55c7aaa66b6e08b9fe42b40c0e5b81f1d5c350aa7531a9709d87517017',
 //   'c0e2047791f5a1456b45238de0063b8d5f4c1a1963b35372b1042a1322eaa00b'
@@ -221,12 +211,14 @@ dockerContainerController.getContainerData = (req, res, next) => {
     .then((containerStats) => {
       console.log(containerStats);
       const containerData = {};
+      // containerID : containerStats
       containerStats.forEach((container) => {
         const containerID = container.Container;
-        const taskID = req.body[containerID];
-        !containerData[taskID]
-          ? (containerData[taskID] = [container])
-          : containerData[taskID].push(container);
+        containerData[containerID] = container;
+        // const taskID = req.body[containerID];
+        // !containerData[taskID]
+        //   ? (containerData[taskID] = [container])
+        //   : containerData[taskID].push(container);
       });
       res.locals.dockerContainerStats = containerData;
       return next();
