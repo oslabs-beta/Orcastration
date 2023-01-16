@@ -9,8 +9,14 @@ export default function WorkerComponent({ task }) {
       </legend>
       {!task
         ? null
-        : task.containers.map((container) => {
-            return <ContainerComponent containerData={container} />;
+        : task.containers.map((containerID) => {
+            return (
+              <ContainerComponent
+                id={containerID}
+                key={containerID}
+                containerData={containerID}
+              />
+            );
           })}
     </fieldset>
   );
