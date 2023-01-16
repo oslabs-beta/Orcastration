@@ -5,6 +5,7 @@ import ManagerMetricsContainer from './Managers/ManagerMetricsContainer';
 import SignUp from './Authentication/SignUp';
 import LogIn from './Authentication/Login';
 import Loader from './tabComponent/Loader'
+
 // import Data from '../TEST-DATA/Data';
 // import PieChart from '../components/PieChart';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
@@ -16,6 +17,7 @@ const App = (props) => {
   const [signUp, setSignUp] = useState(true);
   const [logIn, setLogIn] = useState(false);
   const [user, setUser] = useState(false);
+
   const [activeTab, setActiveTab] = useState('tab1');
   const [currentNode, setCurrentNode] = useState('');
   const [nodeTotal, setNodeTotal] = useState(0);
@@ -28,6 +30,7 @@ const App = (props) => {
 
   const checkLogIn = () => {
     const loggedInUser = localStorage.getItem('user');
+
     if (loggedInUser) {
       console.log('inside the conditional');
       setSignUp(false);
@@ -35,10 +38,10 @@ const App = (props) => {
     }
   };
 
+
   const signUpClick = () => {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    console.log(email, password);
     fetch(`http://localhost:3000/user/signup`, {
       method: 'POST',
       headers: {
@@ -48,6 +51,7 @@ const App = (props) => {
       body: JSON.stringify({ email: email, password: password }),
     }).then((data) => {
       if (data.status === 200) {
+
         setSignUp(false);
         setLogIn(true);
         localStorage.setItem('user', true);
@@ -57,6 +61,7 @@ const App = (props) => {
       }
     });
   };
+
 
   const logInClick = () => {
     const email = document.getElementById('email').value;
@@ -78,6 +83,7 @@ const App = (props) => {
     });
   };
 
+
   const logOutClick = () => {
     setUser(false);
     setSignUp(true);
@@ -92,6 +98,7 @@ const App = (props) => {
   const signUpPage = () => {
     setSignUp(true);
   };
+
 
   useEffect(() => {
     checkLogIn();
@@ -158,6 +165,7 @@ const App = (props) => {
       </div>
     );
   }
+};
 };
 
 export default App;
