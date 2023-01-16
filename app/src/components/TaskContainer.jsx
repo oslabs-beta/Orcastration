@@ -1,13 +1,14 @@
 import React from 'react';
 import ContainerComponent from './ContainerComponent';
 
-export default function WorkerComponent({ task }) {
+export default function TaskContainer({ id, children }) {
   return (
-    <fieldset className='worker-component border-solid flex flex-col items-center gap-y-4 snap-y scroll-smooth rounded-md'>
+    <fieldset className='task-container border-solid flex flex-col items-center gap-y-4 snap-y scroll-smooth rounded-md'>
       <legend className='text-white bg-nightblue-300 text-lg p-2 rounded-md shadow-lg'>
-        taskID: {task ? task.taskID : 'Loading Task'}
+        Task ID: {id ? id : 'Loading Task'}
       </legend>
-      {!task
+      {children}
+      {/* {!task
         ? null
         : task.containers.map((containerID) => {
             return (
@@ -17,7 +18,7 @@ export default function WorkerComponent({ task }) {
                 containerData={containerID}
               />
             );
-          })}
+          })} */}
     </fieldset>
   );
 }
