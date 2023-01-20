@@ -4,7 +4,7 @@ import Navigation from './Navigation';
 import ManagerMetricsContainer from './Managers/ManagerMetricsContainer';
 import SignUp from './Authentication/SignUp';
 import LogIn from './Authentication/Login';
-import Loader from './tabComponent/Loader'
+import Loader from './tabComponent/Loader';
 
 // import Data from '../TEST-DATA/Data';
 // import PieChart from '../components/PieChart';
@@ -18,7 +18,7 @@ const App = (props) => {
   const [logIn, setLogIn] = useState(false);
   const [user, setUser] = useState(false);
 
-  const [activeTab, setActiveTab] = useState('tab1');
+  const [activeTab, setActiveTab] = useState('tab0');
   const [currentNode, setCurrentNode] = useState('');
   const [nodeTotal, setNodeTotal] = useState(0);
   const [tasks, setTasks] = useState([]); // should it be null or arr? what if use has no docker swarm set up
@@ -32,12 +32,11 @@ const App = (props) => {
     const loggedInUser = localStorage.getItem('user');
 
     if (loggedInUser) {
-      console.log('inside the conditional');
+      // console.log('inside the conditional');
       setSignUp(false);
       setLogIn(true);
     }
   };
-
 
   const signUpClick = () => {
     const email = document.getElementById('email').value;
@@ -51,17 +50,15 @@ const App = (props) => {
       body: JSON.stringify({ email: email, password: password }),
     }).then((data) => {
       if (data.status === 200) {
-
         setSignUp(false);
         setLogIn(true);
         localStorage.setItem('user', true);
-        console.log(data);
+        // console.log(data);
       } else {
         alert('The username has already been taken.');
       }
     });
   };
-
 
   const logInClick = () => {
     const email = document.getElementById('email').value;
@@ -83,7 +80,6 @@ const App = (props) => {
     });
   };
 
-
   const logOutClick = () => {
     setUser(false);
     setSignUp(true);
@@ -99,13 +95,13 @@ const App = (props) => {
     setSignUp(true);
   };
 
-
   useEffect(() => {
     checkLogIn();
     const fetchData = async () => {
       try {
         let rawData = await fetch('/dockerCont/getTasks');
         let parsedData = await rawData.json();
+        // console.log('this is all tasks data: ', parsedData);
         setTasks(parsedData);
         setCurrentNode(parsedData[0].nodeID);
         setLoading(true);
@@ -154,18 +150,21 @@ const App = (props) => {
             activeTab={activeTab}
             currentNode={currentNode}
           />
-          {loading ? <Tabs
-            // allTasks={data}
-            allTasks={tasks}
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            currentNode={currentNode}
-          /> : <Loader />}
+          {loading ? (
+            <Tabs
+              // allTasks={data}
+              allTasks={tasks}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+              currentNode={currentNode}
+            />
+          ) : (
+            <Loader />
+          )}
         </div>
       </div>
     );
   }
 };
-
 
 export default App;

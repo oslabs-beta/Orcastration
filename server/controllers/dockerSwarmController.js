@@ -20,6 +20,7 @@ dockerSwarmController.getHealth = (req, res, next) => {
     })
     .then((healthData) => {
       res.locals.healthData = healthData;
+      console.log(res.locals.healthData)
       return next();
     })
     .catch((err) => {
