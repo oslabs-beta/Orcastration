@@ -81,6 +81,7 @@
     "react-router": "^6.6.1",
     "react-router-dom": "^6.6.1",
     "react-svg-loader": "^3.0.3",
-    "util": "^0.12.5"
+    "util": "^0.12.5",
+    "uuid": "^9.0.0"
   }
 }

@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 const request = require("supertest");
 const User = require('/Users/meimeixiong/Desktop/Desktop/Desktop Documents/Coding/CodeSmith/Immersive Program/Projects/OSP/Orcastration/server/models/userModel.js');
-//server/models/userModel.js
+const bcrypt = require('bcryptjs');
+
 require("dotenv").config();
 
 beforeAll(async () => {  
@@ -21,31 +22,36 @@ afterAll(async () => {
     }
   });
 
-describe('Signup',() => {
+
+
+describe('Login?',() => {
 
     beforeEach (async () => (
         await new User({
-            email: "createuser18@test.com",
-            password: "working"
+            email: "testpassword@test.com",
+            password: "match"
         }).save()
     ));
 
     //find and delete the email created for verification to comply with 'unique' rule of MongoDB
     afterEach (async () => (
-        await User.findOneAndDelete({email: "createuser18@test.com"})
+        await User.findOneAndDelete({email: "testpassword@test.com"})
     ));
 
-    it("should create a new user", async () => {
-    try{
-    User.find({ email: "createuser18@test.com" })
-      .then((user) => expect(user[0].email).toBe("createuser18@test.com"))
-    }
-    catch (err) {
-        throw new Error(err);
-    }
-
     
-})
-})
+    it("should throw an error if password is wrong", async () => {
+     try {
+        let userEmail = await User.find({ email: "testpassword@test.com" })
+        console.log('userEmail', userEmail);
+        let wrongPassword = "abc"
+        //create userSchema.authenticate in userModels.js but it is not working
+        const result = await bcrypt.compare(wrongPassword, userEmail[0].password)
+        console.log('result', result);
+        expect(result).toEqual(false)
+     }
+      catch (err) {
+        throw new Error(err)
+    }
 
-
+}); 
+})
