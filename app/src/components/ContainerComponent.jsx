@@ -3,9 +3,9 @@ import { motion } from 'framer-motion';
 import CPUPieChart from './CPUandMemCharts.js/CPUPieChart';
 import MemPieChart from './CPUandMemCharts.js/MemPieChart';
 
-export default function ContainerComponent({ containerData, children }) {
+export default function ContainerComponent({ containerData }) {
   const [toggleData, setToggleData] = useState(false);
-  console.log(containerData);
+  // console.log('containercomponent data', data)
   return (
     <React.Fragment>
       <motion.div

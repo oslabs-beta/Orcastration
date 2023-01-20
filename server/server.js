@@ -10,10 +10,21 @@ const dockerContainerRouter = require('./routes/dockerContainer');
 const dockerSwarmRouter = require('./routes/dockerSwarm');
 const userRouter = require('./routes/user');
 
+
+
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT');
+  res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');
+  res.status(200);
+  next();
+});
+
 // parses JSON from incoming request
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({ credentials: true, origin: 'http://localhost:8080' }));
+// app.use(cors({ credentials: true, origin: 'http://localhost:8080' }));
 
 // handle requests for static files
 app.use(express.static(path.resolve(__dirname, '../app')));
