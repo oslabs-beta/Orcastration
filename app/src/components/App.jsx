@@ -4,7 +4,7 @@ import Navigation from './Navigation';
 import ManagerMetricsContainer from './Managers/ManagerMetricsContainer';
 import SignUp from './Authentication/SignUp';
 import LogIn from './Authentication/Login';
-import Loader from './tabComponent/Loader'
+import Loader from './tabComponent/Loader';
 
 // import Data from '../TEST-DATA/Data';
 // import PieChart from '../components/PieChart';
@@ -16,7 +16,9 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const App = (props) => {
   const [signUp, setSignUp] = useState(true);
   const [logIn, setLogIn] = useState(false);
-  const [user, setUser] = useState(false);
+  // const [userEmail, setUserEmail] = useState(null);
+
+
 
   const [activeTab, setActiveTab] = useState('tab1');
   const [currentNode, setCurrentNode] = useState('');
@@ -38,9 +40,9 @@ const App = (props) => {
     }
   };
 
-
   const signUpClick = () => {
     const email = document.getElementById('email').value;
+    // setUserEmail(email);
     const password = document.getElementById('password').value;
     fetch(`http://localhost:3000/user/signup`, {
       method: 'POST',
@@ -51,7 +53,6 @@ const App = (props) => {
       body: JSON.stringify({ email: email, password: password }),
     }).then((data) => {
       if (data.status === 200) {
-
         setSignUp(false);
         setLogIn(true);
         localStorage.setItem('user', true);
@@ -61,7 +62,6 @@ const App = (props) => {
       }
     });
   };
-
 
   const logInClick = () => {
     const email = document.getElementById('email').value;
@@ -77,15 +77,13 @@ const App = (props) => {
       if (data.status === 200) {
         setSignUp(false);
         setLogIn(true);
-        setUser(true);
         localStorage.setItem('user', true);
       }
     });
   };
 
-
   const logOutClick = () => {
-    setUser(false);
+    // setUserEmail(null);
     setSignUp(true);
     setLogIn(false);
     localStorage.clear();
@@ -99,13 +97,13 @@ const App = (props) => {
     setSignUp(true);
   };
 
-
   useEffect(() => {
     checkLogIn();
     const fetchData = async () => {
       try {
         let rawData = await fetch('/dockerCont/getTasks');
         let parsedData = await rawData.json();
+        console.log('parsed data here', parsedData);
         setTasks(parsedData);
         setCurrentNode(parsedData[0].nodeID);
         setLoading(true);
@@ -154,18 +152,22 @@ const App = (props) => {
             activeTab={activeTab}
             currentNode={currentNode}
           />
-          {loading ? <Tabs
-            // allTasks={data}
-            allTasks={tasks}
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            currentNode={currentNode}
-          /> : <Loader />}
+          {loading ? (
+            <Tabs
+              // allTasks={data}
+              // userEmail={userEmail}
+              allTasks={tasks}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+              currentNode={currentNode}
+            />
+          ) : (
+            <Loader />
+          )}
         </div>
       </div>
     );
   }
 };
-
 
 export default App;

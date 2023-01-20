@@ -1,12 +1,30 @@
+const mongoose = require('mongoose');
+const ContainerSnapshot = require('../models/containerSnapshotModel.js');
+// import {v4 as uuidv4} from 'uuid';
+const uuid = require('uuid');
+
 const { promisify } = require('util');
 const { exec } = require('child_process');
 
 const execProm = promisify(exec);
 
+// we can have it make a function here instead
 const parseRawData = (rawData) => {
+  // console.log('rawData', rawData);
   const stdout = rawData.stdout.trim().split('\n');
   const parsedData = stdout.map((rawData) => JSON.parse(rawData));
   return parsedData;
+};
+
+const parseRawDataIntoObject = (rawData) => {
+  const parsedDataObject = {};
+  const stdout = rawData.stdout.trim().split('\n');
+  stdout.forEach((rawData) => {
+    const parsedData = JSON.parse(rawData);
+    const containerID = parsedData.Container;
+    parsedDataObject[containerID] = parsedData;
+  });
+  return parsedDataObject;
 };
 
 const getNodeIDs = () => {
@@ -61,23 +79,21 @@ const getContainerIDs = (taskID) => {
 //   console.log(containerIDs);
 // });
 
-const getContainerStats = (containerID) => {
-  const idParams = containerID.reduce((acc, ID) => {
-    return /^[A-Za-z0-9]*$/.test(ID) ? (acc += ID + ' ') : acc;
-  }, '');
-  console.log(idParams);
+const getContainerStats = (containerIDs) => {
+  // console.log('inside of getContainerStats!', containerIDs);
   return execProm(
-    `docker stats ${idParams} --no-stream --format "{{json .}}"`
+    `docker stats ${containerIDs} --no-stream --format "{{json .}}"`
   ).then((rawContainerStats) => {
-    const parsedContainerStats = parseRawData(rawContainerStats);
+    const parsedContainerStats = parseRawDataIntoObject(rawContainerStats);
+    // console.log('parsedContainerStats: ', parsedContainerStats);
     return parsedContainerStats;
   });
 };
 
-// getContainerStats(
-//   'ee004d55c7aaa66b6e08b9fe42b40c0e5b81f1d5c350aa7531a9709d87517017',
-//   'c0e2047791f5a1456b45238de0063b8d5f4c1a1963b35372b1042a1322eaa00b'
-// ).then((containerStats) => {
+// getContainerStats([
+//   'd7d2de94021bacbc5e6797e01bad3e85bf1bf11feef753197623647f8bdf4bf4',
+//   '2009902c820ff673abdcc734fc430f1e329ffa289491b22dc820084db98c38fd',
+// ]).then((containerStats) => {
 //   console.log(containerStats);
 // });
 
@@ -122,7 +138,7 @@ dockerContainerController.getContainers = (req, res, next) => {
 };
 
 /*
-getStats() => 
+getStats() =>
 
 {
   containerIDA : taskIDA,
@@ -132,10 +148,7 @@ getStats() =>
 
 if (!object[containerID] => getStats()); <<<<
 
-
-
-while iterating, also build an object like this : 
-
+while iterating, also build an object like this :
 
 const containerIdObj = {
   containerID: taskID1,
@@ -152,10 +165,30 @@ streamInfo(containerIDs) {
   , interval)
 }
 
-
-
+saveSwarmData
 
 */
+
+dockerContainerController.saveSwarmData = (req, res, next) => {
+  // generate a uuid, make a new DB entry w/ uuid and containerIDs array, send UUID back up to FE
+  // console.log('saveSwarmData');
+  const containerList = req.body.filter((id) => /^[A-Za-z0-9]*$/.test(id));
+  const UUID = uuid.v4();
+  // console.log('filtered result:', containerIDs);
+  // console.log([email, containerIDs]);
+  ContainerSnapshot.create({ UUID, containerList })
+    .then(() => {
+      res.locals.containerSnapshotUUID = UUID;
+      return next();
+    })
+    .catch((err) => {
+      return next({
+        log: `dockerContainterController.saveSwarmData: ERROR: ${err}`,
+        message: { err: 'An error occurred in saving swarm data.' },
+      });
+    });
+};
+
 dockerContainerController.getTasksByNode = (req, res, next) => {
   getNodeIDs()
     .then((nodeIDList) => {
@@ -195,41 +228,138 @@ dockerContainerController.getTasksByNode = (req, res, next) => {
     .catch((err) => {
       return next({
         log: `dockerContainerController.getStats: ERROR: ${err}`,
-        message: { err: "An error occurred in obtaining container stats'." },
+        message: { err: 'An error occurred in obtaining container stats.' },
       });
     });
 };
 // send back a UUID and save task + container IDs in DB
-dockerContainerController.getContainerData = (req, res, next) => {
-  res.setHeader('Content-Type', 'text/event-stream');
-  res.setHeader('Cache-Control', 'no-cache');
-  res.setHeader('Connection', 'keep-alive');
-  console.log('REQBODY', req.body);
-  // setInterval(() => {}, 1500);
-  const containerList = Object.keys(req.body);
-  getContainerStats(containerList)
-    .then((containerStats) => {
-      console.log(containerStats);
-      const containerData = {};
-      // containerID : containerStats
-      containerStats.forEach((container) => {
-        const containerID = container.Container;
-        containerData[containerID] = container;
-        // const taskID = req.body[containerID];
-        // !containerData[taskID]
-        //   ? (containerData[taskID] = [container])
-        //   : containerData[taskID].push(container);
+dockerContainerController.streamSwarmStats = (req, res, next) => {
+  res.writeHead(200, {
+    'Content-Type': 'text/event-stream',
+    'Cache-Control': 'no-cache',
+    Connection: 'keep-alive',
+    'Access-Control-Allow-Origin': '*',
+  });
+  const { UUID } = req.params;
+  // console.log('req.params in middleware', req.params);
+  // console.log('UUID in middleware', UUID);
+  ContainerSnapshot.findOne({ UUID })
+    .then((containerListDoc) => {
+      if (containerListDoc === null) {
+        return next({
+          log: `dockerContainerController.streamSwarmStats: ContainerList with ${UUID} not found. ERROR: ${err}`,
+          message: {
+            err: 'An error occurred while attempting to find containers.',
+          },
+        });
+      }
+      // console.log('containerListDoc here', containerListDoc);
+      const concatenatedContainerIDs = containerListDoc.containerList.reduce(
+        (acc, ID) => {
+          return /^[A-Za-z0-9]*$/.test(ID) ? (acc += ID + ' ') : acc;
+        },
+        ''
+      );
+      return concatenatedContainerIDs;
+    })
+    // .then((concatenatedContainerIDs) => {
+    //   getContainerStats(concatenatedContainerIDs)
+    //     .then((containerStats) => {
+    //       res.locals.dockerContainerStats = containerStats;
+    //       return next();
+    //     })
+    //     .catch((err) => {
+    //       return next({
+    //         log: `dockerContainerController.getContainerData: ERROR: ${err}`,
+    //         message: {
+    //           err: "An error occurred in obtaining container stats'.",
+    //         },
+    //       });
+    //     });
+    // })
+    .then((concatenatedContainerIDs) => {
+      console.log(`concatenatedContainerIDs:, ${concatenatedContainerIDs}`);
+      const streamingInterval = setInterval(() => {
+        console.log('in setInterval');
+        // console.log(
+        //   `concatenatedContainerIDs WITHIN SETINTERVAL:, ${concatenatedContainerIDs}`
+        // );
+        getContainerStats(concatenatedContainerIDs)
+          .then((containerStats) => {
+            const stringifiedContainerStats = JSON.stringify(containerStats);
+            console.log('stringifiedContainerStats', stringifiedContainerStats); // this works
+            // res.write('data: ' + 'hi' + '\n\n');
+            res.write(`data: ${stringifiedContainerStats}\n\n`);
+            // res.locals.dockerContainerStats = containerStats;
+            // return next();
+          })
+          .catch((err) => {
+            return next({
+              log: `dockerContainerController.streamSwarmStats: Error occured in streamSwarmStats streamingInterval. ERROR: ${err}`,
+              message: {
+                err: 'An error occurred while streaming docker swarm container stats.',
+              },
+            });
+          });
+      }, 1500);
+
+      res.on('close', () => {
+        clearInterval(streamingInterval);
+        res.end();
       });
-      res.locals.dockerContainerStats = containerData;
-      return next();
     })
     .catch((err) => {
       return next({
-        log: `dockerContainerController.getContainerData: ERROR: ${err}`,
-        message: { err: "An error occurred in obtaining container stats'." },
+        log: `dockerContainerController.streamSwarmStats: ERROR: ${err}`,
+        message: {
+          err: 'An error occurred while streaming docker swarm container stats.',
+        },
       });
     });
 };
+
+// console.log(containerStats);
+// const containerData = {};
+// // containerID : containerStats
+// containerStats.forEach((container) => {
+//   const containerID = container.Container;
+//   containerData[containerID] = container;
+// const taskID = req.body[containerID];
+// !containerData[taskID]
+//   ? (containerData[taskID] = [container])
+//   : containerData[taskID].push(container);
+// });
+
+// dockerContainerController.getContainerData = (req, res, next) => {
+//   res.setHeader('Content-Type', 'text/event-stream');
+//   res.setHeader('Cache-Control', 'no-cache');
+//   res.setHeader('Connection', 'keep-alive');
+//   console.log('REQBODY', req.body);
+//   // setInterval(() => {}, 1500);
+//   const containerList = Object.keys(req.body);
+//   getContainerStats(containerList)
+//     .then((containerStats) => {
+//       console.log(containerStats);
+//       const containerData = {};
+//       // containerID : containerStats
+//       containerStats.forEach((container) => {
+//         const containerID = container.Container;
+//         containerData[containerID] = container;
+//         // const taskID = req.body[containerID];
+//         // !containerData[taskID]
+//         //   ? (containerData[taskID] = [container])
+//         //   : containerData[taskID].push(container);
+//       });
+//       res.locals.dockerContainerStats = containerData;
+//       return next();
+//     })
+//     .catch((err) => {
+//       return next({
+//         log: `dockerContainerController.getContainerData: ERROR: ${err}`,
+//         message: { err: "An error occurred in obtaining container stats'." },
+//       });
+//     });
+// };
 
 // dockerContainerController.getStats = (req, res, next) => {
 //   getNodeIDs()

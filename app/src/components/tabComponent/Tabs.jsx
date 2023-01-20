@@ -14,21 +14,42 @@ const Tabs = ({
   currentNode,
   setCurrentNode,
   updateNode,
+  userEmail,
 }) => {
   const [data, setData] = useState(null);
 
+  // useEffect(() => {
+  //   const sse = new EventSource(`http://localhost:3000/cont/constream/?id=${ID}`)
+  //   sse.onmessage = (event) => {
+  //     const data = JSON.parse(event.data);
+  //     setChange(prevState => !prevState)
+  //     setData(data);
+  //   };
+  //   sse.onerror = () => sse.close();
+  //   return () => {
+  //     sse.close();
+  //   };
+  // }, []);
+
+  ///////////////////////////////////////////
   useEffect(() => {
     const fetchData = async () => {
-      const reqObj = {};
+      // const reqObj = {
+      //   email: userEmail,
+      //   containerIDs: [],
+      // };
+      const reqObj = [];
       allTasks.forEach((node) => {
         node.tasks.forEach((task) => {
           task.containers.forEach((container) => {
-            reqObj[container] = task.taskID;
+            reqObj.push(container);
+            // reqObj[container] = task.taskID;
           });
         });
       });
+      console.log('reqObj here', reqObj);
       try {
-        let response = await fetch('/dockerCont/getStats', {
+        let response = await fetch('/dockerCont/saveSwarmData', {
           method: 'POST',
           mode: 'cors',
           headers: {
@@ -36,17 +57,51 @@ const Tabs = ({
           },
           body: JSON.stringify(reqObj),
         });
+        let UUID = await response.json();
 
-        let parsedData = await response.json();
-        console.log('here is the parsed data', parsedData);
-        setData(parsedData);
+        // let initialResponse = await fetch(
+        //   `/dockerCont/streamSwarmStats/${UUID}`,
+        //   {
+        //     method: 'GET',
+        //   }
+        // );
+        // let parsedResponse = await initialResponse.json();
+        // console.log(parsedResponse);
+        // setData(parsedResponse);
+
+        console.log('uuid here', UUID);
+
+        const sse = new EventSource(`http://localhost:3000/dockerCont/streamSwarmStats/${UUID}`);
+
+        sse.onmessage = (event) => {
+          console.log('sse.onmessage event', event);
+          const data = JSON.parse(event.data);
+          console.log('streamData', data);
+          setData(data);
+        };
+        sse.onerror = (err) => {
+          console.log('see.error', err);
+          return () => {
+            sse.close();
+          };
+        };
+        
+        return () => {
+          sse.close();
+        };
+        // let parsedData = await response.json();
+        // open sse, with uuid as req.params
+       
+        // console.log('here is the parsed data', parsedData);
       } catch (err) {
-        console.log('Error in App.jsx useEffect', err);
+        console.log('Error in Tabs.jsx useEffect', err);
       }
     };
     fetchData();
     // return for componentWillUnmount lifecycle
+    // potentially remove containterSnapshot document from database when user signs out
   }, []);
+
 
   return (
     <div className='Tabs px-4 pb-4 bg-nightblue-800/50 rounded-md'>

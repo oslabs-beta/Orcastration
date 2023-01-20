@@ -54,9 +54,9 @@ userController.verifyUser = (req, res, next) => {
 
 userController.getUser = (req, res, next) => {
 
-  console.log('req.params:', req.params);
+  // console.log('req.params:', req.params);
   const checkUser = req.body.email;
-  console.log(checkUser);
+  // console.log(checkUser);
   User.findOne({ email: checkUser })
     .then((user) => {
       if (user) {
