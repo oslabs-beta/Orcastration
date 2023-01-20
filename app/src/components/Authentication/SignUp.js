@@ -16,7 +16,7 @@ const SignUp = (props) => {
           email:
           <input className='signUpInput' id='email'></input>
           password:
-          <input className='signUpInput' id='password'></input>
+          <input className='signUpInput' type="password" id='password'></input>
           <button className='enter' onClick={props.signUpClick}> enter </button>
       </div>
     </div>
