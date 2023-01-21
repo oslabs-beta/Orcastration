@@ -41,6 +41,8 @@ app.get('*', (req, res) => {
   return res.status(400).send('This page does not exist. Try again!');
 });
 
+
+// NOTE: cannot set header after they are sent to client error
 // define catch all global error handler
 app.use((err, req, res, next) => {
   const defaultErr = {

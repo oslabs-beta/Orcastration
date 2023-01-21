@@ -15,40 +15,26 @@ const Tabs = ({
   setCurrentNode,
   updateNode,
   userEmail,
+  currentStep,
+  setCurrentStep,
 }) => {
   const [data, setData] = useState(null);
+  const [UUID, setUUID] = useState(null);
 
-  // useEffect(() => {
-  //   const sse = new EventSource(`http://localhost:3000/cont/constream/?id=${ID}`)
-  //   sse.onmessage = (event) => {
-  //     const data = JSON.parse(event.data);
-  //     setChange(prevState => !prevState)
-  //     setData(data);
-  //   };
-  //   sse.onerror = () => sse.close();
-  //   return () => {
-  //     sse.close();
-  //   };
-  // }, []);
-
-  ///////////////////////////////////////////
+  console.log('Tabs.jsx has rendered');
   useEffect(() => {
+    console.log('Use effect run Tabs.jsx');
     const fetchData = async () => {
-      // const reqObj = {
-      //   email: userEmail,
-      //   containerIDs: [],
-      // };
       const reqObj = [];
       allTasks.forEach((node) => {
         node.tasks.forEach((task) => {
           task.containers.forEach((container) => {
             reqObj.push(container);
-            // reqObj[container] = task.taskID;
           });
         });
       });
-      console.log('reqObj here', reqObj);
       try {
+        setCurrentStep('Snapshot');
         let response = await fetch('/dockerCont/saveSwarmData', {
           method: 'POST',
           mode: 'cors',
@@ -57,8 +43,9 @@ const Tabs = ({
           },
           body: JSON.stringify(reqObj),
         });
-        let UUID = await response.json();
-
+        let newUUID = await response.json();
+        setUUID(newUUID);
+        setCurrentStep('Ready');
         // let initialResponse = await fetch(
         //   `/dockerCont/streamSwarmStats/${UUID}`,
         //   {
@@ -69,30 +56,7 @@ const Tabs = ({
         // console.log(parsedResponse);
         // setData(parsedResponse);
 
-        console.log('uuid here', UUID);
-
-        const sse = new EventSource(`http://localhost:3000/dockerCont/streamSwarmStats/${UUID}`);
-
-        sse.onmessage = (event) => {
-          console.log('sse.onmessage event', event);
-          const data = JSON.parse(event.data);
-          console.log('streamData', data);
-          setData(data);
-        };
-        sse.onerror = (err) => {
-          console.log('see.error', err);
-          return () => {
-            sse.close();
-          };
-        };
-        
-        return () => {
-          sse.close();
-        };
-        // let parsedData = await response.json();
-        // open sse, with uuid as req.params
-       
-        // console.log('here is the parsed data', parsedData);
+        // console.log('uuid here', UUID);
       } catch (err) {
         console.log('Error in Tabs.jsx useEffect', err);
       }
@@ -101,6 +65,36 @@ const Tabs = ({
     // return for componentWillUnmount lifecycle
     // potentially remove containterSnapshot document from database when user signs out
   }, []);
+
+  
+  useEffect(() => {
+    if (currentStep === 'Start') {
+      const sse = new EventSource(
+        `http://localhost:3000/dockerCont/streamSwarmStats/${UUID}`
+      );
+      console.log('Started Streaming');
+      sse.onmessage = (event) => {
+        console.log('sse.onmessage event', event);
+        const data = JSON.parse(event.data);
+        console.log('streamData', data);
+        setData(data);
+      };
+      sse.onerror = (err) => {
+        console.log('see.error', err);
+        return () => {
+          sse.close();
+        };
+      };
+  
+      return () => {
+        sse.close();
+      };
+    }
+    // let parsedData = await response.json();
+    // open sse, with uuid as req.params
+  
+    // console.log('here is the parsed data', parsedData);
+  }, [currentStep])
 
 
   return (
