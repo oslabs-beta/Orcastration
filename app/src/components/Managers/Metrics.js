@@ -23,7 +23,12 @@ const Metrics = ({ totalCPU, currentNode }) => {
     ],
   };
   return (
-    <div>
+    <div className='bg-slate-100/90 rounded-md py-4 px-2'>
+      <h1 className='mainFontEl text-slate-800 border-b-2 border-slate-400 pb-4 mb-4 text-xl'>
+        <span className='font-bold'>Viewing Node ID:</span> <br />
+        {currentNode}
+        <br />
+      </h1>
       <Pie
         data={cpuData}
         options={{
