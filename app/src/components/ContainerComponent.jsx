@@ -11,10 +11,11 @@ const healthCheck = (containerId) => {
     .then((response) => response.json())
     .then((res) => {
       if (res[0] === null) {
-        alert(null), setToggleHealth(true);
+        alert('Health Check is not set up for this container'), setToggleHealth(true);
         setHealthStatus('null');
         // setToggleHealth((prev) => !prev)
       } else{
+        alert(`${res}`)
         setHealthStatus(`${res}`)
       }
     });
