@@ -12,7 +12,7 @@ const ManagerMetricsContainer = ({
   return (
     <div
       className='managerMetricsContainer rounded-md bg-nightblue-800/60
-      shadow-xl h-full text-slate-200 m-0 w-full outline-nightblue-700'
+      shadow-xl text-slate-200 m-0 w-full'
     >
       <h1 className='mainFontEl'>NodeID: {currentNode}</h1>
       <Metrics totalCPU={totalCPU} currentNode={currentNode} />

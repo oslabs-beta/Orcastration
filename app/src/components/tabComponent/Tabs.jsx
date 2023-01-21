@@ -166,7 +166,7 @@ const Tabs = ({
 
 
   return (
-    <div className='Tabs px-4 pb-4 bg-nightblue-800/50 rounded-md'>
+    <div className='Tabs px-4 scroll-pb-4 bg-nightblue-800/50 rounded-md'>
       <ul className='nav m-0 flex h-fit'>
         {/* <TabNavItem
           // this is currently hardcoded

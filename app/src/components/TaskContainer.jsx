@@ -2,7 +2,6 @@ import React from 'react';
 import ContainerComponent from './ContainerComponent';
 import Loader from './tabComponent/Loader';
 
-
 export default function TaskContainer({ id, containers, containerData }) {
   // console.log('in taskContainer component');
   // console.log('containers props', containers);
@@ -22,8 +21,8 @@ export default function TaskContainer({ id, containers, containerData }) {
   }
   // console.log('this is containerComponents: ', containerComponents);
   return (
-    <fieldset className='task-container border-solid flex flex-col items-center gap-y-4 snap-y scroll-smooth rounded-md'>
-      <legend className='text-white bg-nightblue-300 text-lg p-2 rounded-md shadow-lg'>
+    <fieldset className='task-container border-solid flex flex-col items-center snap-y scroll-smooth rounded-md'>
+      <legend className='text-white bg-nightblue-300 text-lg p-2 ml-4 rounded-md shadow-lg'>
         Task ID: {id ? id : 'Loading Task'}
       </legend>
 
