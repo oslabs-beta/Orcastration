@@ -18,8 +18,9 @@ const App = (props) => {
   const [logIn, setLogIn] = useState(false);
   // const [userEmail, setUserEmail] = useState(null);
 
+
+  const [activeTab, setActiveTab] = useState('tab0');
   const [currentStep, setCurrentStep] = useState('Start');
-  const [activeTab, setActiveTab] = useState('tab1');
   const [currentNode, setCurrentNode] = useState('');
   const [nodeTotal, setNodeTotal] = useState(0);
   const [tasks, setTasks] = useState([]); // should it be null or arr? what if use has no docker swarm set up
@@ -33,7 +34,7 @@ const App = (props) => {
     const loggedInUser = localStorage.getItem('user');
 
     if (loggedInUser) {
-      console.log('inside the conditional');
+      // console.log('inside the conditional');
       setSignUp(false);
       setLogIn(true);
     }
@@ -55,7 +56,7 @@ const App = (props) => {
         setSignUp(false);
         setLogIn(true);
         localStorage.setItem('user', true);
-        console.log(data);
+        // console.log(data);
       } else {
         alert('The username has already been taken.');
       }
@@ -157,7 +158,6 @@ const App = (props) => {
           {loading ? (
             <Tabs
               // allTasks={data}
-              // userEmail={userEmail}
               currentStep={currentStep}
               setCurrentStep={setCurrentStep}
               allTasks={tasks}

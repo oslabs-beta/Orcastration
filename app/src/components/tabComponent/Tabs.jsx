@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+
 // import FirstTab from '../allTabs/firstTab';
 // import SecondTab from '../allTabs/secondTab';
 import TabNavItem from '../tabNavAndContent/TabNavItem';
@@ -6,7 +7,8 @@ import TabContent from '../tabNavAndContent/TabContent';
 import TaskContainer from '../TaskContainer';
 import ContainerComponent from '../ContainerComponent';
 import Loader from './Loader';
-
+import { flushSync } from 'react-dom';
+// const containerNum = 0;
 const Tabs = ({
   allTasks,
   activeTab,
@@ -18,12 +20,62 @@ const Tabs = ({
   currentStep,
   setCurrentStep,
 }) => {
-  const [data, setData] = useState(null);
+
+  const [data, setData] = useState('');
+  const [tabContentArr, setTabContentArr] = useState([]);
   const [UUID, setUUID] = useState(null);
+  
+  //declare variable tabNavArr and initialize to empty array
+  const [test, setTest] = useState(true);
+  let tabNavArr = [];
+  //declare variable tabContentArr and initialzie to empty array
+  let tabContent = [];
+
+  //loop through incoming tasks (use foreach loop below? we want this to happen on page load so yes. or can we put this in a function and then call th function in the fetch)
+  const createNavAndContent = () => {
+    // console.log('this is alltasks', allTasks);
+    for (let i = 0; i < allTasks.length; i++) {
+      tabNavArr.push(
+        <TabNavItem
+          title={!allTasks.length ? 'Node ID' : `${allTasks[i].nodeID}`}
+          key={allTasks[i].nodeID}
+          id={'tab' + i}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          currentNode={currentNode}
+          updateNode={updateNode}
+          setCurrentNode={setCurrentNode}
+        />
+      );
+    }
+    // console.log('this is tabNavArr: ', tabNavArr)
+    // console.log('this is tabContentArr: ', tabContentArr)
+    return;
+  };
+  createNavAndContent();
+
+  const createTabContent = () => {
+    for (let i = 0; i < allTasks.length; i++) {
+      tabContent.push(
+        <TabContent
+          id={'tab' + i}
+          activeTab={activeTab}
+          key={allTasks[i].nodeID}
+          tasks={allTasks[i].tasks}
+          containerData={data}
+        />
+      );
+    }
+    return;
+  };
+  //create tabNav components for each node identical to the structure below
+  //generate that inside unordered list
+  // createTabContent();
+  //while we are looping we can ALSO take care of tabcontent since this also relies on looping through alltasks initially
+
 
   console.log('Tabs.jsx has rendered');
   useEffect(() => {
-    console.log('Use effect run Tabs.jsx');
     const fetchData = async () => {
       const reqObj = [];
       allTasks.forEach((node) => {
@@ -33,6 +85,7 @@ const Tabs = ({
           });
         });
       });
+
       try {
         setCurrentStep('Snapshot');
         let response = await fetch('/dockerCont/saveSwarmData', {
@@ -43,6 +96,7 @@ const Tabs = ({
           },
           body: JSON.stringify(reqObj),
         });
+
         let newUUID = await response.json();
         setUUID(newUUID);
         setCurrentStep('Ready');
@@ -57,14 +111,27 @@ const Tabs = ({
         // setData(parsedResponse);
 
         // console.log('uuid here', UUID);
+
       } catch (err) {
         console.log('Error in Tabs.jsx useEffect', err);
       }
+      // console.log('data inside useEffect', data);
     };
+    // setData(parsedData)
     fetchData();
+
+    // console.log('data outside of fetch request: ', data);
+    // console.log('this is tabNavArr: ', tabNavArr);
+    // console.log('tabContentArr: ', tabContentArr);
     // return for componentWillUnmount lifecycle
     // potentially remove containterSnapshot document from database when user signs out
   }, []);
+  console.log('data', data);
+ 
+
+
+  // // console.log('this is data outside of useEffect function', data);
+  createTabContent();
 
   
   useEffect(() => {
@@ -97,10 +164,11 @@ const Tabs = ({
   }, [currentStep])
 
 
+
   return (
     <div className='Tabs px-4 pb-4 bg-nightblue-800/50 rounded-md'>
       <ul className='nav m-0 flex h-fit'>
-        <TabNavItem
+        {/* <TabNavItem
           // this is currently hardcoded
           title={!allTasks.length ? 'Node ID' : `${allTasks[0].nodeID}`}
           id='tab1'
@@ -133,13 +201,19 @@ const Tabs = ({
           setActiveTab={setActiveTab}
           currentNode={currentNode}
           updateNode={updateNode}
-        />
+        /> */}
+        {tabNavArr.length === 0 ? (
+          // change loader
+          <Loader />
+        ) : (
+          tabNavArr
+        )}
       </ul>
 
-      <TabContent id='tab1' activeTab={activeTab}>
-        {/* this is hardcoded, we are only taking the tasks from the first node */}
+      {/* use for loop or map to render tab content components dynamically based on how many nodes are available */}
+      {/* inclue the tasks array respective to the node passed down as props to each of the task containers  */}
+      {/* <TabContent id='tab1' activeTab={activeTab}>
         {allTasks[0].tasks.map((task) => {
-          console.log('here is the task: ', task);
           return (
             <TaskContainer id={task.taskID} key={task.taskID}>
               {!data ? (
@@ -161,7 +235,15 @@ const Tabs = ({
       </TabContent>
       <TabContent id='tab2' activeTab={activeTab}></TabContent>
       <TabContent id='tab3' activeTab={activeTab}></TabContent>
-      <TabContent id='tab4' activeTab={activeTab}></TabContent>
+      <TabContent id='tab4' activeTab={activeTab}></TabContent> */}
+      {/* 
+      {!tabContentArr.length ? (
+        // change loader
+        <Loader />
+      ) : (
+        tabContentArr
+      )} */}
+      {tabNavArr.length === 0 ? <Loader /> : tabContent}
     </div>
   );
 };
