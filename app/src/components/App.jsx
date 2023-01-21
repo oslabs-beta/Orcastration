@@ -18,7 +18,6 @@ const App = (props) => {
   const [logIn, setLogIn] = useState(false);
   // const [userEmail, setUserEmail] = useState(null);
 
-
   const [activeTab, setActiveTab] = useState('tab0');
   const [currentStep, setCurrentStep] = useState('Start');
   const [currentNode, setCurrentNode] = useState('');
@@ -107,6 +106,9 @@ const App = (props) => {
         console.log('parsed data here', parsedData);
         setTasks(parsedData);
         setCurrentNode(parsedData[0].nodeID);
+        // document.getElementById('root').style.backgroundImage =
+        //   "url('../assets/night_nomoon.png')";
+        // document.getElementById('root').style.removeProperty('backgroundImage')
         setLoading(true);
       } catch (err) {
         console.log('Error in App.jsx useEffect', err);

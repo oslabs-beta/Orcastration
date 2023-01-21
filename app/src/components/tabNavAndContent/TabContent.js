@@ -15,12 +15,16 @@ const TabContent = ({ id, activeTab, tasks, containerData }) => {
         id={tasks[i].taskID}
         key={tasks[i].taskID}
         containers={tasks[i].containers}
-        containerData = {containerData}
+        containerData={containerData}
       />
     );
   }
   // console.log('this is taskContainer data: ', taskContainers);
-  return (activeTab === id ? <div>{taskContainers}</div> : null);
+  return activeTab === id ? (
+    <div className='task-scroll mb-4 overflow-y-auto space-y-4'>
+      {taskContainers}
+    </div>
+  ) : null;
 };
 
 export default TabContent;
