@@ -20,11 +20,11 @@ const Tabs = ({
   currentStep,
   setCurrentStep,
 }) => {
-
   const [data, setData] = useState('');
   const [tabContentArr, setTabContentArr] = useState([]);
   const [UUID, setUUID] = useState(null);
-  
+  const [change, setChange] = useState(false);
+
   //declare variable tabNavArr and initialize to empty array
   const [test, setTest] = useState(true);
   let tabNavArr = [];
@@ -63,6 +63,7 @@ const Tabs = ({
           key={allTasks[i].nodeID}
           tasks={allTasks[i].tasks}
           containerData={data}
+          change={change}
         />
       );
     }
@@ -72,7 +73,6 @@ const Tabs = ({
   //generate that inside unordered list
   // createTabContent();
   //while we are looping we can ALSO take care of tabcontent since this also relies on looping through alltasks initially
-
 
   console.log('Tabs.jsx has rendered');
   useEffect(() => {
@@ -111,7 +111,6 @@ const Tabs = ({
         // setData(parsedResponse);
 
         // console.log('uuid here', UUID);
-
       } catch (err) {
         console.log('Error in Tabs.jsx useEffect', err);
       }
@@ -127,13 +126,10 @@ const Tabs = ({
     // potentially remove containterSnapshot document from database when user signs out
   }, []);
   console.log('data', data);
- 
-
 
   // // console.log('this is data outside of useEffect function', data);
   createTabContent();
 
-  
   useEffect(() => {
     if (currentStep === 'Start') {
       const sse = new EventSource(
@@ -145,6 +141,7 @@ const Tabs = ({
         const data = JSON.parse(event.data);
         console.log('streamData', data);
         setData(data);
+        setChange((prev) => !prev);
       };
       sse.onerror = (err) => {
         console.log('see.error', err);
@@ -152,22 +149,20 @@ const Tabs = ({
           sse.close();
         };
       };
-  
+
       return () => {
         sse.close();
       };
     }
     // let parsedData = await response.json();
     // open sse, with uuid as req.params
-  
+
     // console.log('here is the parsed data', parsedData);
-  }, [currentStep])
-
-
+  }, [currentStep]);
 
   return (
     <div className='Tabs px-4 scroll-pb-4 bg-nightblue-800/50 rounded-md'>
-      <ul className='nav m-0 flex h-fit'>
+      <ul className='nav m-0 h-fit justify-center'>
         {/* <TabNavItem
           // this is currently hardcoded
           title={!allTasks.length ? 'Node ID' : `${allTasks[0].nodeID}`}

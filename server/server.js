@@ -11,7 +11,6 @@ const dockerSwarmRouter = require('./routes/dockerSwarm');
 const userRouter = require('./routes/user');
 
 
-
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Credentials', 'true');

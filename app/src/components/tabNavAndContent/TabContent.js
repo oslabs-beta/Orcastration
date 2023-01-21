@@ -1,7 +1,7 @@
 import React from 'react';
 import TaskContainer from '../TaskContainer';
 
-const TabContent = ({ id, activeTab, tasks, containerData }) => {
+const TabContent = ({ id, activeTab, tasks, containerData, change }) => {
   // console.log('we are in tabContent', tasks);
   // use for loop to loop over tasks array,
   //for each loop, we want to create a task container passing a new prop down
@@ -16,6 +16,7 @@ const TabContent = ({ id, activeTab, tasks, containerData }) => {
         key={tasks[i].taskID}
         containers={tasks[i].containers}
         containerData={containerData}
+        change={change}
       />
     );
   }
