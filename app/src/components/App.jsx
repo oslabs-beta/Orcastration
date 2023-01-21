@@ -18,8 +18,7 @@ const App = (props) => {
   const [logIn, setLogIn] = useState(false);
   // const [userEmail, setUserEmail] = useState(null);
 
-
-
+  const [currentStep, setCurrentStep] = useState('Start');
   const [activeTab, setActiveTab] = useState('tab1');
   const [currentNode, setCurrentNode] = useState('');
   const [nodeTotal, setNodeTotal] = useState(0);
@@ -99,6 +98,7 @@ const App = (props) => {
 
   useEffect(() => {
     checkLogIn();
+    setCurrentStep('IDs');
     const fetchData = async () => {
       try {
         let rawData = await fetch('/dockerCont/getTasks');
@@ -151,11 +151,15 @@ const App = (props) => {
           <ManagerMetricsContainer
             activeTab={activeTab}
             currentNode={currentNode}
+            currentStep={currentStep}
+            setCurrentStep={setCurrentStep}
           />
           {loading ? (
             <Tabs
               // allTasks={data}
               // userEmail={userEmail}
+              currentStep={currentStep}
+              setCurrentStep={setCurrentStep}
               allTasks={tasks}
               activeTab={activeTab}
               setActiveTab={setActiveTab}

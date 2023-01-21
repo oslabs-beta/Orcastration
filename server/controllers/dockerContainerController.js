@@ -278,16 +278,16 @@ dockerContainerController.streamSwarmStats = (req, res, next) => {
     //     });
     // })
     .then((concatenatedContainerIDs) => {
-      console.log(`concatenatedContainerIDs:, ${concatenatedContainerIDs}`);
+      // console.log(`concatenatedContainerIDs:, ${concatenatedContainerIDs}`);
       const streamingInterval = setInterval(() => {
-        console.log('in setInterval');
+        // console.log('in setInterval');
         // console.log(
         //   `concatenatedContainerIDs WITHIN SETINTERVAL:, ${concatenatedContainerIDs}`
         // );
         getContainerStats(concatenatedContainerIDs)
           .then((containerStats) => {
             const stringifiedContainerStats = JSON.stringify(containerStats);
-            console.log('stringifiedContainerStats', stringifiedContainerStats); // this works
+            // console.log('stringifiedContainerStats', stringifiedContainerStats); // this works
             // res.write('data: ' + 'hi' + '\n\n');
             res.write(`data: ${stringifiedContainerStats}\n\n`);
             // res.locals.dockerContainerStats = containerStats;
