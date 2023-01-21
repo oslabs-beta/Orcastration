@@ -18,13 +18,37 @@ router.get(
   }
 );
 
+// router.post(
+//   '/getStats',
+//   dockerContainerController.getContainerData,
+//   (req, res) => {
+//     return res.status(200).json(res.locals.dockerContainerStats);
+//   }
+// );
+
 router.post(
-  '/getStats',
-  dockerContainerController.getContainerData,
+  '/saveSwarmData',
+  dockerContainerController.saveSwarmData,
   (req, res) => {
-    return res.status(200).json(res.locals.dockerContainerStats);
+    return res.status(200).json(res.locals.containerSnapshotUUID);
   }
 );
+
+router.get(
+  '/streamSwarmStats/:UUID',
+  dockerContainerController.streamSwarmStats,
+  // (req, res) => {
+  //   return res.status(200).json(res.locals.dockerContainerStats);
+  // }
+);
+
+// router.post(
+//   '/getStreamData',
+//   dockerContainerController.dockerContainerStreaData,
+//   (req, res) => {
+//     return res.status(200).json(res.locals);
+//   }
+// );
 
 router.get(
   '/getStatsByNode/:nodeID',

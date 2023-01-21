@@ -16,9 +16,15 @@ const Tabs = ({
   currentNode,
   setCurrentNode,
   updateNode,
+  userEmail,
+  currentStep,
+  setCurrentStep,
 }) => {
+
   const [data, setData] = useState('');
   const [tabContentArr, setTabContentArr] = useState([]);
+  const [UUID, setUUID] = useState(null);
+  
   //declare variable tabNavArr and initialize to empty array
   const [test, setTest] = useState(true);
   let tabNavArr = [];
@@ -67,20 +73,22 @@ const Tabs = ({
   // createTabContent();
   //while we are looping we can ALSO take care of tabcontent since this also relies on looping through alltasks initially
 
+
+  console.log('Tabs.jsx has rendered');
   useEffect(() => {
-    // console.log(tabNavArr);
     const fetchData = async () => {
-      const reqObj = {};
+      const reqObj = [];
       allTasks.forEach((node) => {
         node.tasks.forEach((task) => {
           task.containers.forEach((container) => {
-            reqObj[container] = task.taskID;
+            reqObj.push(container);
           });
         });
       });
 
       try {
-        let response = await fetch('/dockerCont/getStats', {
+        setCurrentStep('Snapshot');
+        let response = await fetch('/dockerCont/saveSwarmData', {
           method: 'POST',
           mode: 'cors',
           headers: {
@@ -88,18 +96,24 @@ const Tabs = ({
           },
           body: JSON.stringify(reqObj),
         });
-        // console.log('all tasks in the useEffect', allTasks[0].tasks)
-        let parsedData = await response.json();
-        // console.log('this is parsedData', parsedData);
-        // console.log('here is the parsed data', parsedData);
-        setData(parsedData);
-        // createTabContent();
-        // console.log('this is setData: ', setData)
-        // console.log('this is data: ', data);
-        // console.log('test', test)
-        // console.log('this is tabContentArr: ', tabContentArr);
+
+        let newUUID = await response.json();
+        setUUID(newUUID);
+        setCurrentStep('Ready');
+        // let initialResponse = await fetch(
+        //   `/dockerCont/streamSwarmStats/${UUID}`,
+        //   {
+        //     method: 'GET',
+        //   }
+        // );
+        // let parsedResponse = await initialResponse.json();
+        // console.log(parsedResponse);
+        // setData(parsedResponse);
+
+        // console.log('uuid here', UUID);
+
       } catch (err) {
-        console.log('Error in App.jsx useEffect', err);
+        console.log('Error in Tabs.jsx useEffect', err);
       }
       // console.log('data inside useEffect', data);
     };
@@ -110,39 +124,47 @@ const Tabs = ({
     // console.log('this is tabNavArr: ', tabNavArr);
     // console.log('tabContentArr: ', tabContentArr);
     // return for componentWillUnmount lifecycle
+    // potentially remove containterSnapshot document from database when user signs out
   }, []);
   console.log('data', data);
-  // useEffect(() => {
-  //   const reqObj = {};
-  //   allTasks.forEach((node) => {
-  //     node.tasks.forEach((task) => {
-  //       task.containers.forEach((container) => {
-  //         reqObj[container] = task.taskID;
-  //       });
-  //     });
-  //   });
+ 
 
-  //   const fetchData = () => {
-  //     fetch('/dockerCont/getStats', {
-  //       method: 'POST',
-  //       mode: 'cors',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(reqObj),
-  //     })
-  //       .then((response) => response.json())
-  //       .then((parsedData) => setData(parsedData))
-  //       .then((data) => {
-  //         console.log(data);
-  //       })
-  //       .then(() => createTabContent());
-  //   };
-  //   fetchData();
-  // }, []);
 
   // // console.log('this is data outside of useEffect function', data);
   createTabContent();
+
+  
+  useEffect(() => {
+    if (currentStep === 'Start') {
+      const sse = new EventSource(
+        `http://localhost:3000/dockerCont/streamSwarmStats/${UUID}`
+      );
+      console.log('Started Streaming');
+      sse.onmessage = (event) => {
+        console.log('sse.onmessage event', event);
+        const data = JSON.parse(event.data);
+        console.log('streamData', data);
+        setData(data);
+      };
+      sse.onerror = (err) => {
+        console.log('see.error', err);
+        return () => {
+          sse.close();
+        };
+      };
+  
+      return () => {
+        sse.close();
+      };
+    }
+    // let parsedData = await response.json();
+    // open sse, with uuid as req.params
+  
+    // console.log('here is the parsed data', parsedData);
+  }, [currentStep])
+
+
+
   return (
     <div className='Tabs px-4 pb-4 bg-nightblue-800/50 rounded-md'>
       <ul className='nav m-0 flex h-fit'>

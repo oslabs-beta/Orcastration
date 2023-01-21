@@ -5,6 +5,7 @@ import MemPieChart from './CPUandMemCharts.js/MemPieChart';
 // import e from 'express';
 // import { ProgressPlugin } from 'webpack';
 
+
 const healthCheck = (containerId) => {
   // const containerId = document.getElementById()
   fetch(`/dockerSwarm/getHealth/${containerId}`)
@@ -28,6 +29,8 @@ export default function ContainerComponent({ containerData, containerID }) {
   // console.log('we are in container component', containerData);
 
   console.log('containerData in container component:', containerData);
+
+
   return (
     <React.Fragment>
       <motion.div

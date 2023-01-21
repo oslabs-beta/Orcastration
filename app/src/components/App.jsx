@@ -16,9 +16,11 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const App = (props) => {
   const [signUp, setSignUp] = useState(true);
   const [logIn, setLogIn] = useState(false);
-  const [user, setUser] = useState(false);
+  // const [userEmail, setUserEmail] = useState(null);
+
 
   const [activeTab, setActiveTab] = useState('tab0');
+  const [currentStep, setCurrentStep] = useState('Start');
   const [currentNode, setCurrentNode] = useState('');
   const [nodeTotal, setNodeTotal] = useState(0);
   const [tasks, setTasks] = useState([]); // should it be null or arr? what if use has no docker swarm set up
@@ -40,6 +42,7 @@ const App = (props) => {
 
   const signUpClick = () => {
     const email = document.getElementById('email').value;
+    // setUserEmail(email);
     const password = document.getElementById('password').value;
     fetch(`http://localhost:3000/user/signup`, {
       method: 'POST',
@@ -74,14 +77,13 @@ const App = (props) => {
       if (data.status === 200) {
         setSignUp(false);
         setLogIn(true);
-        setUser(true);
         localStorage.setItem('user', true);
       }
     });
   };
 
   const logOutClick = () => {
-    setUser(false);
+    // setUserEmail(null);
     setSignUp(true);
     setLogIn(false);
     localStorage.clear();
@@ -97,11 +99,12 @@ const App = (props) => {
 
   useEffect(() => {
     checkLogIn();
+    setCurrentStep('IDs');
     const fetchData = async () => {
       try {
         let rawData = await fetch('/dockerCont/getTasks');
         let parsedData = await rawData.json();
-        // console.log('this is all tasks data: ', parsedData);
+        console.log('parsed data here', parsedData);
         setTasks(parsedData);
         setCurrentNode(parsedData[0].nodeID);
         setLoading(true);
@@ -149,10 +152,14 @@ const App = (props) => {
           <ManagerMetricsContainer
             activeTab={activeTab}
             currentNode={currentNode}
+            currentStep={currentStep}
+            setCurrentStep={setCurrentStep}
           />
           {loading ? (
             <Tabs
               // allTasks={data}
+              currentStep={currentStep}
+              setCurrentStep={setCurrentStep}
               allTasks={tasks}
               activeTab={activeTab}
               setActiveTab={setActiveTab}
