@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import CPUPieChart from './Charts/CPUPieChart';
-import MemPieChart from './Charts/MemPieChart';
-import NetworkLineChart from './Charts/NetworkLineChart'
+// import CPUPieChart from './Charts/CPUPieChart';
+import PieChart from './Charts/PieChart';
+import LineChart from './Charts/LineChart';
 // import e from 'express';
 // import { ProgressPlugin } from 'webpack';
 
-
-export default function ContainerComponent({ containerData, containerID }) {
+export default function ContainerComponent({
+  containerData,
+  containerID,
+  change,
+}) {
   const [toggleData, setToggleData] = useState(false);
   const [toggleHealth, setToggleHealth] = useState(false);
   const [healthStatus, setHealthStatus] = useState('');
@@ -21,7 +24,7 @@ export default function ContainerComponent({ containerData, containerID }) {
           alert('Health Check is not set up for this container'),
             setToggleHealth(true);
           setHealthStatus('null');
-          setToggleHealth((prev) => !prev)
+          setToggleHealth((prev) => !prev);
         } else {
           alert(`${res[0].Status}`);
           setHealthStatus(`${res[0].Status}`);
@@ -30,7 +33,7 @@ export default function ContainerComponent({ containerData, containerID }) {
   };
 
   // console.log('containerData in container component:', containerData);
-  
+
   return (
     <React.Fragment>
       <motion.div
@@ -72,30 +75,30 @@ export default function ContainerComponent({ containerData, containerID }) {
         </div>
         {containerData && (
           <div className='chart-container h-24 flex'>
-              <CPUPieChart CPUPerc={containerData.CPUPerc} />
-              <MemPieChart memPerc={containerData.MemPerc} />
-              {/* <NetworkLineChart change={change} propData={containerData.NetIO}/> */}
+            <PieChart perc={containerData.CPUPerc} containerStat={'CPUPerc'} />
+            <PieChart perc={containerData.MemPerc} containerStat={'MemPerc'} />
+            <LineChart change={change} networkIO={containerData.NetIO} />
           </div>
         )}
-        <section className='flex flex-row p-4 gap-4'></section>
+        {/* <section className='flex flex-row p-4 gap-4'></section>
         {containerData && (
           <motion.div
             className='bg-blue-200 w-full min-h-fit p-1'
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
-          >
-            Mem Usage / Mem Limit: {containerData.MemUsage}
+          > */}
+            {/* Mem Usage / Mem Limit: {containerData.MemUsage}
             <br></br>
-            net I/O: {containerData.NetIO}
+            net I/O: {containerData.NetIO} */}
             {/* <br></br> */}
             {/* Image: {containerData.information.image} */}
             {/* <br></br> */}
             {/* Created At: {containerData.information.created} */}
             {/* <br></br> */}
             {/* Size: {containerData.information.size} */}
-          </motion.div>
-        )}
+          {/* </motion.div> */}
+        {/* )} */}
       </motion.div>
     </React.Fragment>
   );
