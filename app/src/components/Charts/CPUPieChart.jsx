@@ -1,17 +1,15 @@
 import React from 'react';
-import { Doughnut, Pie } from 'react-chartjs-2';
+import { Pie } from 'react-chartjs-2';
 
-function MemPieChart({ memPerc }) {
+function CPUPieChart({ CPUPerc }) {
   return (
     <Pie
       data={{
-        labels: [
-          `MEM usage: ${memPerc}`
-        ],
+        labels: [`CPU usage: ${CPUPerc}`],
         datasets: [
           {
-            label: 'memory test',
-            data: [parseFloat(memPerc), 100 - parseFloat(memPerc)],
+            label: 'cpu test',
+            data: [parseFloat(CPUPerc), 100 - parseFloat(CPUPerc)],
             backgroundColor: [
               'rgba(75,192,192,1)',
               '#ecf0f1',
@@ -28,12 +26,13 @@ function MemPieChart({ memPerc }) {
         plugins: {
           title: {
             display: true,
-            text: 'container memory usage',
+            position: 'bottom',
+            text: 'cpu usage vs max allowed cpu',
           },
-          borderWidth: 1,
         },
+        maintainAspectRatio: false,
       }}
     />
   );
 }
-export default MemPieChart;
+export default CPUPieChart;
