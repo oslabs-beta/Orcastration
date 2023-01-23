@@ -16,9 +16,10 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const App = (props) => {
   const [signUp, setSignUp] = useState(true);
   const [logIn, setLogIn] = useState(false);
-  const [user, setUser] = useState(false);
+  // const [userEmail, setUserEmail] = useState(null);
 
-  const [activeTab, setActiveTab] = useState('tab1');
+  const [activeTab, setActiveTab] = useState('tab0');
+  const [currentStep, setCurrentStep] = useState('Start');
   const [currentNode, setCurrentNode] = useState('');
   const [nodeTotal, setNodeTotal] = useState(0);
   const [tasks, setTasks] = useState([]); // should it be null or arr? what if use has no docker swarm set up
@@ -32,7 +33,7 @@ const App = (props) => {
     const loggedInUser = localStorage.getItem('user');
 
     if (loggedInUser) {
-      console.log('inside the conditional');
+      // console.log('inside the conditional');
       setSignUp(false);
       setLogIn(true);
     }
@@ -55,7 +56,7 @@ const App = (props) => {
         setSignUp(false);
         setLogIn(true);
         localStorage.setItem('user', true);
-        console.log(data);
+        // console.log(data);
       } else {
         alert('The username has already been taken.');
       }
@@ -102,12 +103,16 @@ const App = (props) => {
 
   useEffect(() => {
     checkLogIn();
+    setCurrentStep('IDs');
     const fetchData = async () => {
       try {
         let rawData = await fetch('/dockerCont/getTasks');
         let parsedData = await rawData.json();
         setTasks(parsedData);
         setCurrentNode(parsedData[0].nodeID);
+        // document.getElementById('root').style.backgroundImage =
+        //   "url('../assets/night_nomoon.png')";
+        // document.getElementById('root').style.removeProperty('backgroundImage')
         setLoading(true);
       } catch (err) {
         console.log('Error in App.jsx useEffect', err);
@@ -153,14 +158,22 @@ const App = (props) => {
           <ManagerMetricsContainer
             activeTab={activeTab}
             currentNode={currentNode}
+            currentStep={currentStep}
+            setCurrentStep={setCurrentStep}
           />
-          {loading ? <Tabs
-            // allTasks={data}
-            allTasks={tasks}
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            currentNode={currentNode}
-          /> : <Loader />}
+          {loading ? (
+            <Tabs
+              // allTasks={data}
+              currentStep={currentStep}
+              setCurrentStep={setCurrentStep}
+              allTasks={tasks}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+              currentNode={currentNode}
+            />
+          ) : (
+            <Loader />
+          )}
         </div>
       </div>
     );

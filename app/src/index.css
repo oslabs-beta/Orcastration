@@ -49,6 +49,24 @@ body {
   margin-bottom: 20px;
 }
 
+/* .dockerHealth {
+  background-color: hsl(232, 43%, 27%);
+  color: white;
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  margin-right: 10px;
+  margin-left: 15px;
+  border-radius: 5px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1), 0 6px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+} */
+
+/* .ping { */
+/* width: 10px; */
+/* height: 5px; */
+/* } */
+
 #root {
   height: inherit;
   /* width: inherit; */
@@ -56,10 +74,10 @@ body {
   background: linear-gradient(
     158deg,
     hsl(231, 39%, 6%) 17%,
-    hsl(231, 72%, 45%) 50%
+    hsl(231, 69%, 30%) 80%
   );
   /* background-color: rgb(255, 255, 255); */
-  /* background-image: url('../assets/night_nomoon.png'); */
+  /* background-image: url('../assets/night_bg.png'); */
   /* background-color: rgb(9, 6, 60); */
   background-repeat: no-repeat;
   background-size: cover;
@@ -69,7 +87,6 @@ body {
 .Tabs {
   display: grid;
   grid-template-rows: 1fr 92.5%;
-  height: inherit;
   overflow: auto;
 }
 
@@ -84,7 +101,7 @@ body {
 .task-container {
   height: fit-content;
   /* min-height: fit-content; */
-  padding-bottom: 2rem;
+  padding-bottom: 1rem;
   position: relative;
   background-image: linear-gradient(to bottom, #121f6d, #131d5a);
   z-index: 1;
@@ -114,7 +131,7 @@ body {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-family: Georgia, 'Times New Roman', Times, sans-serif;
 }
 
 /* Style App.js wrapper */
@@ -127,16 +144,16 @@ body {
   overflow: hidden;
 } */
 
-.nav {
+/* .nav {
   margin-inline: auto;
-}
+} */
 
 /* Tab Navigation */
 ul.nav {
   width: 60%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  /* display: flex; */
+  /* align-items: center; */
+  /* justify-content: space-between; */
   box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px,
     rgba(17, 17, 26, 0.1) 0px 0px 8px;
   /* @media (max-width: 768px) {
@@ -188,7 +205,6 @@ ul.nav li.active {
   grid-auto-columns: 40%; */
   display: flex;
   flex-direction: column;
-  gap: 1rem;
   font-size: 2rem;
   text-align: center;
   overflow-y: auto;
@@ -222,41 +238,35 @@ ul.nav li.active {
   background-color: #ececec;
   border-radius: 0.375rem;
 }
-
+/* 
 .navigationBar {
   display: flex;
   justify-content: space-between;
-}
+} */
 
 #logo {
   font-size: 1.8rem;
 }
+/* 
+.mainFontEl:hover {
+  text-decoration: none;
+} */
 
-/* .mainFontEl { */
-/* font-family: 'Prosto One', cursive; */
-/* } */
-
-.managerMetricsContainer {
-  /* display: flex; */
-  outline-style: solid;
-  outline-width: 1px;
-}
-
-#signout:hover {
+/* #signout:hover {
   text-decoration: underline;
-}
+} */
 
 /* set nav proportion relative to rest of screen  */
 .navigation {
   padding-bottom: 2rem;
   height: inherit;
   display: grid;
-  grid-template-rows: 2fr 90% 1fr;
+  grid-template-rows: 10% 87.5% 1fr;
 }
 
 .managerAndTabs {
   display: grid;
-  grid-template-columns: 1fr 80%;
+  grid-template-columns: 1fr 8fr;
   gap: 2rem;
 }
 
