@@ -1,11 +1,18 @@
 import React from 'react';
 import TaskContainer from '../TaskContainer';
 
-const TabContent = ({ id, activeTab, tasks, containerData, change }) => {
+const TabContent = ({
+  id,
+  activeTab,
+  tasks,
+  containerData,
+  change,
+  setHealthStatus,
+}) => {
   // console.log('we are in tabContent', tasks);
   // use for loop to loop over tasks array,
-  //for each loop, we want to create a task container passing a new prop down
-  //called containers which is equal to all the containers of that task
+  // for each loop, we want to create a task container passing a new prop down
+  // called containers which is equal to all the containers of that task
   const taskContainers = [];
   for (let i = 0; i < tasks.length; i++) {
     // console.log('tasks within tab content for loop: ', tasks[i])
@@ -17,6 +24,7 @@ const TabContent = ({ id, activeTab, tasks, containerData, change }) => {
         containers={tasks[i].containers}
         containerData={containerData}
         change={change}
+        setHealthStatus={setHealthStatus}
       />
     );
   }

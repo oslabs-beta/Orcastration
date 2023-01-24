@@ -19,6 +19,7 @@ const Tabs = ({
   userEmail,
   currentStep,
   setCurrentStep,
+  setHealthStatus,
 }) => {
   const [data, setData] = useState('');
   const [tabContentArr, setTabContentArr] = useState([]);
@@ -64,6 +65,7 @@ const Tabs = ({
           tasks={allTasks[i].tasks}
           containerData={data}
           change={change}
+          setHealthStatus={setHealthStatus}
         />
       );
     }
@@ -74,7 +76,7 @@ const Tabs = ({
   // createTabContent();
   //while we are looping we can ALSO take care of tabcontent since this also relies on looping through alltasks initially
 
-  console.log('Tabs.jsx has rendered');
+  // console.log('Tabs.jsx has rendered');
   useEffect(() => {
     const fetchData = async () => {
       const reqObj = [];
@@ -125,7 +127,7 @@ const Tabs = ({
     // return for componentWillUnmount lifecycle
     // potentially remove containterSnapshot document from database when user signs out
   }, []);
-  console.log('data', data);
+  // console.log('data', data);
 
   // // console.log('this is data outside of useEffect function', data);
   createTabContent();
@@ -137,9 +139,9 @@ const Tabs = ({
       );
       console.log('Started Streaming');
       sse.onmessage = (event) => {
-        console.log('sse.onmessage event', event);
+        // console.log('sse.onmessage event', event);
         const data = JSON.parse(event.data);
-        console.log('streamData', data);
+        // console.log('streamData', data);
         setData(data);
         setChange((prev) => !prev);
       };

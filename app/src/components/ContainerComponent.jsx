@@ -10,10 +10,18 @@ export default function ContainerComponent({
   containerData,
   containerID,
   change,
+  setHealthStatus,
 }) {
   const [toggleData, setToggleData] = useState(false);
   const [toggleHealth, setToggleHealth] = useState(false);
-  const [healthStatus, setHealthStatus] = useState('');
+
+  const handleClick = () => {
+    healthCheck(containerID);
+    // clearTimeout() // this needs to be set-- maybe moved to managerMetrics,
+    // setTimeout(() => {
+    //   setHealthStatus('waiting');
+    // }, 8000);
+  };
 
   const healthCheck = (containerID) => {
     // const containerId = document.getElementById()
@@ -21,13 +29,14 @@ export default function ContainerComponent({
       .then((response) => response.json())
       .then((res) => {
         if (res[0] === null) {
-          alert('Health Check is not set up for this container'),
-            setToggleHealth(true);
+          // alert('Health Check is not set up for this container'),
+          setToggleHealth(true);
           setHealthStatus('null');
           setToggleHealth((prev) => !prev);
         } else {
-          alert(`${res[0].Status}`);
-          setHealthStatus(`${res[0].Status}`);
+          // alert(`${res[0].Status}`);
+          // console.log('res from health check!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', res[0])
+          setHealthStatus(Object.assign(res[0], {containerID: containerID}));
         }
       });
   };
@@ -40,7 +49,7 @@ export default function ContainerComponent({
         initial={{ opacity: 0, scale: 0.5, originY: -0.2 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
-        whileHover={{ scale: 1.01 }}
+        // whileHover={{ scale: 1.01 }}
         className='container_component p-5 my-2 flex flex-col bg-slate-100/90 hover:bg-slate-100 hover:duration-200 w-5/6 scroll-mt-2 drop-shadow-lg hover:drop-shadow-2xl rounded-md z-30 text-sm text-slate-800'
       >
         <div className='flex flex-row justify-between'>
@@ -59,7 +68,7 @@ export default function ContainerComponent({
           </div>
           <button
             className='dockerHealth text-white bg-nightblue-300 rounded-md p-2 shadow-lg text-lg transition ease-in-out duration-300 hover:bg-custompurple'
-            onClick={() => healthCheck(containerID)}
+            onClick={handleClick}
           >
             Health Check
           </button>
@@ -74,7 +83,7 @@ export default function ContainerComponent({
           {/* <motion.div></motion.div> */}
         </div>
         {containerData && (
-          <div className='chart-container h-24 flex'>
+          <div className='chart-container h-24 grid grid-flow-col h-fit justify-center items-center overflow-visible'>
             <PieChart perc={containerData.CPUPerc} containerStat={'CPUPerc'} />
             <PieChart perc={containerData.MemPerc} containerStat={'MemPerc'} />
             <LineChart change={change} networkIO={containerData.NetIO} />
@@ -88,16 +97,16 @@ export default function ContainerComponent({
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
           > */}
-            {/* Mem Usage / Mem Limit: {containerData.MemUsage}
+        {/* Mem Usage / Mem Limit: {containerData.MemUsage}
             <br></br>
             net I/O: {containerData.NetIO} */}
-            {/* <br></br> */}
-            {/* Image: {containerData.information.image} */}
-            {/* <br></br> */}
-            {/* Created At: {containerData.information.created} */}
-            {/* <br></br> */}
-            {/* Size: {containerData.information.size} */}
-          {/* </motion.div> */}
+        {/* <br></br> */}
+        {/* Image: {containerData.information.image} */}
+        {/* <br></br> */}
+        {/* Created At: {containerData.information.created} */}
+        {/* <br></br> */}
+        {/* Size: {containerData.information.size} */}
+        {/* </motion.div> */}
         {/* )} */}
       </motion.div>
     </React.Fragment>

@@ -24,6 +24,7 @@ const App = (props) => {
   const [nodeTotal, setNodeTotal] = useState(0);
   const [tasks, setTasks] = useState([]); // should it be null or arr? what if use has no docker swarm set up
   const [loading, setLoading] = useState(false);
+  const [healthStatus, setHealthStatus] = useState({ Status: 'waiting' });
 
   const updateNode = (node) => {
     setCurrentNode(node);
@@ -156,6 +157,7 @@ const App = (props) => {
             currentNode={currentNode}
             currentStep={currentStep}
             setCurrentStep={setCurrentStep}
+            healthStatus={healthStatus}
           />
           {loading ? (
             <Tabs
@@ -166,11 +168,13 @@ const App = (props) => {
               activeTab={activeTab}
               setActiveTab={setActiveTab}
               currentNode={currentNode}
+              setHealthStatus={setHealthStatus}
             />
           ) : (
             <Loader />
           )}
         </div>
+        <div className='footer text-center'>Orcastration</div>
       </div>
     );
   }
