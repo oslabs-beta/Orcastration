@@ -2,11 +2,16 @@ import React from 'react';
 import ContainerComponent from './ContainerComponent';
 import Loader from './tabComponent/Loader';
 
-export default function TaskContainer({ id, containers, containerData, change }) {
+export default function TaskContainer({
+  id,
+  containers,
+  containerData,
+  change,
+  setHealthStatus,
+}) {
   // console.log('in taskContainer component');
   // console.log('containers props', containers);
   // console.log('containerData props', containerData);
-
   let containerComponents = [];
   for (let i = 0; i < containers.length; i++) {
     // console.log(containerData[i]);
@@ -17,6 +22,7 @@ export default function TaskContainer({ id, containers, containerData, change })
         containerID={containers[i]}
         containerData={containerData[containers[i]]}
         change={change}
+        setHealthStatus={setHealthStatus}
       />
     );
   }

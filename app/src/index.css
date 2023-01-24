@@ -68,7 +68,6 @@ body {
 /* } */
 
 #root {
-  height: inherit;
   /* width: inherit; */
   margin: 0;
   background: linear-gradient(
@@ -76,9 +75,6 @@ body {
     hsl(231, 39%, 6%) 17%,
     hsl(231, 69%, 30%) 80%
   );
-  /* background-color: rgb(255, 255, 255); */
-  /* background-image: url('../assets/night_bg.png'); */
-  /* background-color: rgb(9, 6, 60); */
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -258,15 +254,13 @@ ul.nav li.active {
 
 /* set nav proportion relative to rest of screen  */
 .navigation {
-  padding-bottom: 2rem;
-  height: inherit;
   display: grid;
   grid-template-rows: 10% 87.5% 1fr;
 }
 
 .managerAndTabs {
   display: grid;
-  grid-template-columns: 1fr 8fr;
+  grid-template-columns: 3fr 8fr;
   gap: 2rem;
 }
 
@@ -342,4 +336,7 @@ ul.nav li.active {
 /* .lineChart {
   background-image: url('https://i.imgur.com/jW0PsjL.png');
   background-size: cover;
+} */
+/* .managerMetricsContainer {
+  grid-template-rows: 3fr 1fr 2fr;
 } */

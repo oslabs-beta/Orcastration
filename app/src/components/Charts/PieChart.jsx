@@ -159,7 +159,7 @@ export default function PieChart({ perc, containerStat }) {
   }, [perc]);
 
   return (
-    <div className='h-36 w-64 mx-auto'>
+    <div>
       <Pie data={chartData} options={chartOptions} />
     </div>
   );
