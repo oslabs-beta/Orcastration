@@ -139,7 +139,7 @@ export default function PieChart({ perc, containerStat }) {
         ],
         borderColor: ['rgba(75,192,192,1)', 'rgba(153, 102, 255, 1)'], // this has a different shade for border but same color
         borderWidth: 1,
-        hoverOffset: 20,
+        // hoverOffset: 20,
       },
     ],
   });

@@ -1,203 +1,44 @@
-const mongoose = require('mongoose');
-const ContainerSnapshot = require('../models/containerSnapshotModel.js');
-// import {v4 as uuidv4} from 'uuid';
+const ContainerSnapshot = require('../models/containerSnapshotModel');
 const uuid = require('uuid');
 
-const { promisify } = require('util');
-const { exec } = require('child_process');
+/*
+Import getNodeIDs, getRunningTaskIDs, and getTaskContainerIDs helper functions. See '../helperFunctions/dockerSwarmCLI.js' for more details.
+*/
+const {
+  getNodeIDs,
+  getRunningTaskIDs,
+  getTaskContainerIDs,
+  // getSwarmContainerInfo,
+} = require('../helperFunctions/dockerSwarmCLI.js');
 
-const execProm = promisify(exec);
-
-// we can have it make a function here instead
-const parseRawData = (rawData) => {
-  // console.log('rawData', rawData);
-  const stdout = rawData.stdout.trim().split('\n');
-  const parsedData = stdout.map((rawData) => JSON.parse(rawData));
-  return parsedData;
-};
-
-const parseRawDataIntoObject = (rawData) => {
-  const parsedDataObject = {};
-  const stdout = rawData.stdout.trim().split('\n');
-  stdout.forEach((rawData) => {
-    const parsedData = JSON.parse(rawData);
-    const containerID = parsedData.Container;
-    parsedDataObject[containerID] = parsedData;
-  });
-  return parsedDataObject;
-};
-
-const getNodeIDs = () => {
-  return execProm('docker node ls --format "{{json .ID}}"').then(
-    (rawNodeIDs) => {
-      const parsedNodeIDs = parseRawData(rawNodeIDs);
-      return parsedNodeIDs;
-    }
-  );
-};
-
-// getNodeIDs().then((nodeIDs) => {
-//   console.log(nodeIDs);
-// });
-
-const getRunningTaskIDs = (nodeID) => {
-  return execProm(
-    `docker node ps ${nodeID} --filter desired-state=running --format "{{json .ID}}"`
-  ).then((rawTaskIDs) => {
-    const parsedRunningTaskIDs = parseRawData(rawTaskIDs);
-    return parsedRunningTaskIDs;
-  });
-};
-
-// getRunningTaskIDs('01hce8ymcxnkc10hhsgqusb0t').then((taskIDs) => {
-//   console.log(taskIDs);
-// });
-
-const getShutdownTaskIDs = (nodeID) => {
-  return execProm(
-    `docker node ps ${nodeID} --filter desired-state=shutdown --format "{{json .ID}}"`
-  ).then((rawTaskIDs) => {
-    const parsedShutdownTaskIDs = parseRawData(rawTaskIDs);
-    return parsedShutdownTaskIDs;
-  });
-};
-
-// getShutdownTaskIDs('01hce8ymcxnkc10hhsgqusb0t').then((taskIDs) => {
-//   console.log(taskIDs);
-// });
-
-const getContainerIDs = (taskID) => {
-  return execProm(
-    `docker inspect ${taskID} --format='{{json .Status.ContainerStatus.ContainerID}}'`
-  ).then((rawContainerIDs) => {
-    const parsedContainerIDs = parseRawData(rawContainerIDs);
-    return parsedContainerIDs;
-  });
-};
-
-// getContainerIDs('d57ntl1o16jk').then((containerIDs) => {
-//   console.log(containerIDs);
-// });
-
-const getContainerStats = (containerIDs) => {
-  // console.log('inside of getContainerStats!', containerIDs);
-  return execProm(
-    `docker stats ${containerIDs} --no-stream --format "{{json .}}"`
-  ).then((rawContainerStats) => {
-    const parsedContainerStats = parseRawDataIntoObject(rawContainerStats);
-    // console.log('parsedContainerStats: ', parsedContainerStats);
-    return parsedContainerStats;
-  });
-};
-
-// getContainerStats([
-//   'd7d2de94021bacbc5e6797e01bad3e85bf1bf11feef753197623647f8bdf4bf4',
-//   '2009902c820ff673abdcc734fc430f1e329ffa289491b22dc820084db98c38fd',
-// ]).then((containerStats) => {
-//   console.log(containerStats);
-// });
-
-const getContainerInfo = (containerID) => {
-  return execProm(
-    `docker ps --filter "id=${containerID}" --format "{{json .}}"`
-  ).then((rawContainerData) => {
-    const parsedContainerData = parseRawData(rawContainerData);
-    return parsedContainerData;
-  });
-};
+/*
+Import getContainerStats helper function. See '../helperFunctions/dockerCLI.js' for more details.
+*/
+const { getContainerStats } = require('../helperFunctions/dockerCLI.js');
 
 dockerContainerController = {};
 
-dockerContainerController.getContainers = (req, res, next) => {
-  execProm(
-    // only list the containers in the swarm
-    'docker ps --all --format "{{json .}}" --filter "label=com.docker.swarm.service.name"'
-  )
-    .then((rawContainerData) => {
-      const parsedContainerData = parseRawData(rawContainerData);
-      const containerStatus = parsedContainerData.map((container) => {
-        return {
-          createdAt: container.CreatedAt,
-          containerID: container.ID,
-          containerName: container.Names,
-          image: container.Image,
-          size: container.Size,
-          state: container.State,
-          containerStatus: container.Status,
-        };
-      });
-      res.locals.dockerContData = containerStatus;
-      return next();
-    })
-    .catch((err) => {
-      return next({
-        log: `dockerContainterController.getStatus: ERROR: ${err}`,
-        message: { err: "An error occurred in obtaining container status'." },
-      });
-    });
-};
-
-/*
-getStats() =>
-
-{
-  containerIDA : taskIDA,
-  containerIDB : taskIDB,
-  containerIDC : taskIDA
-}
-
-if (!object[containerID] => getStats()); <<<<
-
-while iterating, also build an object like this :
-
-const containerIdObj = {
-  containerID: taskID1,
-  containerID2: taskID2,
-  containerID3: taskID1
-}
-
-streamInfo(containerIDs) {
-  setInterval(
-    dockerstats().filter(
-      containerID => containerIdObj[containerID] <<<<
-      containerID => taskData.containers.includes(containerID) <<<<
-    )
-  , interval)
-}
-
-saveSwarmData
-
+/**
+* @description This middleware retrieves an object containing all tasks and containers running strictly on the first node in the Docker Swarm cluster. 
+  The information is used to populate the tasks and containers of the first node on the frontend upon landing/routing. 
+  The information on the tasks and containers of other nodes in the Docker Swarm cluster will be retreived by clicking seprate node tabs. See 'getStatsByNode' middleware.
+* @note This is done to modularize the code and reduce the amount of bandwidth and data being sent over the network through each HTTP request.
+* @param {Object} req - Express request object
+* @param {Object} res - Express response object
+* @param {function} next - Express next middleware function
+* @returns {function} next - Express next middleware function is returned after storing 'nodesData' in res.locals
+* @throws {Object} err - An object containing the error message and log.
 */
-
-dockerContainerController.saveSwarmData = (req, res, next) => {
-  // generate a uuid, make a new DB entry w/ uuid and containerIDs array, send UUID back up to FE
-  // console.log('saveSwarmData');
-  const containerList = req.body.filter((id) => /^[A-Za-z0-9]*$/.test(id));
-  const UUID = uuid.v4();
-  // console.log('filtered result:', containerIDs);
-  // console.log([email, containerIDs]);
-  ContainerSnapshot.create({ UUID, containerList })
-    .then(() => {
-      res.locals.containerSnapshotUUID = UUID;
-      return next();
-    })
-    .catch((err) => {
-      return next({
-        log: `dockerContainterController.saveSwarmData: ERROR: ${err}`,
-        message: { err: 'An error occurred in saving swarm data.' },
-      });
-    });
-};
-
 dockerContainerController.getTasksByNode = (req, res, next) => {
+  // Get the list of nodes in the Docker Swarm cluster
   getNodeIDs()
     .then((nodeIDList) => {
+      // Extract the first node in the list of node ID's
       const firstNodeID = [nodeIDList[0]];
       return Promise.all(
         firstNodeID.map((nodeID) => {
           // Create an object for the current node
           const nodeData = { nodeID: nodeID, tasks: [] };
-
           // Get the running tasks for the current node
           return getRunningTaskIDs(nodeID).then((runningTaskList) => {
             // Iterate over the running tasks
@@ -206,14 +47,14 @@ dockerContainerController.getTasksByNode = (req, res, next) => {
                 // Create an object for the current task
                 const taskData = { taskID: taskID, containers: [] };
                 // Get the container IDs for the current task
-                return getContainerIDs(taskID).then((containerIDList) => {
-                  // console.log(containerIDList);
+                return getTaskContainerIDs(taskID).then((containerIDList) => {
+                  // Populate the containers array with the list of container ID's
                   taskData.containers = [...containerIDList];
                   return taskData;
                 });
               })
             ).then((tasksData) => {
-              // console.log('tasksData', tasksData);
+              // Populate the tasks array with the taskData objects containing the task ID and the array of container IDs associated with that task.
               nodeData.tasks = tasksData;
               return nodeData;
             });
@@ -222,18 +63,63 @@ dockerContainerController.getTasksByNode = (req, res, next) => {
       );
     })
     .then((nodesData) => {
+      // Store the promise that resolves to an object containing the node ID and an array of task objects for the first node in the Docker Swarm cluster. Each task object contains the task ID and an array of container IDs associated with that task.
       res.locals.dockerContainerStats = nodesData;
       return next();
     })
     .catch((err) => {
       return next({
-        log: `dockerContainerController.getStats: ERROR: ${err}`,
-        message: { err: 'An error occurred in obtaining container stats.' },
+        log: `dockerContainerController.getTasksByNode: ERROR: ${err}`,
+        message: {
+          err: 'An error occurred in obtaining the tasks and containers of the first node in the Docker Swarm cluster.',
+        },
       });
     });
 };
-// send back a UUID and save task + container IDs in DB
+
+/**
+ * @description This middleware retrieves a list of container ID's from the request body, generates a new UUID, and sanitizes the container list.
+   The sanitized container list and generated UUID are used as schema fields to create a new 'ContainerSnapshot' document in the database. 
+   This middleware is used to store a snapshot of the container IDs in the database for later use in the 'streamSwarmStats' middleware.
+ * @note By separating this functionality into a separate middleware, it allows for better control and management of the data flow, partial rendering,
+         as well as reducing load on the server.
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {function} next - Express next middleware function
+ * @return {function} next - Express next middleware function is returned after storing 'containerSnapshotUUID' in res.locals
+ * @throws {Object} err - An object containing the error message and log.
+ */
+dockerContainerController.saveSwarmData = (req, res, next) => {
+  const containerList = req.body.filter((id) => /^[A-Za-z0-9]*$/.test(id));
+  const UUID = uuid.v4();
+  ContainerSnapshot.create({ UUID, containerList })
+    .then(() => {
+      res.locals.containerSnapshotUUID = UUID;
+      return next();
+    })
+    .catch((err) => {
+      return next({
+        log: `dockerContainterController.saveSwarmData: ERROR: ${err}`,
+        message: {
+          err: 'An error occurred in saving Docker Swarm cluster containers.',
+        },
+      });
+    });
+};
+
+/**
+* @description This middleware streams the statistics of all containers in a Docker Swarm cluster using Server-Sent Events (SSE) technology.
+  It utilizes the UUID provided in the request params to query the 'ContainerSnapshot' model and retrieve the list of container IDs.
+  The list of container IDs is concatenated and passed to the 'getContainerStats' function which retrieves the statistics of all containers in one exec call, reducing load and bandwidth.
+  A streaming interval of 1500ms is used to make real-time update to the statistics
+* @note This middleware is separated from the 'saveSwarmData' and 'getTasksByNode' middleware for better control and modularity of functionality, as well as for the purpose of reducing load on the server.
+* @param {Object} req - Express request object
+* @param {Object} res - Express response object
+* @param {function} next - Express next middleware function
+* @returns {void} 
+ */
 dockerContainerController.streamSwarmStats = (req, res, next) => {
+  // Set response headers for SSE compatibility
   res.writeHead(200, {
     'Content-Type': 'text/event-stream',
     'Cache-Control': 'no-cache',
@@ -241,8 +127,7 @@ dockerContainerController.streamSwarmStats = (req, res, next) => {
     'Access-Control-Allow-Origin': '*',
   });
   const { UUID } = req.params;
-  // console.log('req.params in middleware', req.params);
-  // console.log('UUID in middleware', UUID);
+  // Query the 'ContainerSnapshot' model in the database to find the list of containers associated to the unique UUID
   ContainerSnapshot.findOne({ UUID })
     .then((containerListDoc) => {
       if (containerListDoc === null) {
@@ -253,7 +138,7 @@ dockerContainerController.streamSwarmStats = (req, res, next) => {
           },
         });
       }
-      // console.log('containerListDoc here', containerListDoc);
+      // Concatenate the list of containers into one string to pass into 'getContainerStats' to retrieve the container stats in one exec call
       const concatenatedContainerIDs = containerListDoc.containerList.reduce(
         (acc, ID) => {
           return /^[A-Za-z0-9]*$/.test(ID) ? (acc += ID + ' ') : acc;
@@ -262,47 +147,25 @@ dockerContainerController.streamSwarmStats = (req, res, next) => {
       );
       return concatenatedContainerIDs;
     })
-    // .then((concatenatedContainerIDs) => {
-    //   getContainerStats(concatenatedContainerIDs)
-    //     .then((containerStats) => {
-    //       res.locals.dockerContainerStats = containerStats;
-    //       return next();
-    //     })
-    //     .catch((err) => {
-    //       return next({
-    //         log: `dockerContainerController.getContainerData: ERROR: ${err}`,
-    //         message: {
-    //           err: "An error occurred in obtaining container stats'.",
-    //         },
-    //       });
-    //     });
-    // })
     .then((concatenatedContainerIDs) => {
-      // console.log(`concatenatedContainerIDs:, ${concatenatedContainerIDs}`);
+      //  Set a streaming interval of 1500ms to retrieve real-time updates of the container statistics.
       const streamingInterval = setInterval(() => {
-        // console.log('in setInterval');
-        // console.log(
-        //   `concatenatedContainerIDs WITHIN SETINTERVAL:, ${concatenatedContainerIDs}`
-        // );
         getContainerStats(concatenatedContainerIDs)
           .then((containerStats) => {
+            //  The returned statistics are stringified and written to the response object with a 'data:' prefix, adhering to SSE conventions.
             const stringifiedContainerStats = JSON.stringify(containerStats);
-            // console.log('stringifiedContainerStats', stringifiedContainerStats); // this works
-            // res.write('data: ' + 'hi' + '\n\n');
             res.write(`data: ${stringifiedContainerStats}\n\n`);
-            // res.locals.dockerContainerStats = containerStats;
-            // return next();
           })
           .catch((err) => {
             return next({
-              log: `dockerContainerController.streamSwarmStats: Error occured in streamSwarmStats streamingInterval. ERROR: ${err}`,
+              log: `dockerContainerController.streamSwarmStats: Error occured in 'streamSwarmStats' streamingInterval. ERROR: ${err}`,
               message: {
-                err: 'An error occurred while streaming docker swarm container stats.',
+                err: 'An error occurred while streaming Docker Swarm cluster container stats',
               },
             });
           });
       }, 1500);
-
+      // Add 'close' event listener to clear the interval and end the response when the client closes the connection.
       res.on('close', () => {
         clearInterval(streamingInterval);
         res.end();
@@ -312,175 +175,35 @@ dockerContainerController.streamSwarmStats = (req, res, next) => {
       return next({
         log: `dockerContainerController.streamSwarmStats: ERROR: ${err}`,
         message: {
-          err: 'An error occurred while streaming docker swarm container stats.',
+          err: 'An error occurred while streaming Docker Swarm cluster container stats.',
         },
       });
     });
 };
 
-// console.log(containerStats);
-// const containerData = {};
-// // containerID : containerStats
-// containerStats.forEach((container) => {
-//   const containerID = container.Container;
-//   containerData[containerID] = container;
-// const taskID = req.body[containerID];
-// !containerData[taskID]
-//   ? (containerData[taskID] = [container])
-//   : containerData[taskID].push(container);
-// });
-
-// dockerContainerController.getContainerData = (req, res, next) => {
-//   res.setHeader('Content-Type', 'text/event-stream');
-//   res.setHeader('Cache-Control', 'no-cache');
-//   res.setHeader('Connection', 'keep-alive');
-//   console.log('REQBODY', req.body);
-//   // setInterval(() => {}, 1500);
-//   const containerList = Object.keys(req.body);
-//   getContainerStats(containerList)
-//     .then((containerStats) => {
-//       console.log(containerStats);
-//       const containerData = {};
-//       // containerID : containerStats
-//       containerStats.forEach((container) => {
-//         const containerID = container.Container;
-//         containerData[containerID] = container;
-//         // const taskID = req.body[containerID];
-//         // !containerData[taskID]
-//         //   ? (containerData[taskID] = [container])
-//         //   : containerData[taskID].push(container);
-//       });
-//       res.locals.dockerContainerStats = containerData;
-//       return next();
-//     })
-//     .catch((err) => {
+// Unused by FE
+// dockerContainerController.getContainers = (req, res, next) => {
+//   getSwarmContainerInfo().then((swarmContainerList) => {
+//     console.log(swarmContainerList);
+//     const containerStatus = swarmContainerList.map((container) => {
+//       return {
+//         createdAt: container.CreatedAt,
+//         containerID: container.ID,
+//         containerName: container.Names,
+//         image: container.Image,
+//         size: container.Size,
+//         state: container.State,
+//         containerStatus: container.Status,
+//       };
+//     });
+//     res.locals.dockerContData = containerStatus;
+//     return next().catch((err) => {
 //       return next({
-//         log: `dockerContainerController.getContainerData: ERROR: ${err}`,
-//         message: { err: "An error occurred in obtaining container stats'." },
+//         log: `dockerContainterController.getStatus: ERROR: ${err}`,
+//         message: { err: "An error occurred in obtaining container status'." },
 //       });
 //     });
+//   });
 // };
-
-// dockerContainerController.getStats = (req, res, next) => {
-//   getNodeIDs()
-//     .then((nodeIDList) => {
-//       const firstNodeID = [nodeIDList[0]];
-//       return Promise.all(
-//         firstNodeID.map((nodeID) => {
-//           // Create an object for the current node
-//           const nodeData = { nodeID: nodeID, tasks: [] };
-
-//           // Get the running tasks for the current node
-//           return getRunningTaskIDs(nodeID).then((runningTaskList) => {
-//             // Iterate over the running tasks
-//             return Promise.all(
-//               runningTaskList.map((taskID) => {
-//                 // Create an object for the current task
-//                 const taskData = { taskID: taskID, containers: [] };
-
-//                 // Get the container IDs for the current task
-//                 return getContainerIDs(taskID).then((containerIDList) => {
-//                   // Iterate over the container IDs
-//                   return Promise.all(
-//                     containerIDList.map((containerID) => {
-//                       // Get the stats for the current container
-//                       return getContainerStats(containerID).then(
-//                         (containerStat) => {
-//                           // Create an object for the current container
-//                           const containerData = {
-//                             containerID: containerStat[0].ID,
-//                             containerName: containerStat[0].Name,
-//                             CPUPerc: containerStat[0].CPUPerc,
-//                             memPerc: containerStat[0].MemPerc,
-//                             memUsage: containerStat[0].MemUsage,
-//                             netIO: containerStat[0].NetIO,
-//                           };
-//                           // Add the container data to the task's containers array
-//                           taskData.containers.push(containerData);
-//                           return taskData;
-//                         }
-//                       );
-//                     })
-//                   ).then((tasksData) => {
-//                     return tasksData[0];
-//                   });
-//                 });
-//               })
-//             ).then((tasksData) => {
-//               nodeData.tasks = tasksData;
-//               return nodeData;
-//             });
-//           });
-//         })
-//       );
-//     })
-//     .then((nodesData) => {
-//       res.locals.dockerContainerStats = nodesData;
-//       return next();
-//     })
-//     .catch((err) => {
-//       return next({
-//         log: `dockerContainerController.getStats: ERROR: ${err}`,
-//         message: { err: "An error occurred in obtaining container stats'." },
-//       });
-//     });
-// };
-
-dockerContainerController.getStatsByNode = (req, res, next) => {
-  let nodeID = req.params.nodeID;
-  return Promise.all(
-    [nodeID].map((nodeID) => {
-      const nodeData = { nodeID: nodeID, tasks: [] };
-
-      return getRunningTaskIDs(nodeID).then((runningTaskList) => {
-        return Promise.all(
-          runningTaskList.map((taskID) => {
-            const taskData = { taskID: taskID, containers: [] };
-
-            return getContainerIDs(taskID).then((containerIDList) => {
-              return Promise.all(
-                containerIDList.map((containerID) => {
-                  return getContainerStats(containerID).then(
-                    (containerStat) => {
-                      const containerData = {
-                        containerID: containerStat[0].ID,
-                        containerName: containerStat[0].Name,
-                        CPUPerc: containerStat[0].CPUPerc,
-                        memPerc: containerStat[0].MemPerc,
-                        memUsage: containerStat[0].MemUsage,
-                        netIO: containerStat[0].NetIO,
-                      };
-
-                      taskData.containers.push(containerData);
-                      return taskData;
-                    }
-                  );
-                })
-              ).then((tasksData) => {
-                return tasksData[0];
-              });
-            });
-          })
-        ).then((tasksData) => {
-          nodeData.tasks = tasksData;
-
-          return nodeData;
-        });
-      });
-    })
-  )
-    .then((nodesData) => {
-      res.locals.dockerContainerStats = nodesData;
-      return next();
-    })
-    .catch((err) => {
-      return next({
-        log: `dockerContainerController.getStatsByNode: ERROR: ${err}`,
-        message: {
-          err: "An error occurred in obtaining container stats by node'.",
-        },
-      });
-    });
-};
 
 module.exports = dockerContainerController;

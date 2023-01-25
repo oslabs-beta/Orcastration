@@ -25,6 +25,7 @@ const Tabs = ({
   const [tabContentArr, setTabContentArr] = useState([]);
   const [UUID, setUUID] = useState(null);
   const [change, setChange] = useState(false);
+  const [sse, setSSE] = useState(null);
 
   //declare variable tabNavArr and initialize to empty array
   const [test, setTest] = useState(true);
@@ -49,8 +50,6 @@ const Tabs = ({
         />
       );
     }
-    // console.log('this is tabNavArr: ', tabNavArr)
-    // console.log('this is tabContentArr: ', tabContentArr)
     return;
   };
   createNavAndContent();
@@ -138,13 +137,18 @@ const Tabs = ({
         `http://localhost:3000/dockerCont/streamSwarmStats/${UUID}`
       );
       console.log('Started Streaming');
+      console.log('here is the sse:', sse);
       sse.onmessage = (event) => {
         // console.log('sse.onmessage event', event);
         const data = JSON.parse(event.data);
         // console.log('streamData', data);
         setData(data);
         setChange((prev) => !prev);
+        if (currentStep === 'Stop') {
+          sse.close();
+        }
       };
+ 
       sse.onerror = (err) => {
         console.log('see.error', err);
         return () => {
@@ -158,13 +162,11 @@ const Tabs = ({
     }
     // let parsedData = await response.json();
     // open sse, with uuid as req.params
-
-    // console.log('here is the parsed data', parsedData);
   }, [currentStep]);
 
   return (
     <div className='Tabs px-4 scroll-pb-4 bg-nightblue-800/50 rounded-md'>
-      <ul className='nav m-0 h-fit justify-center'>
+      <ul className='nav mx-auto h-fit justify-center'>
         {/* <TabNavItem
           // this is currently hardcoded
           title={!allTasks.length ? 'Node ID' : `${allTasks[0].nodeID}`}
