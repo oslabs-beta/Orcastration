@@ -9,14 +9,11 @@ const TabContent = ({
   change,
   setHealthStatus,
 }) => {
-  // console.log('we are in tabContent', tasks);
   // use for loop to loop over tasks array,
-  // for each loop, we want to create a task container passing a new prop down
-  // called containers which is equal to all the containers of that task
+  // for each loop, we want to create a task container passing a props down
+  //for taskID, container data, and containerID as well as other props that will be used later on
   const taskContainers = [];
   for (let i = 0; i < tasks.length; i++) {
-    // console.log('tasks within tab content for loop: ', tasks[i])
-    // console.log('containerData in tab content', containerData)
     taskContainers.push(
       <TaskContainer
         id={tasks[i].taskID}
@@ -28,7 +25,6 @@ const TabContent = ({
       />
     );
   }
-  // console.log('this is taskContainer data: ', taskContainers);
   return activeTab === id ? (
     <div className='task-scroll mb-4 overflow-y-auto space-y-4'>
       {taskContainers}

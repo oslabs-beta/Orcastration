@@ -1,6 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-// const MiniCssExtractPlugin = require('minnpi-css-extract-plugin');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
   mode: process.env.Node_ENV,
@@ -32,8 +32,16 @@ module.exports = {
       template: './app/public/index.html',
       filename: 'index.html',
     }),
+    new Dotenv({
+      path: './.env',
+      safe: true,
+      allowEmptyValues: true,
+      systemvars: true,
+      silent: true,
+      defaults: false,
+      prefix: 'process.env',
+    }),
   ],
-  // plugins: [new MiniCssExtractPlugin()],
   devServer: {
     static: {
       directory: path.resolve(__dirname, './app'),
