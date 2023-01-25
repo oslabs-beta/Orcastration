@@ -6,23 +6,19 @@ import SignUp from './Authentication/SignUp';
 import LogIn from './Authentication/Login';
 import Loader from './tabComponent/Loader';
 
-// import Data from '../TEST-DATA/Data';
-// import PieChart from '../components/PieChart';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-// import { Pie } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const App = (props) => {
   const [signUp, setSignUp] = useState(true);
   const [logIn, setLogIn] = useState(false);
-  // const [userEmail, setUserEmail] = useState(null);
 
   const [activeTab, setActiveTab] = useState('tab0');
   const [currentStep, setCurrentStep] = useState('Starting');
   const [currentNode, setCurrentNode] = useState('');
   const [nodeTotal, setNodeTotal] = useState(0);
-  const [tasks, setTasks] = useState([]); // should it be null or arr? what if use has no docker swarm set up
+  const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [healthStatus, setHealthStatus] = useState({ Status: 'waiting' });
 
@@ -34,7 +30,6 @@ const App = (props) => {
     const loggedInUser = localStorage.getItem('user');
 
     if (loggedInUser) {
-      // console.log('inside the conditional');
       setSignUp(false);
       setLogIn(true);
     }
@@ -42,8 +37,8 @@ const App = (props) => {
 
   const signUpClick = () => {
     const email = document.getElementById('email').value;
-    // setUserEmail(email);
     const password = document.getElementById('password').value;
+    //using the inputed email and password from the user, we send their credentials to our database to be stored
     fetch(`http://localhost:3000/user/signup`, {
       method: 'POST',
       headers: {
@@ -53,10 +48,10 @@ const App = (props) => {
       body: JSON.stringify({ email: email, password: password }),
     }).then((data) => {
       if (data.status === 200) {
+        //if post request is successful, we assign signUp to false and logIn to true
         setSignUp(false);
         setLogIn(true);
         localStorage.setItem('user', true);
-        // console.log(data);
       } else {
         alert('The username has already been taken.');
       }
@@ -66,6 +61,7 @@ const App = (props) => {
   const logInClick = () => {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
+    //using the inputed email and password provided by the user, we check to see if we have these credentials in the database
     fetch('http://localhost:3000/user/login', {
       method: 'POST',
       headers: {
@@ -75,6 +71,8 @@ const App = (props) => {
       body: JSON.stringify({ email: email, password: password }),
     }).then((data) => {
       if (data.status === 200) {
+        //if we confirm that this user has been signed up, we can allow them entry
+        //to the developer page (by setting signUp to false and login to true)
         setSignUp(false);
         setLogIn(true);
         localStorage.setItem('user', true);
@@ -83,7 +81,6 @@ const App = (props) => {
   };
 
   const logOutClick = () => {
-    // setUserEmail(null);
     setSignUp(true);
     setLogIn(false);
     localStorage.clear();
@@ -104,12 +101,10 @@ const App = (props) => {
       try {
         let rawData = await fetch('/dockerCont/getTasks');
         let parsedData = await rawData.json();
-        console.log('parsed data here', parsedData);
+        //set setTasks to equal the result of submitting a get request to the above endpoint
         setTasks(parsedData);
+        //set current node to equal the first node in the swarm
         setCurrentNode(parsedData[0].nodeID);
-        // document.getElementById('root').style.backgroundImage =
-        //   "url('../assets/night_nomoon.png')";
-        // document.getElementById('root').style.removeProperty('backgroundImage')
         setLoading(true);
       } catch (err) {
         console.log('Error in App.jsx useEffect', err);
@@ -117,23 +112,6 @@ const App = (props) => {
     };
     fetchData();
   }, []);
-
-  // useEffect(() => {
-  //   checkLogIn();
-  //   const fetchData = async () => {
-  //     try {
-  //       let rawData = await fetch('/dockerCont/getTasks');
-  //       let parsedData = await rawData.json();
-  //       setData(parsedData);
-  //       setCurrentNode(parsedData[0].nodeID);
-  //       let totalPercentageCPU = 0;
-  //       setCurrentNode(parsedData[0].nodeID);
-  //     } catch (err) {
-  //       console.log('Error in App.jsx useEffect', err);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
 
   if (signUp === true) {
     return (
@@ -161,7 +139,6 @@ const App = (props) => {
           />
           {loading ? (
             <Tabs
-              // allTasks={data}
               currentStep={currentStep}
               setCurrentStep={setCurrentStep}
               allTasks={tasks}

@@ -13,7 +13,7 @@ export default function LoadingInformation({ currentStep, setCurrentStep }) {
     Ready: (
       <button
         onClick={handleClick}
-        className='bg-nightblue-300 shadow-md rounded-md p-2 text-lg text-slate-100 animate-pulse transition ease-in-out duration-300 hover:bg-custompurple'
+        className='bg-nightblue-300 shadow-md rounded-md p-2 text-lg text-slate-100 animate-pulse transition ease-in-out duration-300 hover:bg-secondarymidblue'
       >
         Start Streaming
       </button>
@@ -21,7 +21,7 @@ export default function LoadingInformation({ currentStep, setCurrentStep }) {
     Start: (
       <div>
         Streaming Docker Swarm Container Metrics &nbsp;
-        <span className='ping bg-custompurple rounded-full animate-ping px-2'>
+        <span className='ping bg-nightblue-300 rounded-full animate-ping px-2'>
           &nbsp;
         </span>
         <button

@@ -4,7 +4,6 @@ import RedX from '../../../assets/red-x-icon.svg';
 import Warning from '../../../assets/warning-icon.svg';
 
 export default function HealthStatusDisplay({ healthStatus }) {
-  console.log('here is the health status:', healthStatus);
   const healthyOutput = {
     waiting: (
       <h1 className='text-slate-800'>

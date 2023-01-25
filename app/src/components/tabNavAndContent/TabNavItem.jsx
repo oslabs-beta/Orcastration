@@ -12,7 +12,6 @@ const TabNavItem = ({
     setActiveTab(id);
     //when you click a nav tab, you should update the currentManager
     //to equal the title of the nav item
-    // console.log(title);
     updateNode(title);
   };
 

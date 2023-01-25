@@ -8,7 +8,7 @@ const Navigation = (props) => {
         Orcastration
       </p>
       <button
-        className='mainFontEl bg-nightblue-500 p-2 rounded-md hover:bg-nightblue-300 transition ease-in-out duration-300'
+        className='mainFontEl bg-nightblue-300 p-2 rounded-md hover:bg-secondarymidblue transition ease-in-out duration-300'
         id='signout'
         onClick={props.logOutClick}
       >

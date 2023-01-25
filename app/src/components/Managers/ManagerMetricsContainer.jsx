@@ -4,13 +4,10 @@ import LoadingInformationContainer from '../LoadingInformation/LoadingInformatio
 import HealthStatusDisplay from './HealthStatusDisplay.jsx';
 
 const ManagerMetricsContainer = ({
-  currentNode,
-  totalCPU,
   currentStep,
   setCurrentStep,
   healthStatus,
 }) => {
-  // console.log(currentManager);
   return (
     <div
       className='managerMetricsContainer rounded-md bg-nightblue-800/60

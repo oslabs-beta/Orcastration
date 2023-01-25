@@ -1,15 +1,14 @@
 import React from 'react';
 
 const ContainerHealthLogs = ({ healthStatus }) => {
-  console.log('healthStatus', healthStatus);
   const { containerID, Log, FailingStreak } = healthStatus;
-  console.log([Log, FailingStreak]);
-  console.log('Log TYPE', Array.isArray(Log));
+  //declare containerLogs array to hold div elements for each of our logs contained in the Log state
   const containerLogs = [];
 
   let className = 'text-green-700';
   if (Log) {
     for (let i = 0; i < Log.length; i++) {
+      //for each log within the Log state, we will create a div element that contains the log start, end, and exit code
       containerLogs.push(
         <div key={Log[i].Start}>
           Start: {Log[i].Start}
