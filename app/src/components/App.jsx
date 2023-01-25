@@ -15,7 +15,7 @@ const App = (props) => {
   const [logIn, setLogIn] = useState(false);
 
   const [activeTab, setActiveTab] = useState('tab0');
-  const [currentStep, setCurrentStep] = useState('Start');
+  const [currentStep, setCurrentStep] = useState('Starting');
   const [currentNode, setCurrentNode] = useState('');
   const [nodeTotal, setNodeTotal] = useState(0);
   const [tasks, setTasks] = useState([]);
@@ -151,7 +151,7 @@ const App = (props) => {
             <Loader />
           )}
         </div>
-        <div className='footer text-center'>Orcastration</div>
+        <div className='footer text-center'> </div>
       </div>
     );
   }

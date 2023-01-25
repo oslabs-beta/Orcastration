@@ -13,7 +13,10 @@ export default function HealthStatusDisplay({ healthStatus }) {
     // its status says "starting", but its actually going through the health check test and failing the test (failstreak)
     // it will test for x amt of times (however your healthcheck is configured) until the container is classified as unhealthy
     starting: (
-      <h1 className='text-slate-800'>The container is still starting up.</h1>
+      <h1 className='text-slate-800'>
+        The container is attempting to start up. See terminal above to monitor
+        progress.
+      </h1>
     ),
     healthy: (
       <div className='grid grid-cols-2 items-center justify-center space-x-2'>

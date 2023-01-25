@@ -1,12 +1,13 @@
 import React from 'react';
 
 export default function LoadingInformation({ currentStep, setCurrentStep }) {
+  console.log('currentStep', currentStep);
   const handleClick = () => {
     setCurrentStep('Start');
   };
 
   const loadingProgress = {
-    Start: 'Starting up App',
+    Starting: 'Starting up App',
     IDs: 'Retrieving Docker Swarm Nodes',
     Snapshot: 'Creating Snapshot of Current Docker Swarm Configuration',
     Ready: (
@@ -23,7 +24,21 @@ export default function LoadingInformation({ currentStep, setCurrentStep }) {
         <span className='ping bg-nightblue-300 rounded-full animate-ping px-2'>
           &nbsp;
         </span>
+        <button
+          onClick={() => setCurrentStep('Stop')}
+          className='bg-red-400 mt-2 shadow-md rounded-md p-2 text-lg text-slate-100 transition ease-in-out duration-300 hover:bg-red-700'
+        >
+          Pause Stream
+        </button>
       </div>
+    ),
+    Stop: (
+      <button
+        onClick={handleClick}
+        className='bg-nightblue-300 shadow-md rounded-md p-2 text-lg text-slate-100 animate-pulse transition ease-in-out duration-300 hover:bg-custompurple'
+      >
+        Continue Streaming
+      </button>
     ),
   };
 

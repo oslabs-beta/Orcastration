@@ -20,7 +20,7 @@ const TabNavItem = ({
       onClick={() => handleClick(title)}
       className={
         (activeTab === id ? 'active mainFontEl' : 'mainFontEl') +
-        ' min-w-fit h-2 flex flex-col justify-center'
+        'min-w-fit h-2 flex flex-col justify-center'
       }
     >
       {title}

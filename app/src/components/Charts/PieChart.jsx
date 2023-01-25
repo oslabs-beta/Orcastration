@@ -41,7 +41,7 @@ export default function PieChart({ perc, containerStat }) {
         ],
         borderColor: ['rgba(75,192,192,1)', '#19314D'],
         borderWidth: 1,
-        hoverOffset: 20,
+        // hoverOffset: 20,
       },
     ],
   });

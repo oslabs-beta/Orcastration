@@ -4,7 +4,8 @@
 
 body {
   height: 100vh;
-  /* height: 100dvh; */
+  height: 100dvh;
+  /* width: 100vw; */
 }
 
 .signUp {
@@ -67,7 +68,7 @@ body {
 /* } */
 
 #root {
-  /* width: inherit; */
+  height: inherit;
   margin: 0;
   background: #4b84aa;
   background-repeat: no-repeat;
@@ -144,7 +145,7 @@ body {
 
 /* Tab Navigation */
 ul.nav {
-  width: 60%;
+  /* width: 60%; */
   /* display: flex; */
   /* align-items: center; */
   /* justify-content: space-between; */
@@ -158,8 +159,7 @@ ul.nav {
 ul.nav li {
   font-size: medium;
   font-weight: 300;
-  width: 50%;
-  padding: 1rem;
+  padding: 1.1rem;
   background-color: rgb(250, 250, 250);
   color: rgb(33, 33, 33);
   list-style: none;
@@ -238,20 +238,22 @@ ul.nav li.active {
 }
 
 .navigation {
+  height: inherit;
   display: grid;
-  grid-template-rows: 10% 87.5% 1fr;
+  grid-template-rows: 2fr 12fr 1fr;
 }
 
 .managerAndTabs {
   display: grid;
   grid-template-columns: 3fr 8fr;
   gap: 2rem;
+  overflow: hidden;
 }
 
-#tab3 {
+/* #tab3 {
   display: grid;
   grid-auto-flow: column;
-}
+} */
 
 /*LOADING WAVE ANIMATION*/
 /* body {
@@ -317,15 +319,19 @@ ul.nav li.active {
   }
 }
 
-.managerMetricsContainer {
-  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
-    rgba(0, 0, 0, 0.22) 0px 15px 12px;
-}
-
 /* .lineChart {
   background-image: url('https://i.imgur.com/jW0PsjL.png');
   background-size: cover;
 } */
-/* .managerMetricsContainer {
-  grid-template-rows: 3fr 1fr 2fr;
-} */
+.managerMetricsContainer {
+  /* height: inherit; */
+  display: grid;
+  grid-template-rows: 2fr 1fr 1fr;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
+    rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+.health-logs {
+  display: grid;
+  grid-template-rows: 1fr 4fr;
+}

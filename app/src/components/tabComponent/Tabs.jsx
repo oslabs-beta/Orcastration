@@ -70,7 +70,6 @@ const Tabs = ({
         node.tasks.forEach((task) => {
           task.containers.forEach((container) => {
             //for each container in each task in each node returned from allTasks, we will push the data contained in container
-            console.log('container: ', container);
             reqObj.push(container);
           });
         });
@@ -109,7 +108,11 @@ const Tabs = ({
         const data = JSON.parse(event.data);
         setData(data);
         setChange((prev) => !prev);
+        if (currentStep === 'Stop') {
+          sse.close();
+        }
       };
+
       sse.onerror = (err) => {
         console.log('see.error', err);
         return () => {
