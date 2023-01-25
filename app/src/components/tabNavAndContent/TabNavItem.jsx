@@ -12,7 +12,7 @@ const TabNavItem = ({
     setActiveTab(id);
     //when you click a nav tab, you should update the currentManager
     //to equal the title of the nav item
-    console.log(title);
+    // console.log(title);
     updateNode(title);
   };
 
@@ -21,7 +21,7 @@ const TabNavItem = ({
       onClick={() => handleClick(title)}
       className={
         (activeTab === id ? 'active mainFontEl' : 'mainFontEl') +
-        ' min-w-fit h-2 flex flex-col justify-center'
+        'min-w-fit h-2 flex flex-col justify-center'
       }
     >
       {title}

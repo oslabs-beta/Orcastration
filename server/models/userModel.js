@@ -2,24 +2,18 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcryptjs');
 
-const MONGO_URI =
-  'mongodb+srv://max:123@users.jfqv078.mongodb.net/?retryWrites=true&w=majority';
-
-mongoose
-  .connect(MONGO_URI, {
-    // options for the connect method to parse the URI
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    dbName: 'OrcastrationDB',
-  })
-  .then(() => console.log('Connected to Mongo DB.'))
-  .catch((err) => console.log(err));
-
+/*
+Create Mongoose schema for 'User' model
+Schema will have a email and password field that allows users to create an account
+*/
 const userSchema = new Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
 });
 
+/*
+Encypt the password in userSchema with Bcrypt hashing prior to saving it to the database
+*/
 userSchema.pre('save', function (next) {
   const user = this;
   bcrypt
@@ -30,7 +24,10 @@ userSchema.pre('save', function (next) {
       return next();
     })
     .catch((err) => {
-      return next('Error in hashing of user password:' + JSON.stringify(err));
+      return next({
+        log: 'Error in hashing of user password:' + JSON.stringify(err),
+        message: { err: 'An error occured in creating user password.' },
+      });
     });
 });
 
