@@ -1,4 +1,4 @@
-<center>
+<center style='margin:auto'>
     <img src="app/assets/LOGO.png" width='250'>
 </center>
 <h1 align='center'>Orcastration</h1>
