@@ -1,6 +1,6 @@
-<center style='margin:auto'>
-    <img src="app/assets/LOGO.png" width='250'>
-</center>
+<div align='center' >
+    <img style="display: block; margin-left: auto; margin-right: auto;" src="app/assets/LOGO.png" width='250'>
+</div>
 <h1 align='center'>Orcastration</h1>
 <br>
 <p>
