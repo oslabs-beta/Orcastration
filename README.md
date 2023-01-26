@@ -1,6 +1,13 @@
 <div align='center' >
     <img style="display: block; margin-left: auto; margin-right: auto;" src="app/assets/LOGO.png" width='250'>
 </div>
+<div align="center">
+  <a href="https://orcastration.dev" target="_blank">
+    <img src="https://img.shields.io/badge/website-orcastration-teal.svg" />
+  </a>
+  <img alt="license" src="https://img.shields.io/badge/License-MIT-blue.svg">
+  <img alt="last-commit" src="https://img.shields.io/github/last-commit/oslabs-beta/docklight?color=green">
+</div>
 <h1 align='center'>Orcastration</h1>
 <br>
 <p>
@@ -55,9 +62,7 @@
     <br>
     <br>
     <h2 style='text-align:center'>What is the bug?</h2>
-    <br>
     <h2 style='text-align:center'>How can you replicate the bug (please include specific steps)?</h2>
-    <br>
     <h2 style='text-align:center'>What is the severity of this bug: high (impacts core functionality), mid (slightly impacts functionality, but app still remains usable), or low (an annoyance)?</h2>
 </p>
 <br>
