@@ -9,35 +9,35 @@ body {
 }
 
 .signUp {
-  /* align-items: center; */
-  /* background-color: rgb(180, 236, 255); */
-  /* color: white; */
   font-size: 25px;
   margin: 50px auto;
-  background-color: rgb(30 64 175);
+  background-color: #19314d;
   border-radius: 5px;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
     rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
     rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
   padding: 20px 20px;
-  /* text-align: center; */
   max-width: 100%;
-  width: 850px;
+  width: 600px;
+}
+
+.signUpInput {
+  display: flex;
+  height: 2rem;
 }
 
 .signUpTitle {
-  /* margin: 50px auto; */
-  /* margin-top: 100px; */
   color: white;
-  font-size: 28px;
+  font-size: 1.5rem;
 }
 
 .signUpInput {
   border-radius: 5px;
+  font-size: 1rem;
 }
 
 .enter {
-  background-color: hsl(232, 43%, 27%);
+  background-color: #4b84aa;
   color: white;
   padding: 12px;
   font-size: 16px;
@@ -70,11 +70,7 @@ body {
 #root {
   height: inherit;
   margin: 0;
-  background: linear-gradient(
-    158deg,
-    hsl(231, 39%, 6%) 17%,
-    hsl(231, 69%, 30%) 80%
-  );
+  background: #4b84aa;
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -84,6 +80,8 @@ body {
   display: grid;
   grid-template-rows: 1fr 92.5%;
   overflow: auto;
+  /* box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
+    rgba(0, 0, 0, 0.22) 0px 15px 12px; */
 }
 
 .snap-inline {
@@ -99,7 +97,8 @@ body {
   /* min-height: fit-content; */
   padding-bottom: 1rem;
   position: relative;
-  background-image: linear-gradient(to bottom, #121f6d, #131d5a);
+  /* background-image: linear-gradient(to bottom, #121f6d, #131d5a); */
+  background: #19314d;
   z-index: 1;
 }
 
@@ -112,9 +111,9 @@ body {
   left: 0;
   height: 100%;
   border-radius: 0.375rem;
-  background-image: linear-gradient(to bottom, #121f6d, #092fd6, #b517d4);
+  background-image: linear-gradient(to bottom, #19314d, #355477, #19314d);
   z-index: -1;
-  transition: opacity 1.2s linear;
+  transition: opacity 1s linear;
   opacity: 0;
 }
 
@@ -145,28 +144,17 @@ body {
 } */
 
 /* Tab Navigation */
-ul.nav {
-  /* width: 60%; */
-  /* display: flex; */
-  /* align-items: center; */
-  /* justify-content: space-between; */
-  box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px,
-    rgba(17, 17, 26, 0.1) 0px 0px 8px;
-  /* @media (max-width: 768px) {
-    width: 90%;
-  } */
-}
 
 ul.nav li {
-  font-size: medium;
-  font-weight: 300;
+  /* font-size: medium; */
+  /* font-weight: 300; */
   padding: 1.1rem;
-  background-color: rgb(250, 250, 250);
+  /* background-color: rgb(250, 250, 250);
   color: rgb(33, 33, 33);
   list-style: none;
   text-align: center;
   cursor: pointer;
-  transition: all 0.5s;
+  transition: all 0.5s; */
 }
 
 ul.nav li:first-child {
@@ -178,15 +166,13 @@ ul.nav li:last-child {
 }
 
 ul.nav li:hover {
-  box-shadow: 0px 0px 5px #b517d4;
-  background-color: #ececec;
-  color: #b517d4;
+  box-shadow: 0px 0px 5px #f3f5f7;
+  color: #f3f5f7;
 }
 
 ul.nav li.active {
   transition: all 0.7s;
-  background: #092fd6;
-  box-shadow: inset 0 0 4px rgb(33, 18, 160);
+  background: #19314d;
   color: rgb(219, 217, 217);
 }
 
@@ -233,37 +219,23 @@ ul.nav li.active {
   background-color: #ececec;
   border-radius: 0.375rem;
 }
-/* 
-.navigationBar {
-  display: flex;
-  justify-content: space-between;
-} */
 
 #logo {
-  font-size: 1.8rem;
+  font-size: 2rem;
 }
 
-/* 
-.mainFontEl:hover {
-  text-decoration: none;
-} */
-
-/* #signout:hover {
-  text-decoration: underline;
-} */
-
-/* set nav proportion relative to rest of screen  */
 .navigation {
+  gap: 2rem;
   height: inherit;
   display: grid;
-  grid-template-rows: 2fr 12fr 1fr;
+  grid-template-rows: 2fr 20fr 1fr;
 }
 
 .managerAndTabs {
   display: grid;
   grid-template-columns: 3fr 8fr;
   gap: 2rem;
-  overflow: hidden;
+  overflow: auto;
 }
 
 /* #tab3 {
@@ -290,7 +262,7 @@ ul.nav li.active {
 .wave {
   width: 25px;
   height: 400px;
-  background: linear-gradient(45deg, rgb(87, 123, 214), #fff);
+  background: linear-gradient(45deg, #19314d, #fff);
   margin: 5px;
   animation: wave 1s linear infinite;
   border-radius: 20px;
@@ -343,6 +315,8 @@ ul.nav li.active {
   /* height: inherit; */
   display: grid;
   grid-template-rows: 2fr 1fr 1fr;
+  /* box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, */
+  /* rgba(0, 0, 0, 0.22) 0px 15px 12px; */
 }
 
 .health-logs {

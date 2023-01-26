@@ -9,12 +9,10 @@ export default function TaskContainer({
   change,
   setHealthStatus,
 }) {
-  // console.log('in taskContainer component');
-  // console.log('containers props', containers);
-  // console.log('containerData props', containerData);
   let containerComponents = [];
   for (let i = 0; i < containers.length; i++) {
-    // console.log(containerData[i]);
+    //for every container available, we want to create a ContainerComponent passing down the containerID, and container
+    //metric data
     containerComponents.push(
       <ContainerComponent
         id={containers[i]}
@@ -26,7 +24,6 @@ export default function TaskContainer({
       />
     );
   }
-  // console.log('this is containerComponents: ', containerComponents);
   return (
     <fieldset className='task-container border-solid flex flex-col items-center snap-y scroll-smooth rounded-md'>
       <legend className='text-white bg-nightblue-300 text-lg p-2 ml-4 rounded-md shadow-lg'>
