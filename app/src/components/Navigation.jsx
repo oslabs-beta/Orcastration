@@ -8,13 +8,13 @@ const Navigation = (props) => {
       <p id='logo' className='font-sans ml-4'>
         Orcastration
       </p>
-      <button
+      {/* <button
         className='bg-nightblue-300 p-2 rounded-md hover:bg-secondarymidblue transition ease-in-out duration-300 ml-auto'
         id='signout'
         onClick={props.logOutClick}
       >
         Sign Out
-      </button>
+      </button> */}
     </div>
   );
 };
