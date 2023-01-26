@@ -29,6 +29,7 @@ module.exports = {
         },
         pingloader: '#4bc0c0bf',
         custompurple: '#b517d4',
+        bubbleblue: '#54cbf5',
       },
     },
   },
