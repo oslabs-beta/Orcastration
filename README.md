@@ -6,7 +6,7 @@
     <img src="https://img.shields.io/badge/website-orcastration-teal.svg" />
   </a>
   <img alt="license" src="https://img.shields.io/badge/License-MIT-blue.svg">
-  <img alt="last-commit" src="https://img.shields.io/github/last-commit/oslabs-beta/docklight?color=green">
+  <img alt="last-commit" src="https://img.shields.io/github/last-commit/oslabs-beta/orcastration?color=green">
 </div>
 <h1 align='center'>Orcastration</h1>
 <br>
