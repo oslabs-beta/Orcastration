@@ -11,7 +11,7 @@
 <h1 align='center'>Orcastration</h1>
 <br>
 <p>
-    Orcastration is a Docker Swarm visualization tool, giving developers the power to view container metrics of their Docker Swarm with ease! A seamless and efficient GUI gives you insight to CPU usage, memory usage, ,NET I/O, and the health of each of your Docker swarm containers organized neatly by node and task. Say goodbye to clumsy and difficult to understand Docker CLI command outputs and say hello to Orcastration.
+    Orcastration is a Docker Swarm visualization tool, giving developers the power to view container metrics of their Docker Swarm with ease! A seamless and efficient GUI gives you insight to CPU usage, memory usage, NET I/O, and the health of each of your Docker swarm containers organized neatly by node and task. Say goodbye to clumsy and difficult to understand Docker CLI command outputs and say hello to Orcastration.
 </p>
 <br>
 <h2>How it works</h2>
