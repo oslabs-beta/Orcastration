@@ -9,7 +9,6 @@ const dotenv = require('dotenv').config({ path: './.env' });
 Declare MongoDB Atlas URI to connect to MongoDB server
 */
 const MONGO_URI = process.env.MONGO_URI;
-// 'mongodb+srv://max:123@users.jfqv078.mongodb.net/?retryWrites=true&w=majority';
 
 /*
 Connect to MongoDB databse
