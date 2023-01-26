@@ -39,7 +39,7 @@
 <br>
 <h3>Next:</h3>
 <p>
-    Orcastration utilizes a MongoDB database in order to efficiently serve you data. In order to ensure proper functionality, create a MongoDB database (click <a style='color:lightblue'href='https://www.mongodb.com/basics/create-database'>here</a> for more information on setup). Then, create an .env file in the root of the Orcastration codebase and set an environment variable of 
+    Orcastration utilizes a MongoDB database in order to efficiently serve your data. In order to ensure proper functionality, create a MongoDB database (click <a style='color:lightblue'href='https://www.mongodb.com/basics/create-database'>here</a> for more information on setup). Then, create an .env file in the root of the Orcastration codebase and set an environment variable of 
     <br>
     <pre>MONGO_URI</pre>
     to your newly created MongoDB URI. <br><br>Click <a style='color:lightblue'href='https://www.npmjs.com/package/dotenv-webpack'>here</a> for more information on environment variables.
