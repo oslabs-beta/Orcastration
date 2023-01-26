@@ -1,10 +1,17 @@
-<center>
-    <img src="app/assets/LOGO.png" width='250'>
-</center>
+<div align='center' >
+    <img style="display: block; margin-left: auto; margin-right: auto;" src="app/assets/LOGO.png" width='250'>
+</div>
+<div align="center">
+  <a href="https://orcastration.dev" target="_blank">
+    <img src="https://img.shields.io/badge/website-orcastration-teal.svg" />
+  </a>
+  <img alt="license" src="https://img.shields.io/badge/License-MIT-blue.svg">
+  <img alt="last-commit" src="https://img.shields.io/github/last-commit/oslabs-beta/orcastration?color=green">
+</div>
 <h1 align='center'>Orcastration</h1>
 <br>
 <p>
-    Orcastration is a Docker Swarm visualization tool, giving developers the power to view container metrics of their Docker Swarm with ease! A seamless and efficient GUI gives you insight to CPU usage, memory usage, and NET I/O of each of your Docker swarm containers organized neatly by node and task. Say goodbye to clumsy and difficult to understand Docker CLI command outputs and say hello to Orcastration. 
+    Orcastration is a Docker Swarm visualization tool, giving developers the power to view container metrics of their Docker Swarm with ease! A seamless and efficient GUI gives you insight to CPU usage, memory usage, NET I/O, and the health of each of your Docker swarm containers organized neatly by node and task. Say goodbye to clumsy and difficult to understand Docker CLI command outputs and say hello to Orcastration.
 </p>
 <br>
 <h2>How it works</h2>
@@ -25,14 +32,14 @@
 <br>
 <h3>Then:</h3>
 <p>
-    Confirm that your Docker Swarm and Docker Desktop are running. Please be aware that Orcastration runs on port 8080 and 3000, so be mindful that none of your containers share these ports! Also, understand that the Docker Health Check feature will only function for Docker containers configured with Docker Health Check files.
+    Confirm that your Docker Swarm and Docker Desktop are running. Verify that you are running Orcastration on the same machine that is hosting the manager node. The application must be running on the manager node’s machine in order to have the necessary access to the swarm's cluster management functionality.  Please be aware that Orcastration runs on port 8080 and 3000, so be mindful that none of your containers share these ports! Also, understand that the Docker Health Check feature will only function for Docker containers configured with Docker healthcheck in the Dockerfile or the Docker Compose file.
     <br>
     <p>Click <a style='color:lightblue'href='https://scoutapm.com/blog/how-to-use-docker-healthcheck'>here</a> for more information on Docker Health Check. 
 </p>
 <br>
 <h3>Next:</h3>
 <p>
-    Orcastration utilizes a MongoDB database in order to efficiently serve you data. In order to ensure proper functionality, create a MongoDB database (click <a style='color:lightblue'href='https://www.mongodb.com/basics/create-database'>here</a> for more information on setup). Then, create an .env file in the root of the Orcastration codebase and set an environment variable of 
+    Orcastration utilizes a MongoDB database in order to efficiently serve your data. In order to ensure proper functionality, create a MongoDB database (click <a style='color:lightblue'href='https://www.mongodb.com/basics/create-database'>here</a> for more information on setup). Then, create an .env file in the root of the Orcastration codebase and set an environment variable of 
     <br>
     <pre>MONGO_URI</pre>
     to your newly created MongoDB URI. <br><br>Click <a style='color:lightblue'href='https://www.npmjs.com/package/dotenv-webpack'>here</a> for more information on environment variables.
@@ -55,9 +62,7 @@
     <br>
     <br>
     <h2 style='text-align:center'>What is the bug?</h2>
-    <br>
     <h2 style='text-align:center'>How can you replicate the bug (please include specific steps)?</h2>
-    <br>
     <h2 style='text-align:center'>What is the severity of this bug: high (impacts core functionality), mid (slightly impacts functionality, but app still remains usable), or low (an annoyance)?</h2>
 </p>
 <br>
