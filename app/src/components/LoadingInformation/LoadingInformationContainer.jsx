@@ -21,9 +21,10 @@ export default function LoadingInformation({ currentStep, setCurrentStep }) {
     Start: (
       <div>
         Streaming Docker Swarm Container Metrics &nbsp;
-        <span className='ping bg-nightblue-300 rounded-full animate-ping px-2'>
+        <span className='ping bg-red-600 rounded-full animate-ping px-2'>
           &nbsp;
         </span>
+        <br/>
         <button
           onClick={() => setCurrentStep('Stop')}
           className='bg-red-400 mt-2 shadow-md rounded-md p-2 text-lg text-slate-100 transition ease-in-out duration-300 hover:bg-red-700'
@@ -35,7 +36,7 @@ export default function LoadingInformation({ currentStep, setCurrentStep }) {
     Stop: (
       <button
         onClick={handleClick}
-        className='bg-nightblue-300 shadow-md rounded-md p-2 text-lg text-slate-100 animate-pulse transition ease-in-out duration-300 hover:bg-custompurple'
+        className='bg-nightblue-300 shadow-md rounded-md p-2 text-lg text-slate-100 animate-pulse transition ease-in-out duration-300 hover:bg-nightblue-800'
       >
         Continue Streaming
       </button>

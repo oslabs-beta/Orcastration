@@ -36,7 +36,7 @@ export default function HealthStatusDisplay({ healthStatus }) {
     ),
     null: (
       <div className=''>
-        <Warning className='w-4 mx-auto inline mb-2' />
+        <Warning className='w-4 mx-auto inline mb-1' />
         <span className='text-slate-800 text-semibold ml-2'>
           Health Check is not configured for the container.
         </span>

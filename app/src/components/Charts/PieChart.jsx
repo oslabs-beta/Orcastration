@@ -35,7 +35,6 @@ export default function PieChart({ perc, containerStat }) {
         label: 'Container Usage Ratio',
         data: [0, 0],
         backgroundColor: [
-          // only need two colors since there are only two data points
           'rgba(75,192,192,0.2)',
           'rgba(36, 161, 252, 0.2)',
         ],

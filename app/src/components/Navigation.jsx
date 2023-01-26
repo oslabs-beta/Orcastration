@@ -1,14 +1,15 @@
 import React from 'react';
+import logo from '../../../app/assets/LOGO.png';
 
 const Navigation = (props) => {
-  // console.log('running navigation')
   return (
-    <div className='navigationBar text-slate-200 flex justify-between items-center px-12'>
-      <p id='logo' className='mainFontEl'>
+    <div className='navigationBar bg-nightblue-800/60 text-slate-200 flex items-center px-12 py-2'>
+      <img src={logo} className='w-24'></img>
+      <p id='logo' className='font-sans ml-4'>
         Orcastration
       </p>
       <button
-        className='mainFontEl bg-nightblue-300 p-2 rounded-md hover:bg-secondarymidblue transition ease-in-out duration-300'
+        className='bg-nightblue-300 p-2 rounded-md hover:bg-secondarymidblue transition ease-in-out duration-300 ml-auto'
         id='signout'
         onClick={props.logOutClick}
       >
